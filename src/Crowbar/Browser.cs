@@ -2,73 +2,93 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Web;
-using System.Web.SessionState;
 
 namespace Crowbar
 {
+    /// <summary>
+    /// Provides the capabilities of simulating an HTTP(S) request to an ASP.NET web application.
+    /// </summary>
     public class Browser
     {
-        public Browser()
+        /// <summary>
+        /// Performs a DELETE request against the host application.
+        /// </summary>
+        /// <param name="path">The path that is being requested.</param>
+        /// <param name="context">A configuration object for providing the browser context for the request.</param>
+        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
+        public BrowserResponse Delete(string path, Action<BrowserContext> context = null)
         {
-            Cookies = new HttpCookieCollection();
+            return PerformRequest("DELETE", path, context);
         }
 
-        public HttpCookieCollection Cookies { get; private set; }
-
-        public HttpSessionState Session { get; private set; }
-
-        public BrowserResponse Delete(string path, Action<BrowserContext> initialize = null)
+        /// <summary>
+        /// Performs a GET request against the host application.
+        /// </summary>
+        /// <param name="path">The path that is being requested.</param>
+        /// <param name="context">A configuration object for providing the browser context for the request.</param>
+        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
+        public BrowserResponse Get(string path, Action<BrowserContext> context = null)
         {
-            return PerformRequest("DELETE", path, initialize);
+            return PerformRequest("GET", path, context);
         }
 
-        public BrowserResponse Get(string path, Action<BrowserContext> initialize = null)
+        /// <summary>
+        /// Performs a POST request against the host application.
+        /// </summary>
+        /// <param name="path">The path that is being requested.</param>
+        /// <param name="context">A configuration object for providing the browser context for the request.</param>
+        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
+        public BrowserResponse Post(string path, Action<BrowserContext> context = null)
         {
-            return PerformRequest("GET", path, initialize);
+            return PerformRequest("POST", path, context);
         }
 
-        public BrowserResponse Post(string path, Action<BrowserContext> initialize = null)
+        /// <summary>
+        /// Performs a PUT request against the host application.
+        /// </summary>
+        /// <param name="path">The path that is being requested.</param>
+        /// <param name="context">A configuration object for providing the browser context for the request.</param>
+        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
+        public BrowserResponse Put(string path, Action<BrowserContext> context = null)
         {
-            return PerformRequest("POST", path, initialize);
+            return PerformRequest("PUT", path, context);
         }
 
-        public BrowserResponse Put(string path, Action<BrowserContext> initialize = null)
-        {
-            return PerformRequest("PUT", path, initialize);
-        }
-
+        /// <summary>
+        /// Performs a request against the host application using the specified HTTP method.
+        /// </summary>
+        /// <param name="method">The HTTP method that should be used.</param>
+        /// <param name="path">The path that is being requested.</param>
+        /// <param name="initialize">A configuration object for providing the browser context for the request.</param>
+        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
         public BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> initialize = null)
         {
-            var context = new BrowserContext(method);
+            if (method == null)
+            {
+                throw new ArgumentNullException("method");
+            }
 
-            initialize = initialize ?? (ctx => { });
-            initialize(context);
-
-            return ProcessRequest(path, context);
-        }
-
-        private BrowserResponse ProcessRequest(string path, BrowserContext context)
-        {
             if (path == null)
             {
                 throw new ArgumentNullException("path");
             }
 
+            var context = new BrowserContext(method);
+            if (initialize != null)
+            {
+                initialize(context);
+            }
+
             path = path.RemoveLeadingSlash();
             path = context.ExtractQueryString(path);
 
-            // Perform the request.
             CrowbarContext.Reset();
 
             var output = new StringWriter();
-
             var workerRequest = new SimulatedWorkerRequest(path, context, output);
+
             HttpRuntime.ProcessRequest(workerRequest);
-
-            // Capture the output.
-            AddAnyNewCookiesToCookieCollection();
-            Session = CrowbarContext.HttpSessionState;
-
+            
             return CreateResponse(output);
         }
 
@@ -105,34 +125,6 @@ namespace Crowbar
                 Response = response,
                 StatusCode = (HttpStatusCode)response.StatusCode
             };
-        }
-
-        private void AddAnyNewCookiesToCookieCollection()
-        {
-            if (CrowbarContext.Response == null)
-            {
-                return;
-            }
-
-            var lastResponseCookies = CrowbarContext.Response.Cookies;
-            if (lastResponseCookies == null)
-            {
-                return;
-            }
-
-            foreach (string cookieName in lastResponseCookies)
-            {
-                var cookie = lastResponseCookies[cookieName];
-                if (Cookies[cookieName] != null)
-                {
-                    Cookies.Remove(cookieName);
-                }
-
-                if ((cookie.Expires == default(DateTime)) || (cookie.Expires > DateTime.Now))
-                {
-                    Cookies.Add(cookie);
-                }
-            }
         }
     }
 }
