@@ -3,14 +3,16 @@ using System.Web.Mvc;
 
 namespace Crowbar
 {
-    /// <summary>
-    /// Represents the result of a simulated request
-    /// </summary>
-    public class RequestResult
+    public class BrowserResponse
     {
-        public HttpResponse Response { get; set; }
-        public string ResponseText { get; set; }
         public ActionExecutedContext ActionExecutedContext { get; set; }
+
+        public HttpResponse Response { get; set; }
+
+        public string ResponseText { get; set; }
+       
         public ResultExecutedContext ResultExecutedContext { get; set; }
+
+        public HttpStatusCode StatusCode { get; set; }
     }
 }

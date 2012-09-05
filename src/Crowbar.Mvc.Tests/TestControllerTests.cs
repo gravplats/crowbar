@@ -13,20 +13,25 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Delete_Index()
         {
-            server.Execute(session =>
+            server.Execute(context =>
             {
+                // Arrange.
                 var model = new Model { Text = "Crowbar" };
-                using (var raven = session.Store.OpenSession())
+                using (var session = context.Store.OpenSession())
                 {
-                    raven.Store(model);
-                    raven.SaveChanges();
+                    session.Store(model);
+                    session.SaveChanges();
                 }
 
-                session.Delete(CrowbarRoute.Root, ctx => ctx.FormValue("id", model.Id));
+                // Act.
+                var response = context.Delete(CrowbarRoute.Root, ctx => ctx.FormValue("id", model.Id));
 
-                using (var raven = session.Store.OpenSession())
+                // Assert.
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+                using (var session = context.Store.OpenSession())
                 {
-                    var crowbar = raven.Load<Model>(model.Id);
+                    var crowbar = session.Load<Model>(model.Id);
                     Assert.That(crowbar, Is.Null);
                 }
             });
@@ -35,33 +40,42 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Get_Index()
         {
-            server.Execute(session =>
+            server.Execute(context =>
             {
+                // Arrange.
                 var model = new Model { Text = "Crowbar" };
-                using (var raven = session.Store.OpenSession())
+                using (var raven = context.Store.OpenSession())
                 {
                     raven.Store(model);
                     raven.SaveChanges();
                 }
 
+                // Act.
                 string url = CrowbarRoute.Root + "?id=" + HttpUtility.UrlEncode(model.Id);
-                var result = session.Get(url);
-                Assert.That(result.Response.StatusCode, Is.EqualTo(200));
+                var response = context.Get(url);
+
+                // Assert.
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
         }
 
         [Test]
         public void Post_Index()
         {
-            server.Execute(session =>
+            server.Execute(context =>
             {
-                var result = session.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
-                using (var raven = session.Store.OpenSession())
-                {
-                    dynamic json = Json.Decode(result.ResponseText);
-                    string id = json.id;
+                // Act.
+                var response = context.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
 
-                    var model = raven.Load<Model>(id);
+                // Assert.
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(response.Response.ContentType, Is.EqualTo("application/json"));
+
+                using (var session = context.Store.OpenSession())
+                {
+                    dynamic json = Json.Decode(response.ResponseText);
+                    var model = session.Load<Model>((string)json.id);
+
                     Assert.That(model, Is.Not.Null);
                     Assert.That(model.Text, Is.EqualTo("New Crowbar"));
                 }
@@ -71,15 +85,20 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Put_Index()
         {
-            server.Execute(session =>
+            server.Execute(context =>
             {
-                var result = session.Put(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
-                using (var raven = session.Store.OpenSession())
-                {
-                    dynamic json = Json.Decode(result.ResponseText);
-                    string id = json.id;
+                // Act.
+                var response = context.Put(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
 
-                    var model = raven.Load<Model>(id);
+                // Assert.
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(response.Response.ContentType, Is.EqualTo("application/json"));
+
+                using (var session = context.Store.OpenSession())
+                {
+                    dynamic json = Json.Decode(response.ResponseText);
+                    var model = session.Load<Model>((string)json.id);
+
                     Assert.That(model, Is.Not.Null);
                     Assert.That(model.Text, Is.EqualTo("New Crowbar"));
                 }

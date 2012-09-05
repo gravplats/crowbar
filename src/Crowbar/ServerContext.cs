@@ -20,27 +20,27 @@ namespace Crowbar
 
         public IDocumentStore Store { get; private set; }
 
-        public RequestResult Delete(string path, Action<BrowserContext> initialize = null)
+        public BrowserResponse Delete(string path, Action<BrowserContext> initialize = null)
         {
             return PerformRequest("DELETE", path, initialize);
         }
 
-        public RequestResult Get(string path, Action<BrowserContext> initialize = null)
+        public BrowserResponse Get(string path, Action<BrowserContext> initialize = null)
         {
             return PerformRequest("GET", path, initialize);
         }
 
-        public RequestResult Post(string path, Action<BrowserContext> initialize = null)
+        public BrowserResponse Post(string path, Action<BrowserContext> initialize = null)
         {
             return PerformRequest("POST", path, initialize);
         }
 
-        public RequestResult Put(string path, Action<BrowserContext> initialize = null)
+        public BrowserResponse Put(string path, Action<BrowserContext> initialize = null)
         {
             return PerformRequest("PUT", path, initialize);
         }
 
-        public RequestResult PerformRequest(string method, string path, Action<BrowserContext> initialize = null)
+        public BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> initialize = null)
         {
             var context = new BrowserContext(method);
 
@@ -50,7 +50,7 @@ namespace Crowbar
             return ProcessRequest(path, context);
         }
 
-        private RequestResult ProcessRequest(string path, ISimulatedWorkerRequestContext context)
+        private BrowserResponse ProcessRequest(string path, ISimulatedWorkerRequestContext context)
         {
             if (path == null)
             {
@@ -82,12 +82,33 @@ namespace Crowbar
             AddAnyNewCookiesToCookieCollection();
             Session = CrowbarContext.HttpSessionState;
 
-            return new RequestResult
+            return CreateResponse(output);
+        }
+
+        private static BrowserResponse CreateResponse(StringWriter output)
+        {
+            if (CrowbarContext.ExceptionContext != null)
             {
-                ResponseText = output.ToString(),
+                throw new AssertException("The server throw an exception.", CrowbarContext.ExceptionContext.Exception);
+            }
+
+            // When no route is found the response object is null. Are there any other cases when this is also true?
+            var response = CrowbarContext.Response;
+            if (response == null)
+            {
+                return new BrowserResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound
+                };
+            }
+
+            return new BrowserResponse
+            {
                 ActionExecutedContext = CrowbarContext.ActionExecutedContext,
+                ResponseText = output.ToString(),
                 ResultExecutedContext = CrowbarContext.ResultExecutedContext,
-                Response = CrowbarContext.Response,
+                Response = response,
+                StatusCode = (HttpStatusCode)response.StatusCode
             };
         }
 
