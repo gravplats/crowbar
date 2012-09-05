@@ -99,13 +99,13 @@
   <ItemGroup>
     <Compile Include="Browsing\BrowserContext.cs" />
     <Compile Include="Browsing\BrowserSession.cs" />
+    <Compile Include="Browsing\IHideObjectMembers.cs" />
     <Compile Include="Browsing\ISimulatedWorkerRequestContext.cs" />
     <Compile Include="Browsing\MvcUtils.cs" />
     <Compile Include="Browsing\RequestResult.cs" />
     <Compile Include="Browsing\SimulatedWorkerRequest.cs" />
     <Compile Include="Browsing\StringExtensions.cs" />
     <Compile Include="IRavenDbHttpApplication.cs" />
-    <Compile Include="NameValueCollectionConversions.cs" />
     <Compile Include="Hosting\BrowserProxy.cs" />
     <Compile Include="Hosting\AppHost.cs" />
     <Compile Include="Hosting\SerializableDelegate.cs" />

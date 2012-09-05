@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.IO;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.SessionState;
 using Crowbar.Interception;
 using Raven.Client;
@@ -17,62 +15,58 @@ namespace Crowbar.Browsing
             Store = store;
         }
 
-        public HttpSessionState Session { get; private set; }
         public HttpCookieCollection Cookies { get; private set; }
+
+        public HttpSessionState Session { get; private set; }
 
         public IDocumentStore Store { get; private set; }
 
-
-        public RequestResult Get(string url)
+        public RequestResult Get(string path, Action<BrowserContext> initialize = null)
         {
-            return ProcessRequest(url, HttpVerbs.Get, new NameValueCollection());
+            return PerformRequest("GET", path, initialize);
         }
 
-        public RequestResult Post(string url, object formData)
+        public RequestResult Post(string path, Action<BrowserContext> initialize = null)
         {
-            var formNameValueCollection = NameValueCollectionConversions.ConvertFromObject(formData);
-            return ProcessRequest(url, HttpVerbs.Post, formNameValueCollection);
+            return PerformRequest("POST", path, initialize);
         }
 
-        private RequestResult ProcessRequest(string url, HttpVerbs httpVerb = HttpVerbs.Get, NameValueCollection formValues = null)
+        public RequestResult PerformRequest(string method, string path, Action<BrowserContext> initialize = null)
         {
-            return ProcessRequest(url, httpVerb, formValues, null);
+            var context = new BrowserContext(method);
+
+            initialize = initialize ?? (ctx => { });
+            initialize(context);
+
+            return ProcessRequest(path, context);
         }
 
-        private RequestResult ProcessRequest(string url, HttpVerbs httpVerb, NameValueCollection formValues, NameValueCollection headers)
+        private RequestResult ProcessRequest(string path, ISimulatedWorkerRequestContext context)
         {
-            if (url == null)
+            if (path == null)
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException("path");
             }
 
-            url = url.RemoveLeadingSlash();
+            path = path.RemoveLeadingSlash();
 
             // Parse out the querystring if provided.
             string query = "";
-            int querySeparatorIndex = url.IndexOf("?");
+            int querySeparatorIndex = path.IndexOf("?");
             if (querySeparatorIndex >= 0)
             {
-                query = url.Substring(querySeparatorIndex + 1);
-                url = url.Substring(0, querySeparatorIndex);
+                query = path.Substring(querySeparatorIndex + 1);
+                path = path.Substring(0, querySeparatorIndex);
             }
+
+            context.QueryString = query;
 
             // Perform the request.
             LastRequestData.Reset();
 
             var output = new StringWriter();
-            string method = httpVerb.ToString().ToLower();
 
-            ISimulatedWorkerRequestContext context = new BrowserContext();
-            context.BodyString = "";
-            context.Cookies = Cookies;
-            context.FormValues = formValues;
-            context.Headers = headers;
-            context.Method = method;
-            context.Protocol = "http";
-            context.QueryString = query;
-
-            var workerRequest = new SimulatedWorkerRequest(url, context, output);
+            var workerRequest = new SimulatedWorkerRequest(path, context, output);
             HttpRuntime.ProcessRequest(workerRequest);
 
             // Capture the output.

@@ -38,7 +38,7 @@ namespace Crowbar.Mvc.Tests
         {
             host.Start(session =>
             {
-                var result = session.Post("/", new { text = "New Crowbar" });
+                var result = session.Post("/", ctx => ctx.FormValue("text", "New Crowbar"));
                 using (var raven = session.Store.OpenSession())
                 {
                     dynamic json = Json.Decode(result.ResponseText);
