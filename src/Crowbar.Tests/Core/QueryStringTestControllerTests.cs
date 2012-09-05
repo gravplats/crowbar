@@ -1,7 +1,7 @@
 using Crowbar.Mvc.Core;
 using NUnit.Framework;
 
-namespace Crowbar.Mvc.Tests.Core
+namespace Crowbar.Tests.Core
 {
     public class QueryStringTestControllerTests : TestBase
     {

@@ -8,8 +8,8 @@
     <ProjectGuid>{C69860BA-69B9-4B90-BDD1-417C856DF98A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crowbar.Mvc.Tests</RootNamespace>
-    <AssemblyName>Crowbar.Mvc.Tests</AssemblyName>
+    <RootNamespace>Crowbar.Tests</RootNamespace>
+    <AssemblyName>Crowbar.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

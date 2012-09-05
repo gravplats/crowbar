@@ -1,9 +1,8 @@
 ﻿using System.Web;
-using System.Web.Helpers;
 using Crowbar.Mvc.Core;
 using NUnit.Framework;
 
-namespace Crowbar.Mvc.Tests.Core
+namespace Crowbar.Tests.Core
 {
     public class TestControllerTests : TestBase
     {

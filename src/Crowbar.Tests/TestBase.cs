@@ -1,4 +1,4 @@
-namespace Crowbar.Mvc.Tests
+namespace Crowbar.Tests
 {
     public abstract class TestBase
     {
