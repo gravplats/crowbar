@@ -111,7 +111,6 @@
     <Compile Include="Browser.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="ISimulatedWorkerRequestContext.cs" />
-    <Compile Include="MvcUtils.cs" />
     <Compile Include="BrowserResponse.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="ServerContext.cs" />
