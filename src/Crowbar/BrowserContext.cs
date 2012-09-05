@@ -4,6 +4,9 @@ using System.Web;
 
 namespace Crowbar
 {
+    /// <summary>
+    /// Defines the context that a <see cref="Browser"/> instance should run under.
+    /// </summary>
     public class BrowserContext : ISimulatedWorkerRequestContext
     {
         private readonly ISimulatedWorkerRequestContext context;
@@ -21,18 +24,33 @@ namespace Crowbar
             context.Headers["Content-Type"] = "application/octet-stream";
         }
 
+        /// <summary>
+        /// Gets or sets the body.
+        /// </summary>
         string ISimulatedWorkerRequestContext.BodyString { get; set; }
 
         HttpCookieCollection ISimulatedWorkerRequestContext.Cookies { get; set; }
 
+        /// <summary>
+        /// Gets or sets the forms values.
+        /// </summary>
         NameValueCollection ISimulatedWorkerRequestContext.FormValues { get; set; }
 
+        /// <summary>
+        /// Gets or sets the headers that should be used for the request.
+        /// </summary>
         NameValueCollection ISimulatedWorkerRequestContext.Headers { get; set; }
 
         string ISimulatedWorkerRequestContext.Method { get; set; }
 
+        /// <summary>
+        /// Gets or sets the protocol that should be used for the request.
+        /// </summary>
         string ISimulatedWorkerRequestContext.Protocol { get; set; }
 
+        /// <summary>
+        /// Gets or sets the query string.
+        /// </summary>
         string ISimulatedWorkerRequestContext.QueryString { get; set; }
 
         /// <summary>
