@@ -11,7 +11,12 @@ namespace Crowbar.Mvc.Core
 {
     public static class CrowbarRoute
     {
+        public const string Redirected = "/redirected";
+        public const string RedirectPermanent = "/redirectperm";
+        public const string RedirectTemporary = "/redirecttemp";
+
         public const string Root = "/";
+
         public const string Query = "/query";
 
         public static string AsOutbound(this string route, object values = null)

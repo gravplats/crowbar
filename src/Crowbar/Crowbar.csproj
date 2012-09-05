@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="AssertException.cs" />
     <Compile Include="BrowserContext.cs" />
+    <Compile Include="BrowserResponseAssertExtensions.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="IHideObjectMembers.cs" />

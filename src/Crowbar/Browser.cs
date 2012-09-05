@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Web;
 using System.Web.SessionState;
@@ -88,9 +89,17 @@ namespace Crowbar
                 };
             }
 
+            // Cannot read headers from response as it is not supported, however it is possible to fake the 'Location' header.
+            var headers = new NameValueCollection();
+            if (!string.IsNullOrEmpty(response.RedirectLocation))
+            {
+                headers.Add("Location", response.RedirectLocation);
+            }
+
             return new BrowserResponse
             {
                 ActionExecutedContext = CrowbarContext.ActionExecutedContext,
+                Headers = headers,
                 ResponseText = output.ToString(),
                 ResultExecutedContext = CrowbarContext.ResultExecutedContext,
                 Response = response,
