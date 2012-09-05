@@ -4,11 +4,11 @@ using Raven.Client.Embedded;
 
 namespace Crowbar
 {
-    internal class ServerProxy : MarshalByRefObject
+    internal class MvcApplicationProxy : MarshalByRefObject
     {
         private readonly IDocumentStore store;
 
-        public ServerProxy()
+        public MvcApplicationProxy()
         {
             store = new EmbeddableDocumentStore { RunInMemory = true }.Initialize();
         }

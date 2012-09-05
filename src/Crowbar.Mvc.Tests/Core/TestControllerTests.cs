@@ -10,7 +10,7 @@ namespace Crowbar.Mvc.Tests.Core
         [Test]
         public void Delete_Index()
         {
-            Server.Execute((context, browser) =>
+            Application.Execute((context, browser) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -37,7 +37,7 @@ namespace Crowbar.Mvc.Tests.Core
         [Test]
         public void Get_Index()
         {
-            Server.Execute((context, browser) =>
+            Application.Execute((context, browser) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -59,7 +59,7 @@ namespace Crowbar.Mvc.Tests.Core
         [Test]
         public void Post_Index()
         {
-            Server.Execute((context, browser) =>
+            Application.Execute((context, browser) =>
             {
                 // Act.
                 var response = browser.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
@@ -81,7 +81,7 @@ namespace Crowbar.Mvc.Tests.Core
         [Test]
         public void Put_Index()
         {
-            Server.Execute((context, browser) =>
+            Application.Execute((context, browser) =>
             {
                 // Act.
                 var response = browser.Put(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
@@ -106,7 +106,7 @@ namespace Crowbar.Mvc.Tests.Core
         [TestCase("PUT")]
         public void Should_return_http_not_found_when_performing_request_against_an_unknown_path(string method)
         {
-            Server.Execute((context, browser) =>
+            Application.Execute((context, browser) =>
             {
                 var response = browser.PerformRequest(method, "/unknown");
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));

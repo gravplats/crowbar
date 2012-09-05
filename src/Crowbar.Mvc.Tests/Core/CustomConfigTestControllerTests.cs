@@ -8,7 +8,7 @@ namespace Crowbar.Mvc.Tests.Core
         [Test]
         public void Should_be_able_to_set_custom_configuration_file()
         {
-            Server.Execute((_, browser) =>
+            Application.Execute((_, browser) =>
             {
                 var response = browser.Get(CrowbarRoute.CustomConfig);
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

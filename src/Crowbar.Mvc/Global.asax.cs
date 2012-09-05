@@ -6,7 +6,7 @@ using Raven.Client;
 
 namespace Crowbar.Mvc
 {
-    public class MvcApplication : HttpApplication, IRavenDbHttpApplication
+    public class CrowbarHttpApplication : HttpApplication, IRavenDbHttpApplication
     {
         public IDocumentStore Store
         {

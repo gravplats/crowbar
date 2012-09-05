@@ -10,7 +10,7 @@ namespace Crowbar.Mvc.Tests.Core
         [TestCase("PUT")]
         public void Should_be_able_to_perform_a_request_with_an_anti_forgery_token(string method)
         {
-            Server.Execute((_, browser) =>
+            Application.Execute((_, browser) =>
             {
                 var response = browser.PerformRequest(method, CrowbarRoute.AntiForgeryToken, ctx => ctx.AntiForgeryRequestToken());
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -22,7 +22,7 @@ namespace Crowbar.Mvc.Tests.Core
         [TestCase("PUT")]
         public void Should_be_able_to_perform_a_request_with_an_anti_forgery_token_with_username(string method)
         {
-            Server.Execute((_, browser) =>
+            Application.Execute((_, browser) =>
             {
                 var response = browser.PerformRequest(method, CrowbarRoute.AntiForgeryToken, ctx =>
                 {
@@ -41,7 +41,7 @@ namespace Crowbar.Mvc.Tests.Core
         [TestCase("PUT")]
         public void Should_be_able_to_perform_a_request_with_an_anti_forgery_token_with_salt(string method)
         {
-            Server.Execute((_, browser) =>
+            Application.Execute((_, browser) =>
             {
                 var response = browser.PerformRequest(method, CrowbarRoute.AntiForgeryTokenSalt, ctx =>
                     ctx.AntiForgeryRequestToken(salt: AntiForgeryRequestTokenTestController.Salt));

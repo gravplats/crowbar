@@ -9,12 +9,12 @@ using Raven.Client;
 
 namespace Crowbar
 {
-    internal class ServerFactory
+    internal class MvcApplicationFactory
     {
         private static readonly MethodInfo getApplicationInstanceMethod;
         private static readonly MethodInfo recycleApplicationInstanceMethod;
 
-        static ServerFactory()
+        static MvcApplicationFactory()
         {
             // Get references to MethodInfo:s that we'll need to use later to bypass nonpublic access restrictions.
             var httpApplicationFactory = typeof(HttpContext).Assembly.GetType("System.Web.HttpApplicationFactory", true);
@@ -66,7 +66,7 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        public static Server Create(string name, string configurationFile)
+        public static MvcApplication Create(string name, string configurationFile)
         {
             var physicalPath = GetPhysicalPath(name);
             if (physicalPath == null)
@@ -76,7 +76,7 @@ namespace Crowbar
 
             CopyDllFiles(physicalPath);
 
-            var proxy = (ServerProxy)ApplicationHost.CreateApplicationHost(typeof(ServerProxy), "/", physicalPath);
+            var proxy = (MvcApplicationProxy)ApplicationHost.CreateApplicationHost(typeof(MvcApplicationProxy), "/", physicalPath);
             configurationFile = configurationFile == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configurationFile);
 
             proxy.Initialize(configurationFile, (configFile, store) =>
@@ -87,7 +87,7 @@ namespace Crowbar
                 CrowbarContext.Reset();
             });
 
-            return new Server(proxy);
+            return new MvcApplication(proxy);
         }
 
         private static string GetPhysicalPath(string mvcProjectName)
