@@ -1,4 +1,6 @@
+using System.Web;
 using System.Web.Helpers;
+using System.Web.Security;
 
 namespace Crowbar
 {
@@ -14,6 +16,21 @@ namespace Crowbar
         public static void AjaxRequest(this BrowserContext context)
         {
             context.Header("X-Requested-With", "XMLHttpRequest");
+        }
+
+        /// <summary>
+        /// Adds a forms authentication cookie to the request.
+        /// </summary>
+        /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
+        /// <param name="username">The username.</param>
+        /// <param name="timeout">The time, in minutes, for which the forms authentication cookie is valid.</param>
+        public static void FormsAuth(this BrowserContext context, string username = "", int timeout = 30)
+        {
+            // This works because we're encrypting and decrypting on the same machine? In the same AppDomain?
+            var ticket = new FormsAuthenticationTicket(username, false, timeout);
+
+            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
+            context.Cookie(cookie);
         }
 
         /// <summary>

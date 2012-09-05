@@ -11,6 +11,7 @@ namespace Crowbar
         public BrowserContext(string method)
         {
             context = this;
+            context.Cookies = new HttpCookieCollection();
             context.FormValues = new NameValueCollection();
             context.Headers = new NameValueCollection();
             context.Method = method;
@@ -43,6 +44,15 @@ namespace Crowbar
         {
             context.BodyString = body;
             context.Headers["Content-Type"] = contentType;
+        }
+
+        /// <summary>
+        /// Adds a cookie to the request.
+        /// </summary>
+        /// <param name="cookie">The cookie that should be added.</param>
+        public void Cookie(HttpCookie cookie)
+        {
+            context.Cookies.Add(cookie);
         }
 
         /// <summary>

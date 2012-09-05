@@ -12,6 +12,7 @@ namespace Crowbar.Mvc.Core
     public static class CrowbarRoute
     {
         public const string Ajax = "/ajax";
+        public const string Authentication = "/authentication";
 
         public const string CsQuery = "/csquery";
         public const string CustomConfig = "/config";
@@ -22,9 +23,8 @@ namespace Crowbar.Mvc.Core
         public const string Redirected = "/redirected";
         public const string RedirectPermanent = "/redirectperm";
         public const string RedirectTemporary = "/redirecttemp";
-
         public const string Root = "/";
-        
+
         public const string Secure = "/secure";
 
         public const string Query = "/query";
