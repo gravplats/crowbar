@@ -21,6 +21,11 @@ namespace Crowbar.Browsing
 
         public IDocumentStore Store { get; private set; }
 
+        public RequestResult Delete(string path, Action<BrowserContext> initialize = null)
+        {
+            return PerformRequest("DELETE", path, initialize);
+        }
+
         public RequestResult Get(string path, Action<BrowserContext> initialize = null)
         {
             return PerformRequest("GET", path, initialize);
@@ -29,6 +34,11 @@ namespace Crowbar.Browsing
         public RequestResult Post(string path, Action<BrowserContext> initialize = null)
         {
             return PerformRequest("POST", path, initialize);
+        }
+
+        public RequestResult Put(string path, Action<BrowserContext> initialize = null)
+        {
+            return PerformRequest("PUT", path, initialize);
         }
 
         public RequestResult PerformRequest(string method, string path, Action<BrowserContext> initialize = null)
