@@ -127,6 +127,10 @@
     <Content Include="Raven.Studio.xap" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crowbar.Mvc\Crowbar.Mvc.csproj">
+      <Project>{991D0952-367A-4CE6-933B-B35B5884C73C}</Project>
+      <Name>Crowbar.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crowbar.Web\Crowbar.Web.csproj">
       <Project>{94B58915-40CC-41DF-B4AC-27653436C2EE}</Project>
       <Name>Crowbar.Web</Name>

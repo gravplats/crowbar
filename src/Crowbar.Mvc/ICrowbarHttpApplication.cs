@@ -1,6 +1,6 @@
 using Raven.Client;
 
-namespace Crowbar
+namespace Crowbar.Mvc
 {
     /// <summary>
     /// Defines functionality for setting the document store of an MVC application.

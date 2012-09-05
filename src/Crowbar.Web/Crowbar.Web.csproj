@@ -163,6 +163,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crowbar.Mvc\Crowbar.Mvc.csproj">
+      <Project>{991D0952-367A-4CE6-933B-B35B5884C73C}</Project>
+      <Name>Crowbar.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crowbar\Crowbar.csproj">
       <Project>{3C0FDDD4-9A22-490E-A3C6-2991124CE803}</Project>
       <Name>Crowbar</Name>

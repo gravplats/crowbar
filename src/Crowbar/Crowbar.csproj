@@ -110,7 +110,6 @@
     <Compile Include="DefaultDocumentStoreBuilder.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
-    <Compile Include="IDocumentStoreBuilder.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="ISimulatedWorkerRequestContext.cs" />
     <Compile Include="BrowserResponse.cs" />
@@ -118,7 +117,6 @@
     <Compile Include="ServerContext.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="ICrowbarHttpApplication.cs" />
     <Compile Include="MvcApplicationProxy.cs" />
     <Compile Include="MvcApplicationFactory.cs" />
     <Compile Include="SerializableDelegate.cs" />
@@ -132,6 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Raven.Studio.xap" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Crowbar.Mvc\Crowbar.Mvc.csproj">
+      <Project>{991D0952-367A-4CE6-933B-B35B5884C73C}</Project>
+      <Name>Crowbar.Mvc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

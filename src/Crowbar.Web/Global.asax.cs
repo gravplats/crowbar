@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Crowbar.Mvc;
 using Crowbar.Web.Core;
 using Raven.Client;
 

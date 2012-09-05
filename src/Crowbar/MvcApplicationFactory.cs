@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using Crowbar.Mvc;
 using Raven.Client;
 
 namespace Crowbar
