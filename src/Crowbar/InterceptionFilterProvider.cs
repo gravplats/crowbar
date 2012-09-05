@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Crowbar.Interception
+namespace Crowbar
 {
     internal class InterceptionFilterProvider : IFilterProvider
     {

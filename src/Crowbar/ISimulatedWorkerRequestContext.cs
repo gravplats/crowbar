@@ -1,7 +1,7 @@
 using System.Collections.Specialized;
 using System.Web;
 
-namespace Crowbar.Browsing
+namespace Crowbar
 {
     public interface ISimulatedWorkerRequestContext
     {

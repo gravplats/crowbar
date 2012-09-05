@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Crowbar.Browsing
+namespace Crowbar
 {
     public static class MvcUtils
     {

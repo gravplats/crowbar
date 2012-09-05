@@ -97,21 +97,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Browsing\BrowserContext.cs" />
-    <Compile Include="Browsing\BrowserSession.cs" />
-    <Compile Include="Browsing\IHideObjectMembers.cs" />
-    <Compile Include="Browsing\ISimulatedWorkerRequestContext.cs" />
-    <Compile Include="Browsing\MvcUtils.cs" />
-    <Compile Include="Browsing\RequestResult.cs" />
-    <Compile Include="Browsing\SimulatedWorkerRequest.cs" />
-    <Compile Include="Browsing\StringExtensions.cs" />
+    <Compile Include="BrowserContext.cs" />
+    <Compile Include="BrowserSession.cs" />
+    <Compile Include="IHideObjectMembers.cs" />
+    <Compile Include="ISimulatedWorkerRequestContext.cs" />
+    <Compile Include="MvcUtils.cs" />
+    <Compile Include="RequestResult.cs" />
+    <Compile Include="SimulatedWorkerRequest.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="IRavenDbHttpApplication.cs" />
-    <Compile Include="Hosting\BrowserProxy.cs" />
-    <Compile Include="Hosting\AppHost.cs" />
-    <Compile Include="Hosting\SerializableDelegate.cs" />
-    <Compile Include="Interception\InterceptionFilter.cs" />
-    <Compile Include="Interception\InterceptionFilterProvider.cs" />
-    <Compile Include="Interception\LastRequestData.cs" />
+    <Compile Include="BrowserProxy.cs" />
+    <Compile Include="AppHost.cs" />
+    <Compile Include="SerializableDelegate.cs" />
+    <Compile Include="InterceptionFilter.cs" />
+    <Compile Include="InterceptionFilterProvider.cs" />
+    <Compile Include="LastRequestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,10 +2,9 @@
 using System.IO;
 using System.Web;
 using System.Web.SessionState;
-using Crowbar.Interception;
 using Raven.Client;
 
-namespace Crowbar.Browsing
+namespace Crowbar
 {
     public class BrowserSession
     {

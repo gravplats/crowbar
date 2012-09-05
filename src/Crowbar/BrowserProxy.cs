@@ -1,9 +1,8 @@
 ﻿using System;
-using Crowbar.Browsing;
 using Raven.Client;
 using Raven.Client.Embedded;
 
-namespace Crowbar.Hosting
+namespace Crowbar
 {
     internal class BrowserProxy : MarshalByRefObject
     {

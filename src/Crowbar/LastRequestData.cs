@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.SessionState;
 
-namespace Crowbar.Interception
+namespace Crowbar
 {
     /// <summary>
     /// A place to store information about each request as we capture it

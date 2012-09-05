@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace Crowbar.Browsing
+namespace Crowbar
 {
     /// <summary>
     /// Represents the result of a simulated request

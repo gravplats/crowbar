@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace Crowbar.Interception
+namespace Crowbar
 {
     /// <summary>
     /// An ASP.NET MVC filter attached automatically to all controllers invoked within the test application

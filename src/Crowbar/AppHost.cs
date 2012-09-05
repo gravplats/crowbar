@@ -4,12 +4,9 @@ using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
-using Crowbar.Browsing;
-using Crowbar.Interception;
 using Raven.Client;
-using Raven.Client.Embedded;
 
-namespace Crowbar.Hosting
+namespace Crowbar
 {
     /// <summary>
     /// Hosts an ASP.NET application within an ASP.NET-enabled .NET appdomain

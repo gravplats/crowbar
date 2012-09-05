@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Linq;
 
-namespace Crowbar.Browsing
+namespace Crowbar
 {
     internal class SimulatedWorkerRequest : SimpleWorkerRequest
     {

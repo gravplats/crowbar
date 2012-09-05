@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Crowbar.Hosting
+namespace Crowbar
 {
     /// <summary>
     /// Makes delegates serializable where possible

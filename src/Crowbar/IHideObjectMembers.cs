@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Crowbar.Browsing
+namespace Crowbar
 {
     /// <summary>
     /// Helper interface used to hide the base <see cref="Object"/>  members from the fluent API to make it much cleaner 

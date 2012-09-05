@@ -1,4 +1,4 @@
-namespace Crowbar.Browsing
+namespace Crowbar
 {
     internal static class StringExtensions
     {

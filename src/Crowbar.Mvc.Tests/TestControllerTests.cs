@@ -1,6 +1,5 @@
 ﻿using System.Web;
 using System.Web.Helpers;
-using Crowbar.Hosting;
 using Crowbar.Mvc.Core;
 using NUnit.Framework;
 
