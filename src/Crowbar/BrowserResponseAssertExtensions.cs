@@ -1,4 +1,5 @@
 using System;
+using CsQuery;
 
 namespace Crowbar
 {
@@ -8,7 +9,36 @@ namespace Crowbar
     public static class BrowserResponseAssertExtensions
     {
         /// <summary>
-        /// Asserts that response is of type 'application/json'.
+        /// Asserts that the response content type is of the MIME-type 'text/html'.
+        /// </summary>
+        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="assertions">Additional assertions on the CQ object.</param>
+        /// <returns>The CQ object.</returns>
+        public static CQ ShouldBeHtml(this BrowserResponse response, Action<CQ> assertions = null)
+        {
+            if (response.Response.ContentType != "text/html")
+            {
+                throw new AssertException("The content type is not text/html.");
+            }
+
+            try
+            {
+                var document = response.AsCsQuery();
+                if (assertions != null)
+                {
+                    assertions(document);
+                }
+
+                return document;
+            }
+            catch (Exception exception)
+            {
+                throw new AssertException("Failed to convert response body into a CQ object.", exception);
+            }
+        }
+
+        /// <summary>
+        /// Asserts that the response content type is of the MIME-type 'application/json'.
         /// </summary>
         /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
         /// <param name="assertions">Additional assertions on the JSON object.</param>

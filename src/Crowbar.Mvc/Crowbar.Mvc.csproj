@@ -130,6 +130,7 @@
     <Compile Include="Core\AjaxTestController.cs" />
     <Compile Include="Core\CrowbarControllerBase.cs" />
     <Compile Include="Core\CrowbarRoute.cs" />
+    <Compile Include="Core\CsQueryController.cs" />
     <Compile Include="Core\HttpsTestController.cs" />
     <Compile Include="Core\JsonTestController.cs" />
     <Compile Include="Core\Model.cs" />
@@ -163,6 +164,9 @@
       <Project>{3C0FDDD4-9A22-490E-A3C6-2991124CE803}</Project>
       <Name>Crowbar</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CsQuery\CsQuery.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using CsQuery;
 
 namespace Crowbar
 {
@@ -18,6 +19,15 @@ namespace Crowbar
         public ResultExecutedContext ResultExecutedContext { get; set; }
 
         public HttpStatusCode StatusCode { get; set; }
+
+        /// <summary>
+        /// Returns a DOM representation of the HTML document in the response body.
+        /// </summary>
+        /// <returns>A DOM representation of the HTML document.</returns>
+        public CQ AsCsQuery()
+        {
+            return CQ.Create(ResponseText);
+        }
 
         /// <summary>
         /// Gets a dynamic representation of the JSON in the response body.
