@@ -4,7 +4,7 @@ using Raven.Client.Embedded;
 
 namespace Crowbar
 {
-    public class ServerProxy : MarshalByRefObject
+    internal class ServerProxy : MarshalByRefObject
     {
         private readonly IDocumentStore store;
 

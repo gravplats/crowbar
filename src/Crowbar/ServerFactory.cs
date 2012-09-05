@@ -9,7 +9,7 @@ using Raven.Client;
 
 namespace Crowbar
 {
-    public class ServerFactory
+    internal class ServerFactory
     {
         private static readonly MethodInfo getApplicationInstanceMethod;
         private static readonly MethodInfo recycleApplicationInstanceMethod;
@@ -66,7 +66,7 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        public static Server Create(string name, string configurationFile = "Web.config")
+        public static Server Create(string name, string configurationFile)
         {
             var physicalPath = GetPhysicalPath(name);
             if (physicalPath == null)
