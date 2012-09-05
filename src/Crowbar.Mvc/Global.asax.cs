@@ -6,13 +6,8 @@ using Raven.Client;
 
 namespace Crowbar.Mvc
 {
-    public class CrowbarHttpApplication : HttpApplication, IRavenDbHttpApplication
+    public class CrowbarHttpApplication : HttpApplication, ICrowbarHttpApplication
     {
-        public IDocumentStore Store
-        {
-            set { CrowbarControllerBase.Store = value; }
-        }
-
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
@@ -29,6 +24,11 @@ namespace Crowbar.Mvc
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+        }
+
+        public void SetDocumentStore(IDocumentStore store)
+        {
+            CrowbarControllerBase.Store = store;
         }
     }
 }

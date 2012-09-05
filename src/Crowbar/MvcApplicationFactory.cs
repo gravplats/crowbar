@@ -25,7 +25,7 @@ namespace Crowbar
         private static void InitializeApplication(IDocumentStore store)
         {
             var instance = GetApplicationInstance();
-            ((IRavenDbHttpApplication)instance).Store = store;
+            ((ICrowbarHttpApplication)instance).SetDocumentStore(store);
 
             instance.PostRequestHandlerExecute += delegate
             {
@@ -66,7 +66,7 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        public static MvcApplication Create(string name, string configurationFile)
+        public static MvcApplication Create(string name, string configurationFile, IDocumentStoreBuilder documentStoreBuilder)
         {
             var physicalPath = GetPhysicalPath(name);
             if (physicalPath == null)
@@ -79,7 +79,7 @@ namespace Crowbar
             var proxy = (MvcApplicationProxy)ApplicationHost.CreateApplicationHost(typeof(MvcApplicationProxy), "/", physicalPath);
             configurationFile = configurationFile == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configurationFile);
 
-            proxy.Initialize(configurationFile, (configFile, store) =>
+            proxy.Initialize(configurationFile, documentStoreBuilder, (configFile, store) =>
             {
                 SetCustomConfigurationFile(configFile);
                 InitializeApplication(store);

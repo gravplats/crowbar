@@ -1,20 +1,15 @@
 ﻿using System;
 using Raven.Client;
-using Raven.Client.Embedded;
 
 namespace Crowbar
 {
     internal class MvcApplicationProxy : MarshalByRefObject
     {
-        private readonly IDocumentStore store;
+        private IDocumentStore store;
 
-        public MvcApplicationProxy()
+        public void Initialize(string configurationFile, IDocumentStoreBuilder builder, Action<string, IDocumentStore> action)
         {
-            store = new EmbeddableDocumentStore { RunInMemory = true }.Initialize();
-        }
-
-        public void Initialize(string configurationFile, Action<string, IDocumentStore> action)
-        {
+            store = builder.Build();
             action(configurationFile, store);
         }
 
