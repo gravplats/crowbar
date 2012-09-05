@@ -76,7 +76,7 @@ namespace Crowbar
         {
             if (CrowbarContext.ExceptionContext != null)
             {
-                throw new AssertException("The server throw an exception.", CrowbarContext.ExceptionContext.Exception);
+                throw new Exception("The server throw an exception.", CrowbarContext.ExceptionContext.Exception);
             }
 
             // When no route is found the response object is null. Are there any other cases when this is also true?

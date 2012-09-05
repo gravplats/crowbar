@@ -19,6 +19,8 @@ namespace Crowbar.Mvc.Core
         public const string RedirectTemporary = "/redirecttemp";
 
         public const string Root = "/";
+        
+        public const string Secure = "/secure";
 
         public const string Query = "/query";
 
