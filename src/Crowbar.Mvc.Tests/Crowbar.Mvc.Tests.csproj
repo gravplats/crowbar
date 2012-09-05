@@ -100,6 +100,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\AjaxTestControllerTests.cs" />
     <Compile Include="Core\HttpsTestControllerTests.cs" />
     <Compile Include="Core\JsonTestControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

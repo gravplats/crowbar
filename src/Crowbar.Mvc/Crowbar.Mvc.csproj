@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AttributeRouting.cs" />
+    <Compile Include="Core\AjaxTestController.cs" />
     <Compile Include="Core\CrowbarControllerBase.cs" />
     <Compile Include="Core\CrowbarRoute.cs" />
     <Compile Include="Core\HttpsTestController.cs" />

@@ -11,6 +11,8 @@ namespace Crowbar.Mvc.Core
 {
     public static class CrowbarRoute
     {
+        public const string Ajax = "/ajax";
+
         public const string JsonResponse = "/jsonresponse";
         public const string JsonRequest = "/jsonrequest";
 
