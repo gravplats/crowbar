@@ -2,7 +2,7 @@ using System.Configuration;
 using System.Web.Mvc;
 using AttributeRouting.Web.Mvc;
 
-namespace Crowbar.Mvc.Core
+namespace Crowbar.Web.Core
 {
     public class CustomConfigTestController : CrowbarControllerBase
     {

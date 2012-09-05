@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Crowbar.Mvc.Core
+namespace Crowbar.Web.Core
 {
     public static class CrowbarRoute
     {

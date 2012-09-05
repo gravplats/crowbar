@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar", "Crowbar\Crowbar.csproj", "{3C0FDDD4-9A22-490E-A3C6-2991124CE803}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Mvc", "Crowbar.Mvc\Crowbar.Mvc.csproj", "{94B58915-40CC-41DF-B4AC-27653436C2EE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FF7E376C-1701-4B15-976B-F774778CE04B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Tests", "Crowbar.Tests\Crowbar.Tests.csproj", "{C69860BA-69B9-4B90-BDD1-417C856DF98A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Web", "Crowbar.Web\Crowbar.Web.csproj", "{94B58915-40CC-41DF-B4AC-27653436C2EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,20 +19,20 @@ Global
 		{3C0FDDD4-9A22-490E-A3C6-2991124CE803}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C0FDDD4-9A22-490E-A3C6-2991124CE803}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C0FDDD4-9A22-490E-A3C6-2991124CE803}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C69860BA-69B9-4B90-BDD1-417C856DF98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C69860BA-69B9-4B90-BDD1-417C856DF98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C69860BA-69B9-4B90-BDD1-417C856DF98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C69860BA-69B9-4B90-BDD1-417C856DF98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{94B58915-40CC-41DF-B4AC-27653436C2EE} = {FF7E376C-1701-4B15-976B-F774778CE04B}
 		{C69860BA-69B9-4B90-BDD1-417C856DF98A} = {FF7E376C-1701-4B15-976B-F774778CE04B}
+		{94B58915-40CC-41DF-B4AC-27653436C2EE} = {FF7E376C-1701-4B15-976B-F774778CE04B}
 	EndGlobalSection
 EndGlobal

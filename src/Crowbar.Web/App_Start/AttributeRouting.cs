@@ -1,9 +1,9 @@
 using System.Web.Routing;
 using AttributeRouting.Web.Mvc;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(Crowbar.Mvc.App_Start.AttributeRouting), "Start")]
+[assembly: WebActivator.PreApplicationStartMethod(typeof(Crowbar.Web.App_Start.AttributeRouting), "Start")]
 
-namespace Crowbar.Mvc.App_Start {
+namespace Crowbar.Web.App_Start {
     public static class AttributeRouting {
 		public static void RegisterRoutes(RouteCollection routes) {
             

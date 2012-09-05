@@ -1,10 +1,10 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Crowbar.Mvc.Core;
+using Crowbar.Web.Core;
 using Raven.Client;
 
-namespace Crowbar.Mvc
+namespace Crowbar.Web
 {
     public class CrowbarHttpApplication : HttpApplication, ICrowbarHttpApplication
     {
