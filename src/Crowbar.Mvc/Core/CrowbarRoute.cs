@@ -11,6 +11,9 @@ namespace Crowbar.Mvc.Core
 {
     public static class CrowbarRoute
     {
+        public const string JsonResponse = "/jsonresponse";
+        public const string JsonRequest = "/jsonrequest";
+
         public const string Redirected = "/redirected";
         public const string RedirectPermanent = "/redirectperm";
         public const string RedirectTemporary = "/redirecttemp";

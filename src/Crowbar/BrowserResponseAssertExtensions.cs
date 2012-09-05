@@ -1,3 +1,5 @@
+using System;
+
 namespace Crowbar
 {
     /// <summary>
@@ -5,6 +7,35 @@ namespace Crowbar
     /// </summary>
     public static class BrowserResponseAssertExtensions
     {
+        /// <summary>
+        /// Asserts that response is of type 'application/json'.
+        /// </summary>
+        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="assertions">Additional assertions on the JSON object.</param>
+        /// <returns>The JSON object.</returns>
+        public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null)
+        {
+            if (response.Response.ContentType != "application/json")
+            {
+                throw new AssertException("The content type is not application/json.");
+            }
+
+            try
+            {
+                dynamic json = response.AsJson();
+                if (assertions != null)
+                {
+                    assertions(json);
+                }
+
+                return json;
+            }
+            catch (Exception exception)
+            {
+                throw new AssertException("Failed to convert response body into JSON.", exception);
+            }
+        }
+
         /// <summary>
         /// Asserts that a permanent redirect to a specified location took place.
         /// </summary>

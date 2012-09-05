@@ -100,11 +100,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\JsonTestControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryStringTestControllerTests.cs" />
-    <Compile Include="RedirectTestControllerTests.cs" />
+    <Compile Include="Core\QueryStringTestControllerTests.cs" />
+    <Compile Include="Core\RedirectTestControllerTests.cs" />
     <Compile Include="TestBase.cs" />
-    <Compile Include="TestControllerTests.cs" />
+    <Compile Include="Core\TestControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

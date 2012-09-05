@@ -3,7 +3,7 @@ using System.Web.Helpers;
 using Crowbar.Mvc.Core;
 using NUnit.Framework;
 
-namespace Crowbar.Mvc.Tests
+namespace Crowbar.Mvc.Tests.Core
 {
     public class TestControllerTests : TestBase
     {
@@ -66,11 +66,10 @@ namespace Crowbar.Mvc.Tests
 
                 // Assert.
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                Assert.That(response.Response.ContentType, Is.EqualTo("application/json"));
+                dynamic json = response.ShouldBeJson();
 
                 using (var session = context.Store.OpenSession())
                 {
-                    dynamic json = Json.Decode(response.ResponseText);
                     var model = session.Load<Model>((string)json.id);
 
                     Assert.That(model, Is.Not.Null);
@@ -89,11 +88,10 @@ namespace Crowbar.Mvc.Tests
 
                 // Assert.
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                Assert.That(response.Response.ContentType, Is.EqualTo("application/json"));
+                dynamic json = response.ShouldBeJson();
 
                 using (var session = context.Store.OpenSession())
                 {
-                    dynamic json = Json.Decode(response.ResponseText);
                     var model = session.Load<Model>((string)json.id);
 
                     Assert.That(model, Is.Not.Null);
