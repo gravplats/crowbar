@@ -88,7 +88,7 @@ namespace Crowbar
             var workerRequest = new SimulatedWorkerRequest(path, context, output);
 
             HttpRuntime.ProcessRequest(workerRequest);
-            
+
             return CreateResponse(output);
         }
 
@@ -99,14 +99,10 @@ namespace Crowbar
                 throw new Exception("The server throw an exception.", CrowbarContext.ExceptionContext.Exception);
             }
 
-            // When no route is found the response object is null. Are there any other cases when this is also true?
             var response = CrowbarContext.Response;
             if (response == null)
             {
-                return new BrowserResponse
-                {
-                    StatusCode = HttpStatusCode.NotFound
-                };
+                return new BrowserResponse();
             }
 
             // Cannot read headers from response as it is not supported, however it is possible to fake the 'Location' header.
@@ -118,12 +114,9 @@ namespace Crowbar
 
             return new BrowserResponse
             {
-                ActionExecutedContext = CrowbarContext.ActionExecutedContext,
                 Headers = headers,
-                ResponseText = output.ToString(),
-                ResultExecutedContext = CrowbarContext.ResultExecutedContext,
+                ResponseBody = output.ToString(),
                 Response = response,
-                StatusCode = (HttpStatusCode)response.StatusCode
             };
         }
     }

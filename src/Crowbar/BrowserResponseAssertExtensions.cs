@@ -16,7 +16,7 @@ namespace Crowbar
         /// <returns>The CQ object.</returns>
         public static CQ ShouldBeHtml(this BrowserResponse response, Action<CQ> assertions = null)
         {
-            if (response.Response.ContentType != "text/html")
+            if (response.ContentType != "text/html")
             {
                 throw new AssertException("The content type is not text/html.");
             }
@@ -45,7 +45,7 @@ namespace Crowbar
         /// <returns>The JSON object.</returns>
         public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null)
         {
-            if (response.Response.ContentType != "application/json")
+            if (response.ContentType != "application/json")
             {
                 throw new AssertException("The content type is not application/json.");
             }
