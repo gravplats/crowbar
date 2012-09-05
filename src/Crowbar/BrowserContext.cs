@@ -95,5 +95,26 @@ namespace Crowbar
         {
             context.QueryString += string.Format("{0}{1}={2}", context.QueryString.Length == 0 ? "" : "&", key, value);
         }
+
+        internal string ExtractQueryString(string path)
+        {
+            int querySeparatorIndex = path.IndexOf("?");
+            if (querySeparatorIndex >= 0)
+            {
+                string queryString = path.Substring(querySeparatorIndex + 1);
+
+                // This might fail horribly.
+                string[] kvps = queryString.Split('&');
+                foreach (string kvp in kvps)
+                {
+                    string[] parameter = kvp.Split('=');
+                    Query(parameter[0], parameter[1]);
+                }
+
+                path = path.Substring(0, querySeparatorIndex);
+            }
+
+            return path;
+        }
     }
 }

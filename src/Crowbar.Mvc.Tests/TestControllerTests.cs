@@ -5,15 +5,12 @@ using NUnit.Framework;
 
 namespace Crowbar.Mvc.Tests
 {
-    public class TestControllerTests
+    public class TestControllerTests : TestBase
     {
-        // Creating the server is a time-consuming process and should preferably only be done once.
-        private readonly Server server = ServerFactory.Create("Crowbar.Mvc");
-
         [Test]
         public void Delete_Index()
         {
-            server.Execute((context, browser) =>
+            Server.Execute((context, browser) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -40,7 +37,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Get_Index()
         {
-            server.Execute((context, browser) =>
+            Server.Execute((context, browser) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -62,7 +59,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Post_Index()
         {
-            server.Execute((context, browser) =>
+            Server.Execute((context, browser) =>
             {
                 // Act.
                 var response = browser.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
@@ -85,7 +82,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Put_Index()
         {
-            server.Execute((context, browser) =>
+            Server.Execute((context, browser) =>
             {
                 // Act.
                 var response = browser.Put(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));

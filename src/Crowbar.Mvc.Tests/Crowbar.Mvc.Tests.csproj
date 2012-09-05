@@ -101,6 +101,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryStringTestControllerTests.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="TestControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>

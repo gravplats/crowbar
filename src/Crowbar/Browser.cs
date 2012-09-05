@@ -46,7 +46,7 @@ namespace Crowbar
             return ProcessRequest(path, context);
         }
 
-        private BrowserResponse ProcessRequest(string path, ISimulatedWorkerRequestContext context)
+        private BrowserResponse ProcessRequest(string path, BrowserContext context)
         {
             if (path == null)
             {
@@ -54,17 +54,7 @@ namespace Crowbar
             }
 
             path = path.RemoveLeadingSlash();
-
-            // Parse out the querystring if provided.
-            string query = "";
-            int querySeparatorIndex = path.IndexOf("?");
-            if (querySeparatorIndex >= 0)
-            {
-                query = path.Substring(querySeparatorIndex + 1);
-                path = path.Substring(0, querySeparatorIndex);
-            }
-
-            context.QueryString = query;
+            path = context.ExtractQueryString(path);
 
             // Perform the request.
             CrowbarContext.Reset();
