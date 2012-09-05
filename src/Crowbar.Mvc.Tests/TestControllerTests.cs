@@ -13,7 +13,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Delete_Index()
         {
-            server.Execute(context =>
+            server.Execute((context, browser) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -24,7 +24,7 @@ namespace Crowbar.Mvc.Tests
                 }
 
                 // Act.
-                var response = context.Delete(CrowbarRoute.Root, ctx => ctx.FormValue("id", model.Id));
+                var response = browser.Delete(CrowbarRoute.Root, ctx => ctx.FormValue("id", model.Id));
 
                 // Assert.
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -40,7 +40,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Get_Index()
         {
-            server.Execute(context =>
+            server.Execute((context, browser) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -52,7 +52,7 @@ namespace Crowbar.Mvc.Tests
 
                 // Act.
                 string url = CrowbarRoute.Root + "?id=" + HttpUtility.UrlEncode(model.Id);
-                var response = context.Get(url);
+                var response = browser.Get(url);
 
                 // Assert.
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -62,10 +62,10 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Post_Index()
         {
-            server.Execute(context =>
+            server.Execute((context, browser) =>
             {
                 // Act.
-                var response = context.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
+                var response = browser.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
 
                 // Assert.
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -85,10 +85,10 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Put_Index()
         {
-            server.Execute(context =>
+            server.Execute((context, browser) =>
             {
                 // Act.
-                var response = context.Put(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
+                var response = browser.Put(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
 
                 // Assert.
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

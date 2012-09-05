@@ -11,9 +11,9 @@ namespace Crowbar
             this.proxy = proxy;
         }
 
-        public void Execute(Action<ServerContext> script)
+        public void Execute(Action<ServerContext, Browser> script)
         {
-            proxy.Process(new SerializableDelegate<Action<ServerContext>>(script));
+            proxy.Process(new SerializableDelegate<Action<ServerContext, Browser>>(script));
         }
     }
 }

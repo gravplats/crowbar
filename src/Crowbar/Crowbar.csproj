@@ -100,12 +100,13 @@
     <Compile Include="AssertException.cs" />
     <Compile Include="BrowserContext.cs" />
     <Compile Include="HttpStatusCode.cs" />
-    <Compile Include="ServerContext.cs" />
+    <Compile Include="Browser.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="ISimulatedWorkerRequestContext.cs" />
     <Compile Include="MvcUtils.cs" />
     <Compile Include="BrowserResponse.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="ServerContext.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="IRavenDbHttpApplication.cs" />

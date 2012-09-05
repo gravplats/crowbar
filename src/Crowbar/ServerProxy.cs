@@ -24,10 +24,9 @@ namespace Crowbar
             return null; 
         }
 
-        public void Process(SerializableDelegate<Action<ServerContext>> script)
+        public void Process(SerializableDelegate<Action<ServerContext, Browser>> script)
         {
-            var context = new ServerContext(store);
-            script.Delegate(context);
+            script.Delegate(new ServerContext(store), new Browser());
         }
     }
 }
