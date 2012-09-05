@@ -1,4 +1,5 @@
 ﻿using Crowbar.Hosting;
+using Crowbar.Mvc.Core;
 using NUnit.Framework;
 
 namespace Crowbar.Mvc.Tests
@@ -18,6 +19,13 @@ namespace Crowbar.Mvc.Tests
         {
             host.Start(session =>
             {
+                using (var ses = session.Store.OpenSession())
+                {
+                    var model = new Model { Text = "Crowbar" };
+                    ses.Store(model);
+                    ses.SaveChanges();
+                }
+
                 var result = session.Get("");
                 Assert.That(result.Response.StatusCode, Is.EqualTo(200));
             });

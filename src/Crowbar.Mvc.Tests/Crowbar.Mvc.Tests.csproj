@@ -106,13 +106,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Crowbar\Crowbar.csproj">
-      <Project>{3C0FDDD4-9A22-490E-A3C6-2991124CE803}</Project>
-      <Name>Halfling</Name>
-    </ProjectReference>
+    <Content Include="Raven.Studio.xap" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Raven.Studio.xap" />
+    <ProjectReference Include="..\Crowbar.Mvc\Crowbar.Mvc.csproj">
+      <Project>{94B58915-40CC-41DF-B4AC-27653436C2EE}</Project>
+      <Name>Crowbar.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Crowbar\Crowbar.csproj">
+      <Project>{3C0FDDD4-9A22-490E-A3C6-2991124CE803}</Project>
+      <Name>Crowbar</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

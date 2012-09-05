@@ -6,6 +6,8 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using Crowbar.Browsing;
 using Crowbar.Interception;
+using Raven.Client;
+using Raven.Client.Embedded;
 
 namespace Crowbar.Hosting
 {
@@ -20,9 +22,9 @@ namespace Crowbar.Hosting
         private AppHost(string appPhysicalDirectory, string virtualDirectory = "/")
         {
             _appDomainProxy = (AppDomainProxy)ApplicationHost.CreateApplicationHost(typeof(AppDomainProxy), virtualDirectory, appPhysicalDirectory);
-            _appDomainProxy.RunCodeInAppDomain(() =>
+            _appDomainProxy.RunCodeInAppDomain(store =>
             {
-                InitializeApplication();
+                InitializeApplication(store);
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
                 LastRequestData.Reset();
             });
@@ -35,9 +37,13 @@ namespace Crowbar.Hosting
         }
 
         #region Initializing app & interceptors
-        private static void InitializeApplication()
+        private static void InitializeApplication(IDocumentStore store)
         {
             var appInstance = GetApplicationInstance();
+
+            var ravenDbHttpApplication = (IRavenDbHttpApplication)appInstance;
+            ravenDbHttpApplication.Store = store;
+
             appInstance.PostRequestHandlerExecute += delegate
             {
                 // Collect references to context objects that would otherwise be lost

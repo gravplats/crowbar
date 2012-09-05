@@ -1,11 +1,18 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Crowbar.Mvc.Core;
+using Raven.Client;
 
 namespace Crowbar.Mvc
 {
-    public class MvcApplication : HttpApplication
+    public class MvcApplication : HttpApplication, IRavenDbHttpApplication
     {
+        public IDocumentStore Store
+        {
+            set { TestController.Store = value; }
+        }
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());

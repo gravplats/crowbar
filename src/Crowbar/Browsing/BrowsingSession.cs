@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
 using Crowbar.Interception;
+using Raven.Client;
 
 namespace Crowbar.Browsing
 {
@@ -13,9 +14,12 @@ namespace Crowbar.Browsing
         public HttpSessionState Session { get; private set; }
         public HttpCookieCollection Cookies { get; private set; }
 
-        public BrowsingSession()
+        public IDocumentStore Store { get; private set; }
+
+        public BrowsingSession(IDocumentStore store)
         {
             Cookies = new HttpCookieCollection();
+            Store = store;
         }
 
         public RequestResult Get(string url)

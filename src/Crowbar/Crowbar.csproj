@@ -101,6 +101,7 @@
     <Compile Include="Browsing\MvcUtils.cs" />
     <Compile Include="Browsing\RequestResult.cs" />
     <Compile Include="Browsing\SimulatedWorkerRequest.cs" />
+    <Compile Include="IRavenDbHttpApplication.cs" />
     <Compile Include="NameValueCollectionConversions.cs" />
     <Compile Include="Hosting\AppDomainProxy.cs" />
     <Compile Include="Hosting\AppHost.cs" />

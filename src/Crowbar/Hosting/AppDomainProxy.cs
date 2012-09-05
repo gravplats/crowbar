@@ -1,5 +1,7 @@
 ﻿using System;
 using Crowbar.Browsing;
+using Raven.Client;
+using Raven.Client.Embedded;
 
 namespace Crowbar.Hosting
 {
@@ -8,14 +10,21 @@ namespace Crowbar.Hosting
     /// </summary>
     internal class AppDomainProxy : MarshalByRefObject
     {
-        public void RunCodeInAppDomain(Action codeToRun)
+        private readonly IDocumentStore store;
+
+        public AppDomainProxy()
         {
-            codeToRun();
+            store = new EmbeddableDocumentStore { RunInMemory = true }.Initialize();
+        }
+
+        public void RunCodeInAppDomain(Action<IDocumentStore> codeToRun)
+        {
+            codeToRun(store);
         }
 
         public void RunBrowsingSessionInAppDomain(SerializableDelegate<Action<BrowsingSession>> script)
         {
-            var browsingSession = new BrowsingSession();
+            var browsingSession = new BrowsingSession(store);
             script.Delegate(browsingSession);
         }
 
