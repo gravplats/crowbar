@@ -12,6 +12,8 @@ namespace Crowbar.Mvc.Core
     public static class CrowbarRoute
     {
         public const string Ajax = "/ajax";
+        public const string AntiForgeryToken = "/token";
+        public const string AntiForgeryTokenSalt = "/tokensalt";
         public const string Authentication = "/authentication";
 
         public const string CsQuery = "/csquery";
