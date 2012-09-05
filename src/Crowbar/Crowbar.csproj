@@ -112,7 +112,7 @@
     <Compile Include="SerializableDelegate.cs" />
     <Compile Include="InterceptionFilter.cs" />
     <Compile Include="InterceptionFilterProvider.cs" />
-    <Compile Include="LastRequestData.cs" />
+    <Compile Include="CrowbarContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

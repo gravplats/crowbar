@@ -71,7 +71,7 @@ namespace Crowbar
             context.QueryString = query;
 
             // Perform the request.
-            LastRequestData.Reset();
+            CrowbarContext.Reset();
 
             var output = new StringWriter();
 
@@ -80,25 +80,25 @@ namespace Crowbar
 
             // Capture the output.
             AddAnyNewCookiesToCookieCollection();
-            Session = LastRequestData.HttpSessionState;
+            Session = CrowbarContext.HttpSessionState;
 
             return new RequestResult
             {
                 ResponseText = output.ToString(),
-                ActionExecutedContext = LastRequestData.ActionExecutedContext,
-                ResultExecutedContext = LastRequestData.ResultExecutedContext,
-                Response = LastRequestData.Response,
+                ActionExecutedContext = CrowbarContext.ActionExecutedContext,
+                ResultExecutedContext = CrowbarContext.ResultExecutedContext,
+                Response = CrowbarContext.Response,
             };
         }
 
         private void AddAnyNewCookiesToCookieCollection()
         {
-            if (LastRequestData.Response == null)
+            if (CrowbarContext.Response == null)
             {
                 return;
             }
 
-            var lastResponseCookies = LastRequestData.Response.Cookies;
+            var lastResponseCookies = CrowbarContext.Response.Cookies;
             if (lastResponseCookies == null)
             {
                 return;

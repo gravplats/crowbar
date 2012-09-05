@@ -4,22 +4,30 @@ using System.Web.SessionState;
 
 namespace Crowbar
 {
-    /// <summary>
-    /// A place to store information about each request as we capture it
-    /// Static because HttpRuntime.ProcessRequest() exposes no convenient hooks for intercepting the
-    /// request processing pipeline, so we're statically attaching an interceptor to all loaded controllers
-    /// </summary>
-    internal static class LastRequestData
+    internal static class CrowbarContext
     {
+        public static ActionExecutingContext ActionExecutingContext { get; set; }
         public static ActionExecutedContext ActionExecutedContext { get; set; }
+
+        public static ResultExecutingContext ResultExecutingContext { get; set; }
         public static ResultExecutedContext ResultExecutedContext { get; set; }
+
+        public static ExceptionContext ExceptionContext { get; set; }
+
         public static HttpSessionState HttpSessionState { get; set; }
+
         public static HttpResponse Response { get; set; }
 
         public static void Reset()
         {
             ActionExecutedContext = null;
+            ActionExecutingContext = null;
+
+            ResultExecutingContext = null;
             ResultExecutedContext = null;
+
+            ExceptionContext = null;
+
             HttpSessionState = null;
             Response = null;
         }

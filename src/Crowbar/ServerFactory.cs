@@ -29,14 +29,14 @@ namespace Crowbar
             instance.PostRequestHandlerExecute += delegate
             {
                 // Collect references to context objects that would otherwise be lost when the request is completed.
-                if (LastRequestData.HttpSessionState == null)
+                if (CrowbarContext.HttpSessionState == null)
                 {
-                    LastRequestData.HttpSessionState = HttpContext.Current.Session;
+                    CrowbarContext.HttpSessionState = HttpContext.Current.Session;
                 }
 
-                if (LastRequestData.Response == null)
+                if (CrowbarContext.Response == null)
                 {
-                    LastRequestData.Response = HttpContext.Current.Response;
+                    CrowbarContext.Response = HttpContext.Current.Response;
                 }
             };
 
@@ -80,7 +80,7 @@ namespace Crowbar
             {
                 InitializeApplication(store);
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
-                LastRequestData.Reset();
+                CrowbarContext.Reset();
             });
 
             return new Server(proxy);
