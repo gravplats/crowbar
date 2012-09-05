@@ -13,9 +13,9 @@ namespace Crowbar
             store = new EmbeddableDocumentStore { RunInMemory = true }.Initialize();
         }
 
-        public void Initialize(Action<IDocumentStore> action)
+        public void Initialize(string configurationFile, Action<string, IDocumentStore> action)
         {
-            action(store);
+            action(configurationFile, store);
         }
 
         public override object InitializeLifetimeService()

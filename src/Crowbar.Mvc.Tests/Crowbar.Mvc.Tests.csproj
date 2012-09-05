@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="Core\AjaxTestControllerTests.cs" />
     <Compile Include="Core\CsQueryControllerTests.cs" />
+    <Compile Include="Core\CustomConfigTestControllerTests.cs" />
     <Compile Include="Core\HttpsTestControllerTests.cs" />
     <Compile Include="Core\JsonTestControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="Web.Custom.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Raven.Studio.xap" />

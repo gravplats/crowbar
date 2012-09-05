@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Web;
@@ -65,7 +66,7 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        public static Server Create(string name)
+        public static Server Create(string name, string configurationFile = "Web.config")
         {
             var physicalPath = GetPhysicalPath(name);
             if (physicalPath == null)
@@ -76,8 +77,11 @@ namespace Crowbar
             CopyDllFiles(physicalPath);
 
             var proxy = (ServerProxy)ApplicationHost.CreateApplicationHost(typeof(ServerProxy), "/", physicalPath);
-            proxy.Initialize(store =>
+            configurationFile = configurationFile == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configurationFile);
+
+            proxy.Initialize(configurationFile, (configFile, store) =>
             {
+                SetCustomConfigurationFile(configFile);
                 InitializeApplication(store);
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
                 CrowbarContext.Reset();
@@ -114,6 +118,18 @@ namespace Crowbar
                     File.Copy(file, destFile, true);
                 }
             }
+        }
+
+        private static void SetCustomConfigurationFile(string configFile)
+        {
+            if (configFile == null)
+            {
+                // Use the default Web.config.
+                return;
+            }
+
+            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", configFile);
+            typeof(ConfigurationManager).GetField("s_initState", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 0 /* InitState.NotStarted */);
         }
     }
 }

@@ -131,6 +131,7 @@
     <Compile Include="Core\CrowbarControllerBase.cs" />
     <Compile Include="Core\CrowbarRoute.cs" />
     <Compile Include="Core\CsQueryController.cs" />
+    <Compile Include="Core\CustomConfigTestController.cs" />
     <Compile Include="Core\HttpsTestController.cs" />
     <Compile Include="Core\JsonTestController.cs" />
     <Compile Include="Core\Model.cs" />
