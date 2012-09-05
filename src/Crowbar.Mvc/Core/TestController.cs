@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Raven.Client;
 
 namespace Crowbar.Mvc.Core
 {
     public class Model
     {
+        public string Id { get; set; }
+
         public string Text { get; set; }
     }
 
@@ -13,30 +14,37 @@ namespace Crowbar.Mvc.Core
     {
         public static IDocumentStore Store;
 
-        [HttpGet]
-        public ActionResult Index()
+        private ActionResult HttpBadRequest()
+        {
+            return new HttpStatusCodeResult(200);
+        }
+
+        private ActionResult HttpOk()
+        {
+            return new HttpStatusCodeResult(200);
+        }
+
+        [HttpGet, ActionName("Index")]
+        public ActionResult Index_Get(string id)
         {
             using (var session = Store.OpenSession())
             {
-                var models = session.Query<Model>().Customize(x => x.WaitForNonStaleResults()).ToList();
-                if (models.Any())
-                {
-                    return new HttpStatusCodeResult(200);
-                }
+                var model = session.Load<Model>("models/" + id);
+                return model != null ? HttpOk() : HttpBadRequest();
             }
-
-            return new HttpStatusCodeResult(400);
         }
 
-        [HttpPost]
-        public ActionResult Index(string text)
+        [HttpPost, ActionName("Index")]
+        public ActionResult Index_Post(string text)
         {
-            if (text == null)
+            using (var session = Store.OpenSession())
             {
-                return new HttpStatusCodeResult(400);
-            }
+                var model = new Model { Text = text };
+                session.Store(model);
+                session.SaveChanges();
 
-            return new HttpStatusCodeResult(200);
+                return Json(new { id = model.Id });
+            }
         }
     }
 }

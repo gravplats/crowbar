@@ -21,7 +21,7 @@ namespace Crowbar.Mvc
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.MapRoute(null, "", new { controller = "Test", action = "Index" });
+            routes.MapRoute(null, "{id}", new { controller = "Test", action = "Index", id = UrlParameter.Optional });
         }
 
         protected void Application_Start()

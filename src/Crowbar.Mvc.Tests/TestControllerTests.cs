@@ -1,4 +1,5 @@
-﻿using Crowbar.Hosting;
+﻿using System.Web.Helpers;
+using Crowbar.Hosting;
 using Crowbar.Mvc.Core;
 using NUnit.Framework;
 
@@ -19,14 +20,15 @@ namespace Crowbar.Mvc.Tests
         {
             host.Start(session =>
             {
-                using (var ses = session.Store.OpenSession())
+                var model = new Model { Text = "Crowbar" };
+                using (var raven = session.Store.OpenSession())
                 {
-                    var model = new Model { Text = "Crowbar" };
-                    ses.Store(model);
-                    ses.SaveChanges();
+                    raven.Store(model);
+                    raven.SaveChanges();
                 }
 
-                var result = session.Get("");
+                string url = "/" + model.Id.Replace("models/", "");
+                var result = session.Get(url);
                 Assert.That(result.Response.StatusCode, Is.EqualTo(200));
             });
         }
@@ -36,8 +38,16 @@ namespace Crowbar.Mvc.Tests
         {
             host.Start(session =>
             {
-                var result = session.Post("", new { text = "text" });
-                Assert.That(result.Response.StatusCode, Is.EqualTo(200));
+                var result = session.Post("/", new { text = "New Crowbar" });
+                using (var raven = session.Store.OpenSession())
+                {
+                    dynamic json = Json.Decode(result.ResponseText);
+                    string id = json.id;
+
+                    var model = raven.Load<Model>(id);
+                    Assert.That(model, Is.Not.Null);
+                    Assert.That(model.Text, Is.EqualTo("New Crowbar"));
+                }
             });
         }
     }
