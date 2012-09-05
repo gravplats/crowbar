@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AttributeRouting.Web</name>
+    </assembly>
+    <members>
+        <member name="T:AttributeRouting.Web.Framework.AttributeRoute">
+            <summary>
+            Route to use for ASP.NET Mvc or Web API web-hosted routes.
+            </summary>
+        </member>
+        <member name="M:AttributeRouting.Web.Framework.AttributeRoute.#ctor(System.String,System.Web.Routing.RouteValueDictionary,System.Web.Routing.RouteValueDictionary,System.Web.Routing.RouteValueDictionary,AttributeRouting.Web.WebAttributeRoutingConfigurationBase)">
+            <summary>
+            Route used by the AttributeRouting framework in web projects.
+            </summary>
+        </member>
+        <member name="T:AttributeRouting.Web.RegexRouteConstraintAttribute">
+            <summary>
+            Constrains a url parameter by a regex pattern.
+            </summary>
+        </member>
+        <member name="M:AttributeRouting.Web.RegexRouteConstraintAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Specify a regex constraint for a url parameter defined in a RouteAttribute applied to this action.
+            </summary>
+            <param name="key">The key of the url parameter</param>
+            <param name="pattern">The regex pattern used to constrain the url parameter</param>
+        </member>
+        <member name="M:AttributeRouting.Web.RegexRouteConstraintAttribute.#ctor(System.String,System.String,System.Text.RegularExpressions.RegexOptions)">
+            <summary>
+            Specify a regex constraint for a url parameter defined in a RouteAttribute applied to this action.
+            </summary>
+            <param name="key">The key of the url parameter</param>
+            <param name="pattern">The regex pattern used to constrain the url parameter</param>
+            <param name="options">The RegexOptions used when testing the url parameter value</param>
+        </member>
+        <member name="P:AttributeRouting.Web.RegexRouteConstraintAttribute.Pattern">
+            <summary>
+            The regex pattern used to constrain the url parameter.
+            </summary>
+        </member>
+        <member name="P:AttributeRouting.Web.RegexRouteConstraintAttribute.Options">
+            <summary>
+            The RegexOptions used when testing the url parameter value
+            </summary>
+        </member>
+        <member name="T:AttributeRouting.Web.Constraints.RestfulHttpMethodConstraint">
+            <summary>
+            Constrains a route by the specified allowed HTTP methods.
+            </summary>
+            <remarks>
+            AttributeRouting uses its own implementation of the Match method 
+            to handle X-HTTP-Method-Override values in the request headers, form, and query collections.
+            </remarks>
+        </member>
+        <member name="M:AttributeRouting.Web.Constraints.RestfulHttpMethodConstraint.#ctor(System.String[])">
+            <summary>
+            Constrain a route by the specified allowed HTTP methods.
+            </summary>
+        </member>
+        <member name="M:AttributeRouting.Web.Helpers.HttpRequestBaseExtensions.GetUnvalidatedCollectionValue(System.Web.HttpRequestBase,System.String,System.String)">
+            <summary>
+            Loads the Form or QueryString collection value from the unvalidated object in System.Web.Webpages, 
+            if that assembly is available.
+            </summary>
+        </member>
+        <member name="M:AttributeRouting.Web.WebAttributeRoutingConfigurationBase.AddDefaultRouteConstraint(System.String,System.Web.Routing.IRouteConstraint)">
+            <summary>
+            Automatically applies the specified constraint against url parameters
+            with names that match the given regular expression.
+            </summary>
+            <param name="keyRegex">The regex used to match url parameter names</param>
+            <param name="constraint">The constraint to apply to matched parameters</param>
+        </member>
+        <member name="M:AttributeRouting.Web.WebAttributeRoutingConfigurationBase.UseRouteHandler(System.Func{System.Web.Routing.IRouteHandler})">
+            <summary>
+            Specifies a function that returns an alternate route handler.
+            By default, the route handler is the default handler for the namespace type (Mvc, Http).
+            </summary>
+            <example>
+            <code>
+            routes.MapAttributeRoutes(config =>
+            {
+               config.ScanAssembly(System.Reflection.Assembly.GetExecutingAssembly());
+               config.UseRouteHandler(() => new MyOtherLibrary.Mvc.CustomRouteHandler());
+               // default:  config.UseRouteHandler(() => new System.Web.Mvc.MvcRouteHandler());
+            });
+            
+            routes.MapHttpAttributeRoutes(config =>
+            {
+               config.ScanAssembly(System.Reflection.Assembly.GetExecutingAssembly());
+               config.UseRouteHandler(() => new MyOtherLibrary.WebApi.CustomRouteHandler());
+               // default:  config.UseRouteHandler(() => System.Web.Http.WebHost.HttpControllerRouteHandler.Instance());
+            });        
+            </code>
+            </example>
+            <param name="routeHandlerFactory"></param>
+        </member>
+        <member name="P:AttributeRouting.Web.WebAttributeRoutingConfigurationBase.CurrentUICultureResolver">
+            <summary>
+            This delegate returns the current UI culture name,
+            which is used when constraining inbound routes by culture.
+            The default delegate returns the CurrentUICulture name of the current thread.
+            </summary>
+        </member>
+    </members>
+</doc>
