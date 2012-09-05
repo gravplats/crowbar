@@ -17,12 +17,12 @@ namespace Crowbar.Hosting
     /// </summary>
     public class AppHost
     {
-        private readonly AppDomainProxy _appDomainProxy; // The gateway to the ASP.NET-enabled .NET appdomain
+        private readonly BrowserProxy browserProxy; // The gateway to the ASP.NET-enabled .NET appdomain
 
         private AppHost(string appPhysicalDirectory, string virtualDirectory = "/")
         {
-            _appDomainProxy = (AppDomainProxy)ApplicationHost.CreateApplicationHost(typeof(AppDomainProxy), virtualDirectory, appPhysicalDirectory);
-            _appDomainProxy.RunCodeInAppDomain(store =>
+            browserProxy = (BrowserProxy)ApplicationHost.CreateApplicationHost(typeof(BrowserProxy), virtualDirectory, appPhysicalDirectory);
+            browserProxy.RunCodeInAppDomain(store =>
             {
                 InitializeApplication(store);
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
@@ -30,10 +30,10 @@ namespace Crowbar.Hosting
             });
         }
 
-        public void Start(Action<BrowsingSession> testScript)
+        public void Start(Action<BrowserSession> testScript)
         {
-            var serializableDelegate = new SerializableDelegate<Action<BrowsingSession>>(testScript);
-            _appDomainProxy.RunBrowsingSessionInAppDomain(serializableDelegate);
+            var serializableDelegate = new SerializableDelegate<Action<BrowserSession>>(testScript);
+            browserProxy.RunBrowsingSessionInAppDomain(serializableDelegate);
         }
 
         #region Initializing app & interceptors
