@@ -27,7 +27,7 @@ namespace Crowbar.Mvc.Tests
                     raven.SaveChanges();
                 }
 
-                string url = "/" + model.Id.Replace("models/", "");
+                string url = CrowbarRoute.Root + "?id=" + model.Id.Replace("models/", "");
                 var result = session.Get(url);
                 Assert.That(result.Response.StatusCode, Is.EqualTo(200));
             });
@@ -38,7 +38,7 @@ namespace Crowbar.Mvc.Tests
         {
             host.Start(session =>
             {
-                var result = session.Post("/", ctx => ctx.FormValue("text", "New Crowbar"));
+                var result = session.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
                 using (var raven = session.Store.OpenSession())
                 {
                     dynamic json = Json.Decode(result.ResponseText);

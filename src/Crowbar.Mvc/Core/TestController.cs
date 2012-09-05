@@ -1,30 +1,11 @@
 ﻿using System.Web.Mvc;
-using Raven.Client;
+using AttributeRouting.Web.Mvc;
 
 namespace Crowbar.Mvc.Core
 {
-    public class Model
+    public class TestController : CrowbarControllerBase
     {
-        public string Id { get; set; }
-
-        public string Text { get; set; }
-    }
-
-    public class TestController : Controller
-    {
-        public static IDocumentStore Store;
-
-        private ActionResult HttpBadRequest()
-        {
-            return new HttpStatusCodeResult(200);
-        }
-
-        private ActionResult HttpOk()
-        {
-            return new HttpStatusCodeResult(200);
-        }
-
-        [HttpGet, ActionName("Index")]
+        [GET(CrowbarRoute.Root)]
         public ActionResult Index_Get(string id)
         {
             using (var session = Store.OpenSession())
@@ -34,7 +15,7 @@ namespace Crowbar.Mvc.Core
             }
         }
 
-        [HttpPost, ActionName("Index")]
+        [POST(CrowbarRoute.Root)]
         public ActionResult Index_Post(string text)
         {
             using (var session = Store.OpenSession())

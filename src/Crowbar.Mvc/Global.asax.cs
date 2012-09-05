@@ -10,7 +10,7 @@ namespace Crowbar.Mvc
     {
         public IDocumentStore Store
         {
-            set { TestController.Store = value; }
+            set { CrowbarControllerBase.Store = value; }
         }
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -21,7 +21,6 @@ namespace Crowbar.Mvc
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-            routes.MapRoute(null, "{id}", new { controller = "Test", action = "Index", id = UrlParameter.Optional });
         }
 
         protected void Application_Start()
