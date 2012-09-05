@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Mvc", "Crowbar.Mvc\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Mvc.Tests", "Crowbar.Mvc.Tests\Crowbar.Mvc.Tests.csproj", "{C69860BA-69B9-4B90-BDD1-417C856DF98A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FF7E376C-1701-4B15-976B-F774778CE04B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,5 +30,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{94B58915-40CC-41DF-B4AC-27653436C2EE} = {FF7E376C-1701-4B15-976B-F774778CE04B}
+		{C69860BA-69B9-4B90-BDD1-417C856DF98A} = {FF7E376C-1701-4B15-976B-F774778CE04B}
 	EndGlobalSection
 EndGlobal
