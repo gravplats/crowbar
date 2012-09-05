@@ -97,7 +97,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browsing\BrowserContext.cs" />
     <Compile Include="Browsing\BrowserSession.cs" />
+    <Compile Include="Browsing\ISimulatedWorkerRequestContext.cs" />
     <Compile Include="Browsing\MvcUtils.cs" />
     <Compile Include="Browsing\RequestResult.cs" />
     <Compile Include="Browsing\SimulatedWorkerRequest.cs" />

@@ -59,16 +59,26 @@ namespace Crowbar.Browsing
 
             // Perform the request.
             LastRequestData.Reset();
-            
+
             var output = new StringWriter();
-            string httpVerbName = httpVerb.ToString().ToLower();
-            var workerRequest = new SimulatedWorkerRequest(url, query, output, Cookies, httpVerbName, formValues, headers);
+            string method = httpVerb.ToString().ToLower();
+
+            ISimulatedWorkerRequestContext context = new BrowserContext();
+            context.BodyString = "";
+            context.Cookies = Cookies;
+            context.FormValues = formValues;
+            context.Headers = headers;
+            context.Method = method;
+            context.Protocol = "http";
+            context.QueryString = query;
+
+            var workerRequest = new SimulatedWorkerRequest(url, context, output);
             HttpRuntime.ProcessRequest(workerRequest);
 
             // Capture the output.
             AddAnyNewCookiesToCookieCollection();
             Session = LastRequestData.HttpSessionState;
-            
+
             return new RequestResult
             {
                 ResponseText = output.ToString(),
