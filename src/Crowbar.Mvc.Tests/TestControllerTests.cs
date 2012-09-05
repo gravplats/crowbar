@@ -7,18 +7,13 @@ namespace Crowbar.Mvc.Tests
 {
     public class TestControllerTests
     {
-        private AppHost host;
-
-        [TestFixtureSetUp]
-        public void Context()
-        {
-            host = AppHost.Simulate("Crowbar.Mvc");
-        }
+        // Creating the server is a time-consuming process and should preferably only be done once.
+        private readonly Server server = ServerFactory.Create("Crowbar.Mvc");
 
         [Test]
         public void Delete_Index()
         {
-            host.Start(session =>
+            server.Execute(session =>
             {
                 var model = new Model { Text = "Crowbar" };
                 using (var raven = session.Store.OpenSession())
@@ -40,7 +35,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Get_Index()
         {
-            host.Start(session =>
+            server.Execute(session =>
             {
                 var model = new Model { Text = "Crowbar" };
                 using (var raven = session.Store.OpenSession())
@@ -58,7 +53,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Post_Index()
         {
-            host.Start(session =>
+            server.Execute(session =>
             {
                 var result = session.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
                 using (var raven = session.Store.OpenSession())
@@ -76,7 +71,7 @@ namespace Crowbar.Mvc.Tests
         [Test]
         public void Put_Index()
         {
-            host.Start(session =>
+            server.Execute(session =>
             {
                 var result = session.Put(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
                 using (var raven = session.Store.OpenSession())

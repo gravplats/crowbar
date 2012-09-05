@@ -6,9 +6,9 @@ using Raven.Client;
 
 namespace Crowbar
 {
-    public class BrowserSession
+    public class ServerContext
     {
-        public BrowserSession(IDocumentStore store)
+        public ServerContext(IDocumentStore store)
         {
             Cookies = new HttpCookieCollection();
             Store = store;
