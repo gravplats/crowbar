@@ -21,20 +21,23 @@ namespace Crowbar
                 throw new AssertException("The content type is not text/html.");
             }
 
+            CQ document;
+
             try
             {
-                var document = response.AsCsQuery();
-                if (assertions != null)
-                {
-                    assertions(document);
-                }
-
-                return document;
+                document = response.AsCsQuery();
             }
             catch (Exception exception)
             {
                 throw new AssertException("Failed to convert response body into a CQ object.", exception);
             }
+
+            if (assertions != null)
+            {
+                assertions(document);
+            }
+
+            return document;
         }
 
         /// <summary>
@@ -50,20 +53,23 @@ namespace Crowbar
                 throw new AssertException("The content type is not application/json.");
             }
 
+            dynamic json;
+
             try
             {
-                dynamic json = response.AsJson();
-                if (assertions != null)
-                {
-                    assertions(json);
-                }
-
-                return json;
+                json = response.AsJson();
             }
             catch (Exception exception)
             {
                 throw new AssertException("Failed to convert response body into JSON.", exception);
             }
+
+            if (assertions != null)
+            {
+                assertions(json);
+            }
+
+            return json;
         }
 
         /// <summary>
