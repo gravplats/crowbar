@@ -132,7 +132,7 @@
     <Compile Include="Core\FormsAuthTestController.cs" />
     <Compile Include="Core\CrowbarControllerBase.cs" />
     <Compile Include="Core\CrowbarRoute.cs" />
-    <Compile Include="Core\CsQueryController.cs" />
+    <Compile Include="Core\CsQueryTestController.cs" />
     <Compile Include="Core\CustomConfigTestController.cs" />
     <Compile Include="Core\HttpsTestController.cs" />
     <Compile Include="Core\JsonTestController.cs" />
@@ -172,7 +172,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CsQuery\CsQuery.cshtml" />
+    <Content Include="Views\CsQueryTest\CsQuery.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

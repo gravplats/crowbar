@@ -49,7 +49,7 @@
     <Compile Include="Core\AjaxTestControllerTests.cs" />
     <Compile Include="Core\AntiForgeryRequestTokenTestControllerTests.cs" />
     <Compile Include="Core\FormAuthTestControllerTests.cs" />
-    <Compile Include="Core\CsQueryControllerTests.cs" />
+    <Compile Include="Core\CsQueryTestControllerTests.cs" />
     <Compile Include="Core\CustomConfigTestControllerTests.cs" />
     <Compile Include="Core\HttpsTestControllerTests.cs" />
     <Compile Include="Core\JsonTestControllerTests.cs" />

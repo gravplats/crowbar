@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Crowbar.Tests.Core
 {
-    public class CsQueryControllerTests : TestBase
+    public class CsQueryTestControllerTests : TestBase
     {
         [Test]
         public void Should_return_html()

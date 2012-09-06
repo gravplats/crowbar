@@ -3,7 +3,7 @@ using AttributeRouting.Web.Mvc;
 
 namespace Crowbar.Web.Core
 {
-    public class CsQueryController : CrowbarControllerBase
+    public class CsQueryTestController : CrowbarControllerBase
     {
         [GET(CrowbarRoute.CsQuery)]
         public ActionResult Index()
