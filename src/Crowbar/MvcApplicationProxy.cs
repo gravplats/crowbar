@@ -1,28 +1,32 @@
 ﻿using System;
 using Crowbar.Mvc;
-using Raven.Client;
 
 namespace Crowbar
 {
     internal class MvcApplicationProxy : MarshalByRefObject
     {
-        private IDocumentStore store;
+        private IDocumentStoreBuilder builder;
+        private ICrowbarHttpApplication application;
 
-        public void Initialize(string configurationFile, IDocumentStoreBuilder builder, Action<string, IDocumentStore> action)
+        public void Initialize(string config, IDocumentStoreBuilder documentStoreBuilder, Func<string, ICrowbarHttpApplication> initialize)
         {
-            store = builder.Build();
-            action(configurationFile, store);
+            builder = documentStoreBuilder;
+            application = initialize(config);
         }
 
         public override object InitializeLifetimeService()
         {
             // Tells .NET not to expire this remoting object.
-            return null; 
+            return null;
         }
 
         public void Process(SerializableDelegate<Action<ServerContext, Browser>> script)
         {
-            script.Delegate(new ServerContext(store), new Browser());
+            using (var store = builder.Build())
+            {
+                application.SetDocumentStore(store);
+                script.Delegate(new ServerContext(store), new Browser());
+            }
         }
     }
 }

@@ -129,6 +129,7 @@
     <Compile Include="App_Start\AttributeRouting.cs" />
     <Compile Include="Core\AjaxTestController.cs" />
     <Compile Include="Core\AntiForgeryRequestTokenTestController.cs" />
+    <Compile Include="Core\DocumentStoreTestController.cs" />
     <Compile Include="Core\FormsAuthTestController.cs" />
     <Compile Include="Core\CrowbarControllerBase.cs" />
     <Compile Include="Core\CrowbarRoute.cs" />

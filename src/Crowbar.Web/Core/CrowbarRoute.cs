@@ -19,6 +19,8 @@ namespace Crowbar.Web.Core
         public const string CsQuery = "/csquery";
         public const string CustomConfig = "/config";
 
+        public const string DocumentStore = "/store";
+
         public const string JsonResponse = "/jsonresponse";
         public const string JsonRequest = "/jsonrequest";
 

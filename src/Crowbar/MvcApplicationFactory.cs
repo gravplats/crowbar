@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using Crowbar.Mvc;
-using Raven.Client;
 
 namespace Crowbar
 {
@@ -23,11 +22,9 @@ namespace Crowbar
             recycleApplicationInstanceMethod = httpApplicationFactory.GetMethod("RecycleApplicationInstance", BindingFlags.Static | BindingFlags.NonPublic);
         }
 
-        private static void InitializeApplication(IDocumentStore store)
+        private static HttpApplication InitializeApplication()
         {
             var instance = GetApplicationInstance();
-            ((ICrowbarHttpApplication)instance).SetDocumentStore(store);
-
             instance.PostRequestHandlerExecute += delegate
             {
                 // Collect references to context objects that would otherwise be lost when the request is completed.
@@ -44,6 +41,8 @@ namespace Crowbar
 
             RefreshEventsList(instance);
             RecycleApplicationInstance(instance);
+
+            return instance;
         }
 
         private static HttpApplication GetApplicationInstance()
@@ -80,12 +79,14 @@ namespace Crowbar
             var proxy = (MvcApplicationProxy)ApplicationHost.CreateApplicationHost(typeof(MvcApplicationProxy), "/", physicalPath);
             configurationFile = configurationFile == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configurationFile);
 
-            proxy.Initialize(configurationFile, documentStoreBuilder, (configFile, store) =>
+            proxy.Initialize(configurationFile, documentStoreBuilder, configFile =>
             {
                 SetCustomConfigurationFile(configFile);
-                InitializeApplication(store);
+                var instance = InitializeApplication();
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
                 CrowbarContext.Reset();
+
+                return (ICrowbarHttpApplication)instance;
             });
 
             return new MvcApplication(proxy);
