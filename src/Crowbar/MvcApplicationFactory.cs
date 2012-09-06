@@ -82,11 +82,20 @@ namespace Crowbar
             proxy.Initialize(configurationFile, documentStoreBuilder, configFile =>
             {
                 SetCustomConfigurationFile(configFile);
+                
                 var instance = InitializeApplication();
+
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
                 CrowbarContext.Reset();
 
-                return (ICrowbarHttpApplication)instance;
+                var crowbar = instance as ICrowbarHttpApplication;
+                if (crowbar == null)
+                {
+                    string message = string.Format("The HttpApplication (Global.asax) must implement '{0}'", typeof(ICrowbarHttpApplication).FullName);
+                    throw new InvalidOperationException(message);
+                }
+
+                return crowbar;
             });
 
             return new MvcApplication(proxy);
