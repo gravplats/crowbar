@@ -1,7 +1,7 @@
 ﻿using Crowbar.Web.Core;
 using NUnit.Framework;
 
-namespace Crowbar.Tests.Core
+namespace Crowbar.Tests.Web.Core
 {
     public class AntiForgeryRequestTokenTestControllerTests : TestBase
     {

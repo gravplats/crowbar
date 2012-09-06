@@ -46,19 +46,20 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AjaxTestControllerTests.cs" />
-    <Compile Include="Core\AntiForgeryRequestTokenTestControllerTests.cs" />
-    <Compile Include="Core\DocumentStoreTestControllerTests.cs" />
-    <Compile Include="Core\FormAuthTestControllerTests.cs" />
-    <Compile Include="Core\CsQueryTestControllerTests.cs" />
-    <Compile Include="Core\CustomConfigTestControllerTests.cs" />
-    <Compile Include="Core\HttpsTestControllerTests.cs" />
-    <Compile Include="Core\JsonTestControllerTests.cs" />
+    <Compile Include="Web.Core\AjaxTestControllerTests.cs" />
+    <Compile Include="Web.Core\AntiForgeryRequestTokenTestControllerTests.cs" />
+    <Compile Include="Web.Core\DocumentStoreTestControllerTests.cs" />
+    <Compile Include="Web.Core\FormAuthTestControllerTests.cs" />
+    <Compile Include="Web.Core\CsQueryTestControllerTests.cs" />
+    <Compile Include="Web.Core\CustomConfigTestControllerTests.cs" />
+    <Compile Include="Web.Core\HttpsTestControllerTests.cs" />
+    <Compile Include="Web.Core\JsonTestControllerTests.cs" />
+    <Compile Include="MvcApplicationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Core\QueryStringTestControllerTests.cs" />
-    <Compile Include="Core\RedirectTestControllerTests.cs" />
+    <Compile Include="Web.Core\QueryStringTestControllerTests.cs" />
+    <Compile Include="Web.Core\RedirectTestControllerTests.cs" />
     <Compile Include="TestBase.cs" />
-    <Compile Include="Core\TestControllerTests.cs" />
+    <Compile Include="Web.Core\TestControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
