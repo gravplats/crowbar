@@ -40,6 +40,9 @@
     <Reference Include="Raven.Client.Lightweight">
       <HintPath>..\..\lib\RavenDB.Client.1.0.960\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
+    <Reference Include="Raven.Database">
+      <HintPath>..\..\lib\RavenDB.Database.1.0.960\lib\net40\Raven.Database.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
