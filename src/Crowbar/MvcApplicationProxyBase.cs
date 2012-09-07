@@ -7,9 +7,9 @@ namespace Crowbar
     {
         private HttpApplication application;
 
-        public void Initialize(string config, Func<string, HttpApplication> initialize)
+        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize)
         {
-            application = initialize(config);
+            application = initialize.Delegate();
         }
 
         public override object InitializeLifetimeService()

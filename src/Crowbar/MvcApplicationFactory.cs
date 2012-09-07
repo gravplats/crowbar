@@ -99,22 +99,16 @@ namespace Crowbar
         public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config = "Web.config")
             where TProxy : MvcApplicationProxyBase<TContext>
         {
-            var proxy = MvcApplicationProxyFactory.Create<TProxy, TContext>(name);
-
             config = config == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config);
 
-            // Cannot capture 'configurationFile' in the lambda expression due to SerializationException.
-            proxy.Initialize(config, configFile =>
+            var proxy = MvcApplicationProxyFactory.Create<TProxy, TContext>(name);
+            proxy.Initialize(new SerializableDelegate<Func<HttpApplication>>(() =>
             {
-                SetCustomConfigurationFile(configFile);
-
-                var instance = InitializeApplication();
-
+                SetCustomConfigurationFile(config);
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
-                CrowbarContext.Reset();
 
-                return instance;
-            });
+                return InitializeApplication();
+            }));
 
             return new MvcApplication<TContext>(proxy);
         }
