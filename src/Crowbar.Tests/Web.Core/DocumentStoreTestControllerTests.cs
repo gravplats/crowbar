@@ -9,7 +9,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Can_delete_document_on_server()
         {
-            Application.Execute((context, browser) =>
+            Application.Execute((browser, context) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -36,7 +36,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Can_read_document_on_server()
         {
-            Application.Execute((context, browser) =>
+            Application.Execute((browser, context) =>
             {
                 // Arrange.
                 var model = new Model { Text = "Crowbar" };
@@ -58,7 +58,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Can_create_document_on_server()
         {
-            Application.Execute((context, browser) =>
+            Application.Execute((browser, context) =>
             {
                 // Act.
                 var response = browser.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
@@ -80,7 +80,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_get_a_new_instance_of_document_store_for_each_run_1()
         {
-            Application.Execute((context, browser) =>
+            Application.Execute((browser, context) =>
             {
                 // Arrange.
                 const string text = "crowbar";
@@ -103,7 +103,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_get_a_new_instance_of_document_store_for_each_run_2()
         {
-            Application.Execute((context, browser) =>
+            Application.Execute((browser, context) =>
             {
                 // Arrange.
                 const string text = "crowbar";

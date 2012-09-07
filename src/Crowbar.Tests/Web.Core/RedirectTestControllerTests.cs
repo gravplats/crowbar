@@ -8,7 +8,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_perform_permanent_redirect()
         {
-            Application.Execute((_, browser) =>
+            Application.Execute((browser, _) =>
             {
                 var response = browser.Get(CrowbarRoute.RedirectPermanent);
                 response.ShouldHavePermanentlyRedirectTo(CrowbarRoute.Redirected);
@@ -18,7 +18,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_perform_temporary_redirect()
         {
-            Application.Execute((_, browser) =>
+            Application.Execute((browser, _) =>
             {
                 var response = browser.Get(CrowbarRoute.RedirectTemporary);
                 response.ShouldHaveTemporarilyRedirectTo(CrowbarRoute.Redirected);

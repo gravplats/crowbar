@@ -18,11 +18,11 @@ namespace Crowbar
             return null;
         }
 
-        public void Process(SerializableDelegate<Action<TContext, Browser>> script)
+        public void Process(SerializableDelegate<Action<Browser, TContext>> script)
         {
             using (var context = CreateContext(application))
             {
-                script.Delegate(context, new Browser());
+                script.Delegate(new Browser(), context);
             }
         }
 

@@ -8,7 +8,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_return_html()
         {
-            Application.Execute((_, browser) =>
+            Application.Execute((browser, _) =>
             {
                 var response = browser.Get(CrowbarRoute.CsQuery);
                 response.ShouldBeHtml(document =>

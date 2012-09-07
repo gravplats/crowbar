@@ -69,9 +69,9 @@ namespace Crowbar
         /// Executes the specified test script.
         /// </summary>
         /// <param name="script">The test script to be executed.</param>
-        public void Execute(Action<TContext, Browser> script)
+        public void Execute(Action<Browser, TContext> script)
         {
-            proxy.Process(new SerializableDelegate<Action<TContext, Browser>>(script));
+            proxy.Process(new SerializableDelegate<Action<Browser, TContext>>(script));
         }
     }
 }
