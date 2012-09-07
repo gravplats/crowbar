@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Crowbar
 {
-    public class MvcApplicationFactory
+    internal class MvcApplicationFactory
     {
         private static readonly MethodInfo getApplicationInstanceMethod;
         private static readonly MethodInfo recycleApplicationInstanceMethod;
@@ -77,31 +77,25 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        /// <summary>
-        /// Creates an MVC application.
-        /// </summary>
-        /// <param name="name">The name of the ASP.NET project.</param>
-        /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
-        /// <returns></returns>
-        public static MvcApplication<object> Create(string name, string config = "Web.config")
+        public static MvcApplication Create(string name, string config)
         {
-            return Create<MvcApplicationProxy, object>(name, config);
+            var proxy = Create<MvcApplicationProxy>(name, config);
+            return new MvcApplication(proxy);
         }
 
-        /// <summary>
-        /// Creates an MVC application.
-        /// </summary>
-        /// <typeparam name="TProxy">The proxy type of the MVC application.</typeparam>
-        /// <typeparam name="TContext">The proxy context type.</typeparam>
-        /// <param name="name">The name of the ASP.NET project.</param>
-        /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
-        /// <returns></returns>
-        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config = "Web.config")
+        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config)
             where TProxy : MvcApplicationProxyBase<TContext>
+        {
+            var proxy = Create<TProxy>(name, config);
+            return new MvcApplication<TContext>(proxy);
+        }
+
+        private static TProxy Create<TProxy>(string name, string config)
+            where TProxy : IMvcApplicationProxy
         {
             config = config == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config);
 
-            var proxy = MvcApplicationProxyFactory.Create<TProxy, TContext>(name);
+            var proxy = MvcApplicationProxyFactory.Create<TProxy>(name);
             proxy.Initialize(new SerializableDelegate<Func<HttpApplication>>(() =>
             {
                 SetCustomConfigurationFile(config);
@@ -110,7 +104,7 @@ namespace Crowbar
                 return InitializeApplication();
             }));
 
-            return new MvcApplication<TContext>(proxy);
+            return proxy;
         }
     }
 }

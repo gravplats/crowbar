@@ -6,8 +6,7 @@ namespace Crowbar
 {
     internal static class MvcApplicationProxyFactory
     {
-        public static TProxy Create<TProxy, TContext>(string name)
-            where TProxy : MvcApplicationProxyBase<TContext>
+        public static TProxy Create<TProxy>(string name)
         {
             var physicalPath = GetPhysicalPath(name);
             if (physicalPath == null)

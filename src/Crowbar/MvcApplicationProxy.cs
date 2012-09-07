@@ -1,12 +1,23 @@
-﻿using System.Web;
+using System;
+using System.Web;
 
 namespace Crowbar
 {
-    public class MvcApplicationProxy : MvcApplicationProxyBase<object>
+    public class MvcApplicationProxy : MarshalByRefObject, IMvcApplicationProxy
     {
-        protected override object CreateContext(HttpApplication application)
+        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize)
         {
-            return new object();
+            initialize.Delegate();
+        }
+
+        public override object InitializeLifetimeService()
+        {
+            return null;
+        }
+
+        public void Process(SerializableDelegate<Action<Browser>> script)
+        {
+            script.Delegate(new Browser());
         }
     }
 }

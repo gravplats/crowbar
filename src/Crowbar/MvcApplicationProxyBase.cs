@@ -3,7 +3,7 @@ using System.Web;
 
 namespace Crowbar
 {
-    public abstract class MvcApplicationProxyBase<TContext> : MarshalByRefObject
+    public abstract class MvcApplicationProxyBase<TContext> : MarshalByRefObject, IMvcApplicationProxy
     {
         private HttpApplication application;
 
