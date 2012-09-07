@@ -96,7 +96,7 @@ namespace Crowbar
         {
             if (CrowbarContext.ExceptionContext != null)
             {
-                throw new Exception("The server throw an exception.", CrowbarContext.ExceptionContext.Exception);
+                throw new Exception("The MVC application throw an exception.", CrowbarContext.ExceptionContext.Exception);
             }
 
             var response = CrowbarContext.Response;

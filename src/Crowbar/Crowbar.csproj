@@ -34,15 +34,6 @@
     <Reference Include="CsQuery">
       <HintPath>..\..\lib\CsQuery.1.2.1\lib\net40\CsQuery.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Embedded">
-      <HintPath>..\..\lib\RavenDB.Embedded.1.0.960\lib\net40\Raven.Client.Embedded.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\lib\RavenDB.Client.1.0.960\lib\net40\Raven.Client.Lightweight.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Database">
-      <HintPath>..\..\lib\RavenDB.Database.1.0.960\lib\net40\Raven.Database.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -57,14 +48,13 @@
     <Compile Include="BrowserContextExtensions.cs" />
     <Compile Include="BrowserResponseAssertExtensions.cs" />
     <Compile Include="AntiForgeryBrowserExtensions.cs" />
-    <Compile Include="DefaultDocumentStoreBuilder.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="ISimulatedWorkerRequestContext.cs" />
     <Compile Include="BrowserResponse.cs" />
     <Compile Include="MvcApplication.cs" />
-    <Compile Include="ServerContext.cs" />
+    <Compile Include="MvcApplicationProxyBase.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="MvcApplicationProxy.cs" />
@@ -77,12 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Crowbar.Mvc\Crowbar.Mvc.csproj">
-      <Project>{991D0952-367A-4CE6-933B-B35B5884C73C}</Project>
-      <Name>Crowbar.Mvc</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

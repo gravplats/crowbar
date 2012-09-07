@@ -5,11 +5,10 @@ using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
-using Crowbar.Mvc;
 
 namespace Crowbar
 {
-    internal class MvcApplicationFactory
+    public class MvcApplicationFactory
     {
         private static readonly MethodInfo getApplicationInstanceMethod;
         private static readonly MethodInfo recycleApplicationInstanceMethod;
@@ -20,6 +19,18 @@ namespace Crowbar
             var httpApplicationFactory = typeof(HttpContext).Assembly.GetType("System.Web.HttpApplicationFactory", true);
             getApplicationInstanceMethod = httpApplicationFactory.GetMethod("GetApplicationInstance", BindingFlags.Static | BindingFlags.NonPublic);
             recycleApplicationInstanceMethod = httpApplicationFactory.GetMethod("RecycleApplicationInstance", BindingFlags.Static | BindingFlags.NonPublic);
+        }
+
+        private static void SetCustomConfigurationFile(string configFile)
+        {
+            if (configFile == null)
+            {
+                // Use the default Web.config.
+                return;
+            }
+
+            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", configFile);
+            typeof(ConfigurationManager).GetField("s_initState", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 0 /* InitState.NotStarted */);
         }
 
         private static HttpApplication InitializeApplication()
@@ -66,7 +77,27 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        public static MvcApplication Create(string name, string configurationFile, IDocumentStoreBuilder documentStoreBuilder)
+        /// <summary>
+        /// Creates an MVC application.
+        /// </summary>
+        /// <param name="name">The name of the ASP.NET project.</param>
+        /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
+        /// <returns></returns>
+        public static MvcApplication<object> Create(string name, string config = "Web.config")
+        {
+            return Create<MvcApplicationProxy, object>(name, config);
+        }
+
+        /// <summary>
+        /// Creates an MVC application.
+        /// </summary>
+        /// <typeparam name="TProxy">The proxy type of the MVC application.</typeparam>
+        /// <typeparam name="TContext">The proxy context type.</typeparam>
+        /// <param name="name">The name of the ASP.NET project.</param>
+        /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
+        /// <returns></returns>
+        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config = "Web.config")
+            where TProxy : MvcApplicationProxyBase<TContext>
         {
             var physicalPath = GetPhysicalPath(name);
             if (physicalPath == null)
@@ -76,29 +107,23 @@ namespace Crowbar
 
             CopyDllFiles(physicalPath);
 
-            var proxy = (MvcApplicationProxy)ApplicationHost.CreateApplicationHost(typeof(MvcApplicationProxy), "/", physicalPath);
-            configurationFile = configurationFile == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configurationFile);
+            var proxy = (TProxy)ApplicationHost.CreateApplicationHost(typeof(TProxy), "/", physicalPath);
+            config = config == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config);
 
-            proxy.Initialize(configurationFile, documentStoreBuilder, configFile =>
+            // Cannot capture 'configurationFile' in the lambda expression due to SerializationException.
+            proxy.Initialize(config, configFile =>
             {
                 SetCustomConfigurationFile(configFile);
-                
+
                 var instance = InitializeApplication();
 
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
                 CrowbarContext.Reset();
 
-                var crowbar = instance as ICrowbarHttpApplication;
-                if (crowbar == null)
-                {
-                    string message = string.Format("The HttpApplication (Global.asax) must implement '{0}'", typeof(ICrowbarHttpApplication).FullName);
-                    throw new InvalidOperationException(message);
-                }
-
-                return crowbar;
+                return instance;
             });
 
-            return new MvcApplication(proxy);
+            return new MvcApplication<TContext>(proxy);
         }
 
         private static string GetPhysicalPath(string mvcProjectName)
@@ -129,18 +154,6 @@ namespace Crowbar
                     File.Copy(file, destFile, true);
                 }
             }
-        }
-
-        private static void SetCustomConfigurationFile(string configFile)
-        {
-            if (configFile == null)
-            {
-                // Use the default Web.config.
-                return;
-            }
-
-            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", configFile);
-            typeof(ConfigurationManager).GetField("s_initState", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 0 /* InitState.NotStarted */);
         }
     }
 }

@@ -37,15 +37,23 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\lib\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Raven.Client.Embedded, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL" />
     <Reference Include="Raven.Client.Lightweight">
       <HintPath>..\..\lib\RavenDB.Client.1.0.960\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
+    <Reference Include="Raven.Database, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RavenDB.Database.1.0.960\lib\net40\Raven.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RavenMvcApplicationProxy.cs" />
+    <Compile Include="RavenContext.cs" />
     <Compile Include="Web.Core\AjaxTestControllerTests.cs" />
     <Compile Include="Web.Core\AntiForgeryRequestTokenTestControllerTests.cs" />
     <Compile Include="Web.Core\DocumentStoreTestControllerTests.cs" />
@@ -54,7 +62,6 @@
     <Compile Include="Web.Core\CustomConfigTestControllerTests.cs" />
     <Compile Include="Web.Core\HttpsTestControllerTests.cs" />
     <Compile Include="Web.Core\JsonTestControllerTests.cs" />
-    <Compile Include="MvcApplicationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web.Core\QueryStringTestControllerTests.cs" />
     <Compile Include="Web.Core\RedirectTestControllerTests.cs" />
@@ -68,10 +75,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Crowbar.Mvc\Crowbar.Mvc.csproj">
-      <Project>{991D0952-367A-4CE6-933B-B35B5884C73C}</Project>
-      <Name>Crowbar.Mvc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Crowbar.Web\Crowbar.Web.csproj">
       <Project>{94B58915-40CC-41DF-B4AC-27653436C2EE}</Project>
       <Name>Crowbar.Web</Name>

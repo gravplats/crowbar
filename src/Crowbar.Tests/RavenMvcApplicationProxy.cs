@@ -1,13 +1,12 @@
-using System;
-using Crowbar.Mvc;
+using System.Web;
+using Crowbar.Web;
 using Raven.Client;
 using Raven.Client.Embedded;
 using Raven.Client.Listeners;
 
-namespace Crowbar
+namespace Crowbar.Tests
 {
-    [Serializable]
-    public class DefaultDocumentStoreBuilder : IDocumentStoreBuilder
+    public class RavenMvcApplicationProxy : MvcApplicationProxyBase<RavenContext>
     {
         public class WaitForNonStaleResultsListener : IDocumentQueryListener
         {
@@ -17,7 +16,17 @@ namespace Crowbar
             }
         }
 
-        public IDocumentStore Build()
+        protected override RavenContext CreateContext(HttpApplication application)
+        {
+            var store = CreateDocumentStore();
+
+            var crowbar = (ICrowbarHttpApplication)application;
+            crowbar.SetDocumentStore(store);
+
+            return new RavenContext(store);
+        }
+
+        private static IDocumentStore CreateDocumentStore()
         {
             var store = new EmbeddableDocumentStore
             {

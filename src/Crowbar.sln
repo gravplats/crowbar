@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Tests", "Crowbar.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Web", "Crowbar.Web\Crowbar.Web.csproj", "{94B58915-40CC-41DF-B4AC-27653436C2EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Mvc", "Crowbar.Mvc\Crowbar.Mvc.csproj", "{991D0952-367A-4CE6-933B-B35B5884C73C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94B58915-40CC-41DF-B4AC-27653436C2EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{991D0952-367A-4CE6-933B-B35B5884C73C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{991D0952-367A-4CE6-933B-B35B5884C73C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{991D0952-367A-4CE6-933B-B35B5884C73C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{991D0952-367A-4CE6-933B-B35B5884C73C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
