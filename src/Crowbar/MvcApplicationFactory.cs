@@ -85,6 +85,7 @@ namespace Crowbar
 
         public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config)
             where TProxy : MvcApplicationProxyBase<TContext>
+            where TContext : IDisposable
         {
             var proxy = Create<TProxy>(name, config);
             return new MvcApplication<TContext>(proxy);

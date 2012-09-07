@@ -44,6 +44,7 @@ namespace Crowbar
         /// <returns>An MVC application.</returns>
         public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config = "Web.config")
             where TProxy : MvcApplicationProxyBase<TContext>
+            where TContext : IDisposable
         {
             return MvcApplicationFactory.Create<TProxy, TContext>(name, config);
         }
@@ -55,6 +56,7 @@ namespace Crowbar
     /// </summary>
     /// <typeparam name="TContext">The proxy context type.</typeparam>
     public class MvcApplication<TContext>
+        where TContext : IDisposable
     {
         private readonly MvcApplicationProxyBase<TContext> proxy;
 

@@ -4,6 +4,7 @@ using System.Web;
 namespace Crowbar
 {
     public abstract class MvcApplicationProxyBase<TContext> : MarshalByRefObject, IMvcApplicationProxy
+        where TContext : IDisposable
     {
         private HttpApplication application;
 
@@ -19,13 +20,9 @@ namespace Crowbar
 
         public void Process(SerializableDelegate<Action<TContext, Browser>> script)
         {
-            var context = CreateContext(application);
-            script.Delegate(context, new Browser());
-
-            var disposable = context as IDisposable;
-            if (disposable != null)
+            using (var context = CreateContext(application))
             {
-                disposable.Dispose();
+                script.Delegate(context, new Browser());
             }
         }
 
