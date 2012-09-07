@@ -55,6 +55,7 @@
     <Compile Include="BrowserResponse.cs" />
     <Compile Include="MvcApplication.cs" />
     <Compile Include="MvcApplicationProxyBase.cs" />
+    <Compile Include="MvcApplicationProxyFactory.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="MvcApplicationProxy.cs" />

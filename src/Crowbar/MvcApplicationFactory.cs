@@ -99,15 +99,8 @@ namespace Crowbar
         public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config = "Web.config")
             where TProxy : MvcApplicationProxyBase<TContext>
         {
-            var physicalPath = GetPhysicalPath(name);
-            if (physicalPath == null)
-            {
-                throw new ArgumentException(string.Format("Mvc Project {0} not found", name));
-            }
+            var proxy = MvcApplicationProxyFactory.Create<TProxy, TContext>(name);
 
-            CopyDllFiles(physicalPath);
-
-            var proxy = (TProxy)ApplicationHost.CreateApplicationHost(typeof(TProxy), "/", physicalPath);
             config = config == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config);
 
             // Cannot capture 'configurationFile' in the lambda expression due to SerializationException.
@@ -124,36 +117,6 @@ namespace Crowbar
             });
 
             return new MvcApplication<TContext>(proxy);
-        }
-
-        private static string GetPhysicalPath(string mvcProjectName)
-        {
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            while (baseDirectory.Contains("\\"))
-            {
-                string mvcPath = Path.Combine(baseDirectory, mvcProjectName);
-                if (Directory.Exists(mvcPath))
-                {
-                    return mvcPath;
-                }
-
-                baseDirectory = baseDirectory.Substring(0, baseDirectory.LastIndexOf("\\"));
-            }
-
-            return null;
-        }
-
-        private static void CopyDllFiles(string mvcProjectPath)
-        {
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            foreach (var file in Directory.GetFiles(baseDirectory, "*.dll"))
-            {
-                var destFile = Path.Combine(mvcProjectPath, "bin", Path.GetFileName(file));
-                if (!File.Exists(destFile) || File.GetCreationTimeUtc(destFile) != File.GetCreationTimeUtc(file))
-                {
-                    File.Copy(file, destFile, true);
-                }
-            }
         }
     }
 }
