@@ -16,10 +16,8 @@ namespace Crowbar
         /// <returns>The CQ object.</returns>
         public static CQ ShouldBeHtml(this BrowserResponse response, Action<CQ> assertions = null)
         {
-            if (response.ContentType != "text/html")
-            {
-                throw new AssertException("The content type is not text/html.");
-            }
+            response.AssertStatusCode(HttpStatusCode.OK);
+            response.AssertContentType("text/html");
 
             CQ document;
 
@@ -48,10 +46,8 @@ namespace Crowbar
         /// <returns>The JSON object.</returns>
         public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null)
         {
-            if (response.ContentType != "application/json")
-            {
-                throw new AssertException("The content type is not application/json.");
-            }
+            response.AssertStatusCode(HttpStatusCode.OK);
+            response.AssertContentType("application/json");
 
             dynamic json;
 
@@ -79,8 +75,7 @@ namespace Crowbar
         /// <param name="location">The location that should have been redirected to.</param>
         public static void ShouldHavePermanentlyRedirectTo(this BrowserResponse response, string location)
         {
-            var code = HttpStatusCode.MovedPermanently;
-            response.ShouldHaveRedirectedTo(location, code);
+            response.ShouldHaveRedirectedTo(location, HttpStatusCode.MovedPermanently);
         }
 
         /// <summary>
@@ -90,21 +85,34 @@ namespace Crowbar
         /// <param name="location">The location that should have been redirected to.</param>
         public static void ShouldHaveTemporarilyRedirectTo(this BrowserResponse response, string location)
         {
-            var code = HttpStatusCode.Found;
-            response.ShouldHaveRedirectedTo(location, code);
+            response.ShouldHaveRedirectedTo(location, HttpStatusCode.Found);
         }
 
-        private static void ShouldHaveRedirectedTo(this BrowserResponse response, string location, HttpStatusCode code)
+        private static void ShouldHaveRedirectedTo(this BrowserResponse response, string location, HttpStatusCode expectedStatusCode)
         {
-            if (response.StatusCode != code)
-            {
-                string message = string.Format("HTTP status code should have been '{0}' but was '{1}'.", code, response.StatusCode);
-                throw new AssertException(message);
-            }
+            response.AssertStatusCode(expectedStatusCode);
 
             if (response.Headers["Location"] != location)
             {
                 string message = string.Format("Location should have been '{0}' but was '{1}'.", location, response.Headers["Location"]);
+                throw new AssertException(message);
+            }
+        }
+
+        private static void AssertContentType(this BrowserResponse response, string expectedContentType)
+        {
+            if (response.ContentType != expectedContentType)
+            {
+                string message = string.Format("The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
+                throw new AssertException(message);
+            }
+        }
+
+        private static void AssertStatusCode(this BrowserResponse response, HttpStatusCode expectedStatusCode)
+        {
+            if (response.StatusCode != expectedStatusCode)
+            {
+                string message = string.Format("HTTP status code should have been '{0}' but was '{1}'.", expectedStatusCode, response.StatusCode);
                 throw new AssertException(message);
             }
         }
