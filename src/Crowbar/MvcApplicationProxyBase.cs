@@ -7,10 +7,12 @@ namespace Crowbar
         where TContext : IDisposable
     {
         private HttpApplication application;
+        private string testBaseDirectory;
 
-        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize)
+        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
         {
             application = initialize.Delegate();
+            testBaseDirectory = directory;
         }
 
         public override object InitializeLifetimeService()
@@ -20,12 +22,12 @@ namespace Crowbar
 
         public void Process(SerializableDelegate<Action<Browser, TContext>> script)
         {
-            using (var context = CreateContext(application))
+            using (var context = CreateContext(application, testBaseDirectory))
             {
                 script.Delegate(new Browser(), context);
             }
         }
 
-        protected abstract TContext CreateContext(HttpApplication application);
+        protected abstract TContext CreateContext(HttpApplication application, string testBaseDirectory);
     }
 }

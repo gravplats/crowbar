@@ -103,7 +103,7 @@ namespace Crowbar
                 FilterProviders.Providers.Add(new InterceptionFilterProvider());
 
                 return InitializeApplication();
-            }));
+            }), AppDomain.CurrentDomain.BaseDirectory);
 
             return proxy;
         }

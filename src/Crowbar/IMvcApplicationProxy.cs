@@ -5,6 +5,6 @@ namespace Crowbar
 {
     public interface IMvcApplicationProxy
     {
-        void Initialize(SerializableDelegate<Func<HttpApplication>> initialize);
+        void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory);
     }
 }

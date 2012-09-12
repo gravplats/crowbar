@@ -16,7 +16,7 @@ namespace Crowbar.Tests
             }
         }
 
-        protected override RavenContext CreateContext(HttpApplication application)
+        protected override RavenContext CreateContext(HttpApplication application, string testBaseDirectory)
         {
             var store = CreateDocumentStore();
 

@@ -5,7 +5,7 @@ namespace Crowbar
 {
     public class MvcApplicationProxy : MarshalByRefObject, IMvcApplicationProxy
     {
-        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize)
+        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
         {
             initialize.Delegate();
         }
