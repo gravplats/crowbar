@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
@@ -105,13 +106,22 @@ namespace Crowbar
 
             if (formValues.Count > 0)
             {
-                var builder = new StringBuilder();
+                var entries = new List<string>();
                 foreach (string key in formValues)
                 {
-                    builder.AppendFormat("{0}={1}&", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(formValues[key]));
+                    string[] values = formValues.GetValues(key);
+                    if (values == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (string value in values)
+                    {
+                        entries.Add(string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(value)));
+                    }
                 }
 
-                return Encoding.UTF8.GetBytes(builder.ToString());
+                return Encoding.UTF8.GetBytes(string.Join("&", entries));
             }
 
             return base.GetPreloadedEntityBody();
