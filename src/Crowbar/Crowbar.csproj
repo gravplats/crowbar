@@ -43,6 +43,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedBrowserResponse.cs" />
     <Compile Include="AssertException.cs" />
     <Compile Include="BrowserContext.cs" />
     <Compile Include="BrowserContextExtensions.cs" />

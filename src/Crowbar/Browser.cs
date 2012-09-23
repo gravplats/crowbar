@@ -114,6 +114,14 @@ namespace Crowbar
 
             return new BrowserResponse
             {
+                Advanced = new AdvancedBrowserResponse
+                {
+                    ActionExecutedContext = CrowbarContext.ActionExecutedContext,
+                    ActionExecutingContext = CrowbarContext.ActionExecutingContext,
+                    ResultExecutedContext = CrowbarContext.ResultExecutedContext,
+                    ResultExecutingContext = CrowbarContext.ResultExecutingContext,
+                    HttpSessionState = CrowbarContext.HttpSessionState
+                },
                 Headers = headers,
                 ResponseBody = output.ToString(),
                 Response = response,

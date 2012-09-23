@@ -12,6 +12,11 @@ namespace Crowbar
     public class BrowserResponse
     {
         /// <summary>
+        /// Gets various context objects collected during the request.
+        /// </summary>
+        public AdvancedBrowserResponse Advanced { get; internal set; }
+
+        /// <summary>
         /// Gets the Content Type of the HTTP response.
         /// </summary>
         public string ContentType
@@ -28,19 +33,19 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Gets or sets the 'faked' Headers of the HTTP response.
+        /// Gets the 'faked' Headers of the HTTP response.
         /// </summary>
-        public NameValueCollection Headers { get; set; }
+        public NameValueCollection Headers { get; internal set; }
 
         /// <summary>
-        /// Gets or set the HTTP response.
+        /// Gets the HTTP response.
         /// </summary>
-        public HttpResponse Response { get; set; }
+        public HttpResponse Response { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the HTTP response body.
+        /// Gets the HTTP response body.
         /// </summary>
-        public string ResponseBody { get; set; }
+        public string ResponseBody { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP Status Code of the HTTP response.
@@ -55,7 +60,7 @@ namespace Crowbar
                     return HttpStatusCode.NotFound;
                 }
 
-                return (HttpStatusCode) Response.StatusCode;
+                return (HttpStatusCode)Response.StatusCode;
             }
         }
 
