@@ -67,6 +67,7 @@
     <Compile Include="Web.Core\RedirectTestControllerTests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Web.Core\TestControllerTests.cs" />
+    <Compile Include="Web.Core\ThrowsControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
