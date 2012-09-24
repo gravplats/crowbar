@@ -3,28 +3,30 @@ using System.Web;
 
 namespace Crowbar
 {
-    public abstract class MvcApplicationProxyBase<TContext> : MarshalByRefObject, IMvcApplicationProxy
+    public abstract class MvcApplicationProxyBase<TContext> : ProxyBase
         where TContext : IDisposable
     {
         private HttpApplication application;
         private string testBaseDirectory;
 
-        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
+        public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
         {
             application = initialize.Delegate();
             testBaseDirectory = directory;
         }
 
-        public override object InitializeLifetimeService()
-        {
-            return null;
-        }
-
         public void Process(SerializableDelegate<Action<Browser, TContext>> script)
         {
-            using (var context = CreateContext(application, testBaseDirectory))
+            try
             {
-                script.Delegate(new Browser(), context);
+                using (var context = CreateContext(application, testBaseDirectory))
+                {
+                    script.Delegate(new Browser(), context);
+                }
+            }
+            catch (Exception exception)
+            {
+                HandleException(exception);
             }
         }
 

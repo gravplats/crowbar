@@ -3,21 +3,23 @@ using System.Web;
 
 namespace Crowbar
 {
-    public class MvcApplicationProxy : MarshalByRefObject, IMvcApplicationProxy
+    public class MvcApplicationProxy : ProxyBase
     {
-        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
+        public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
         {
             initialize.Delegate();
         }
 
-        public override object InitializeLifetimeService()
-        {
-            return null;
-        }
-
         public void Process(SerializableDelegate<Action<Browser>> script)
         {
-            script.Delegate(new Browser());
+            try
+            {
+                script.Delegate(new Browser());
+            }
+            catch (Exception exception)
+            {
+                HandleException(exception);
+            }
         }
     }
 }

@@ -15,12 +15,13 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Executes the specified test script.
+        /// Executes the specified test.
         /// </summary>
-        /// <param name="script">The test script to be executed.</param>
-        public void Execute(Action<Browser> script)
+        /// <param name="test">The test to be executed.</param>
+        public void Execute(Action<Browser> test)
         {
-            proxy.Process(new SerializableDelegate<Action<Browser>>(script));
+            proxy.Process(new SerializableDelegate<Action<Browser>>(test));
+
         }
 
         /// <summary>
@@ -66,12 +67,12 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Executes the specified test script.
+        /// Executes the specified test.
         /// </summary>
-        /// <param name="script">The test script to be executed.</param>
-        public void Execute(Action<Browser, TContext> script)
+        /// <param name="test">The test to be executed.</param>
+        public void Execute(Action<Browser, TContext> test)
         {
-            proxy.Process(new SerializableDelegate<Action<Browser, TContext>>(script));
+            proxy.Process(new SerializableDelegate<Action<Browser, TContext>>(test));
         }
     }
 }

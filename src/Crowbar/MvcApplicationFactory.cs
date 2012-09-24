@@ -92,7 +92,7 @@ namespace Crowbar
         }
 
         private static TProxy Create<TProxy>(string name, string config)
-            where TProxy : IMvcApplicationProxy
+            where TProxy : ProxyBase
         {
             config = config == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config);
 

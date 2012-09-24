@@ -97,7 +97,7 @@ namespace Crowbar
             if (CrowbarContext.ExceptionContext != null)
             {
                 var exception = CrowbarContext.ExceptionContext.Exception;
-                if (exception.GetType().GetCustomAttributes(typeof(SerializableAttribute), false).Length > 0)
+                if (exception.IsSerializable())
                 {
                     throw new Exception("The MVC application threw an exception.", exception);
                 }
