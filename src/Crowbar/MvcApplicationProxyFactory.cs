@@ -1,19 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Web.Hosting;
 
 namespace Crowbar
 {
     internal static class MvcApplicationProxyFactory
     {
-        public static TProxy Create<TProxy>(string name)
+        public static TProxy Create<TProxy>(string mvcProjectName)
         {
-            var physicalPath = GetPhysicalPath(name);
-            if (physicalPath == null)
-            {
-                throw new ArgumentException(string.Format("Mvc Project {0} not found", name));
-            }
-
+            var physicalPath = GetPhysicalPath(mvcProjectName);
             CopyDllFiles(physicalPath);
 
             return (TProxy)ApplicationHost.CreateApplicationHost(typeof(TProxy), "/", physicalPath);
@@ -21,6 +18,8 @@ namespace Crowbar
 
         private static string GetPhysicalPath(string mvcProjectName)
         {
+            var searchedLocations = new List<string>();
+
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             while (baseDirectory.Contains("\\"))
             {
@@ -30,10 +29,18 @@ namespace Crowbar
                     return mvcPath;
                 }
 
+                searchedLocations.Add(mvcPath);
                 baseDirectory = baseDirectory.Substring(0, baseDirectory.LastIndexOf("\\"));
             }
 
-            return null;
+            var locations = new StringBuilder();
+            foreach (var searchedLocation in searchedLocations)
+            {
+                locations.AppendLine();
+                locations.Append(searchedLocation);
+            }
+
+            throw new ArgumentException(string.Format("The MVC Project '{0}' was not found by Crowbar. The following locations were searched: {1}", mvcProjectName, locations));
         }
 
         private static void CopyDllFiles(string mvcProjectPath)
