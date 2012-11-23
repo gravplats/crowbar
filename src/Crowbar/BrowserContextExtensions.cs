@@ -16,15 +16,6 @@ namespace Crowbar
     public static class BrowserContextExtensions
     {
         /// <summary>
-        /// Adds a header indicating that this is an AJAX request.
-        /// </summary>
-        /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
-        public static void AjaxRequest(this BrowserContext context)
-        {
-            context.Header("X-Requested-With", "XMLHttpRequest");
-        }
-
-        /// <summary>
         /// Adds an anti-forgery request token to the request.
         /// </summary>
         /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
@@ -105,7 +96,7 @@ namespace Crowbar
 
                 byte[] bytes = buffer.ToArray();
                 string xml = Encoding.UTF8.GetString(bytes);
-                
+
                 context.Body(xml, contentType);
             }
         }

@@ -54,6 +54,14 @@ namespace Crowbar
         string ISimulatedWorkerRequestContext.QueryString { get; set; }
 
         /// <summary>
+        /// Adds a header indicating that this is an AJAX request.
+        /// </summary>
+        public void AjaxRequest()
+        {
+            Header("X-Requested-With", "XMLHttpRequest");
+        }
+
+        /// <summary>
         /// Adds a body to the request.
         /// </summary>
         /// <param name="body">A string that should be used as the request body.</param>
