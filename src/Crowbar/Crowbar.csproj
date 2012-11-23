@@ -51,7 +51,6 @@
     <Compile Include="BrowserContext.cs" />
     <Compile Include="BrowserContextExtensions.cs" />
     <Compile Include="BrowserResponseAssertExtensions.cs" />
-    <Compile Include="AntiForgeryBrowserExtensions.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="IHideObjectMembers.cs" />
