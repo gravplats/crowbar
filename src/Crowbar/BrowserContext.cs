@@ -78,6 +78,11 @@ namespace Crowbar
         /// <param name="cookie">The cookie that should be added.</param>
         public void Cookie(HttpCookie cookie)
         {
+            if (cookie == null)
+            {
+                throw new ArgumentNullException("cookie");
+            }
+
             context.Cookies.Add(cookie);
         }
 
@@ -103,6 +108,11 @@ namespace Crowbar
         /// <param name="value">The name of the value.</param>
         public void Header(string name, string value)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Missing name of header.", "name");
+            }
+
             context.Headers.Add(name, value);
         }
 
@@ -129,6 +139,11 @@ namespace Crowbar
         /// <param name="value">The value of the entry.</param>
         public void Query(string key, string value)
         {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentException("Missing key of query parameter.", "key");
+            }
+
             context.QueryString += string.Format("{0}{1}={2}", context.QueryString.Length == 0 ? "" : "&", key, value);
         }
 
