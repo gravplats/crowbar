@@ -134,7 +134,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AttributeRouting.cs" />
     <Compile Include="Core\AjaxTestController.cs" />
     <Compile Include="Core\AntiForgeryRequestTokenTestController.cs" />
     <Compile Include="Core\DocumentStoreTestController.cs" />
@@ -152,10 +151,7 @@
     <Compile Include="Core\XmlModelBinder.cs" />
     <Compile Include="Core\XmlResult.cs" />
     <Compile Include="Core\XmlTestController.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="ICrowbarHttpApplication.cs" />
+    <Compile Include="CrowbarHttpApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,29 +1,31 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using AttributeRouting.Web.Mvc;
 using Crowbar.Web.Core;
 using Raven.Client;
 
 namespace Crowbar.Web
 {
-    public class CrowbarHttpApplication : HttpApplication, ICrowbarHttpApplication
+    public class CrowbarHttpApplication : HttpApplication
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public static void RegisterGlobalFilters()
         {
+            var filters = GlobalFilters.Filters;
             filters.Add(new HandleErrorAttribute());
         }
 
-        public static void RegisterRoutes(RouteCollection routes)
+        public static void RegisterRoutes()
         {
+            var routes = RouteTable.Routes;
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapAttributeRoutes();
         }
 
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-
-            RegisterGlobalFilters(GlobalFilters.Filters);
-            RegisterRoutes(RouteTable.Routes);
+            RegisterGlobalFilters();
+            RegisterRoutes();
         }
 
         public void SetDocumentStore(IDocumentStore store)

@@ -20,7 +20,7 @@ namespace Crowbar.Tests
         {
             var store = CreateDocumentStore();
 
-            var crowbar = (ICrowbarHttpApplication)application;
+            var crowbar = (CrowbarHttpApplication)application;
             crowbar.SetDocumentStore(store);
 
             return new RavenContext(store);

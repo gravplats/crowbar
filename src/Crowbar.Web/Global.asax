@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Crowbar.Web.CrowbarHttpApplication" Language="C#" %>
+﻿<%@ Application Inherits="Crowbar.Web.CrowbarHttpApplication" Language="C#" %>
