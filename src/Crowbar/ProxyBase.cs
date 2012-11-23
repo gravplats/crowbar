@@ -16,7 +16,7 @@ namespace Crowbar
         {
             if (exception.IsSerializable())
             {
-                throw new Exception("An exception was thrown during the execution of the test.", exception);
+                throw new CrowbarException("An exception was thrown during the execution of the test.", exception);
             }
 
             throw new Exception(string.Format("An exception was thrown during the execution of the test: {0}", exception.Message));
