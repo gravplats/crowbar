@@ -22,5 +22,10 @@ namespace Crowbar.Web.Core
         {
             return new HttpStatusCodeResult(200);
         }
+
+        protected ActionResult Xml<TModel>(TModel model)
+        {
+            return new XmlResult<TModel>(model);
+        }
     }
 }

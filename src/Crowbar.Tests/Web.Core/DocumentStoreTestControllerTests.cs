@@ -64,11 +64,9 @@ namespace Crowbar.Tests.Web.Core
                 var response = browser.Post(CrowbarRoute.Root, ctx => ctx.FormValue("text", "New Crowbar"));
 
                 // Assert.
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                dynamic json = response.ShouldBeJson();
-
                 using (var session = context.Store.OpenSession())
                 {
+                    dynamic json = response.ShouldBeJson();
                     var model = session.Load<Model>((string)json.id);
 
                     Assert.That(model, Is.Not.Null);

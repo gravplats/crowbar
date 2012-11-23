@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Helpers;
+using System.Xml.Linq;
 using CsQuery;
 
 namespace Crowbar
@@ -80,6 +81,15 @@ namespace Crowbar
         public dynamic AsJson()
         {
             return Json.Decode(ResponseBody);
+        }
+
+        /// <summary>
+        /// Returns an XElement of the XML in the response body.
+        /// </summary>
+        /// <returns>An XElement.</returns>
+        public XElement AsXml()
+        {
+            return XElement.Parse(ResponseBody);
         }
     }
 }

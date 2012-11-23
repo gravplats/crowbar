@@ -28,7 +28,7 @@ namespace Crowbar.Web.Core
         public const string JsonRequest = "/jsonrequest";
 
         public const string Query = "/query";
-        
+
         public const string Redirected = "/redirected";
         public const string RedirectPermanent = "/redirectperm";
         public const string RedirectTemporary = "/redirecttemp";
@@ -36,7 +36,8 @@ namespace Crowbar.Web.Core
 
         public const string Secure = "/secure";
 
-        public const string XmlRequest = "/xml";
+        public const string XmlResponse = "/xmlresponse";
+        public const string XmlRequest = "/xmlrequest";
 
         public static string AsOutbound(this string route, object values = null)
         {

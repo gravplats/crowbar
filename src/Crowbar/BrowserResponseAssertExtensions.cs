@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Linq;
 using CsQuery;
 
 namespace Crowbar
@@ -39,12 +40,13 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Asserts that the response content type is of the MIME-type 'application/json'.
+        /// Asserts that the response content type is of the MIME-type 'application/json' or the specified override.
         /// </summary>
         /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
         /// <param name="assertions">Additional assertions on the JSON object.</param>
+        /// <param name="contentType">The expected content type.</param>
         /// <returns>The JSON object.</returns>
-        public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null)
+        public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null, string contentType = "application/json")
         {
             response.AssertStatusCode(HttpStatusCode.OK);
             response.AssertContentType("application/json");
@@ -66,6 +68,37 @@ namespace Crowbar
             }
 
             return json;
+        }
+
+        /// <summary>
+        /// Asserts that the response content type is of the MIME-type 'application/xml' or the specified override.
+        /// </summary>
+        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="assertions">Additional assertions on the XML object.</param>
+        /// <param name="contentType">The expected content type.</param>
+        /// <returns>An XElement.</returns>
+        public static XElement ShouldBeXml(this BrowserResponse response, Action<XElement> assertions = null, string contentType = "application/xml")
+        {
+            response.AssertStatusCode(HttpStatusCode.OK);
+            response.AssertContentType(contentType);
+
+            XElement xml;
+
+            try
+            {
+                xml = response.AsXml();
+            }
+            catch (Exception exception)
+            {
+                throw new AssertException("Failed to convert response body into XML.", exception);
+            }
+
+            if (assertions != null)
+            {
+                assertions(xml);
+            }
+
+            return xml;
         }
 
         /// <summary>

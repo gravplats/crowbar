@@ -14,8 +14,6 @@ namespace Crowbar.Tests.Web.Core
             Application.Execute((browser, _) =>
             {
                 var response = browser.PerformRequest(method, CrowbarRoute.JsonResponse);
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
                 response.ShouldBeJson(json => Assert.That(json.payload, Is.EqualTo("text")));
             });
         }

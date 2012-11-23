@@ -11,6 +11,19 @@ namespace Crowbar.Tests.Web.Core
         }
 
         [TestCase("DELETE")]
+        [TestCase("GET")]
+        [TestCase("POST")]
+        [TestCase("PUT")]
+        public void Should_be_able_to_receive_xml(string method)
+        {
+            Application.Execute((browser, _) =>
+            {
+                var response = browser.PerformRequest(method, CrowbarRoute.XmlResponse);
+                response.ShouldBeXml(xml => Assert.That(xml.Value, Is.EqualTo("text")));
+            });
+        }
+
+        [TestCase("DELETE")]
         [TestCase("POST")]
         [TestCase("PUT")]
         public void Should_be_able_to_send_xml(string method)
