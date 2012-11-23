@@ -4,15 +4,11 @@ using System.Runtime.Serialization;
 namespace Crowbar
 {
     /// <summary>
-    /// Exception that is thrown by assert extensions.
+    /// Exception that uses the inner exceptions stack trace.
     /// </summary>
     [Serializable]
     public class CrowbarException : Exception
     {
-        public CrowbarException() { }
-
-        public CrowbarException(string message) : base(message) { }
-
         public CrowbarException(string message, Exception innerException) : base(message, innerException) { }
 
         protected CrowbarException(SerializationInfo info, StreamingContext context) : base(info, context) { }

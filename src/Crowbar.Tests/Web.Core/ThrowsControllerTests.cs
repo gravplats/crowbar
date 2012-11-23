@@ -20,7 +20,7 @@ namespace Crowbar.Tests.Web.Core
         {
             Application.Execute((browser, _) =>
             {
-                Assert.Throws<Exception>(() => browser.Post(CrowbarRoute.ExceptionSerializable));
+                Assert.Throws<CrowbarException>(() => browser.Post(CrowbarRoute.ExceptionSerializable));
             });
         }
     }

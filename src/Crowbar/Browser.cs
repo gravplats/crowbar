@@ -99,7 +99,7 @@ namespace Crowbar
                 var exception = CrowbarContext.ExceptionContext.Exception;
                 if (exception.IsSerializable())
                 {
-                    throw new Exception("The MVC application threw an exception.", exception);
+                    throw new CrowbarException("The MVC application threw an exception.", exception);
                 }
 
                 throw new Exception(string.Format("The MVC application threw an exception: {0}", exception.Message));
