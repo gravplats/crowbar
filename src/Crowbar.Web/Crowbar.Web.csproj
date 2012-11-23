@@ -134,22 +134,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="Core\AjaxTestController.cs" />
     <Compile Include="Core\AntiForgeryRequestTokenTestController.cs" />
     <Compile Include="Core\DocumentStoreTestController.cs" />
     <Compile Include="Core\FormsAuthTestController.cs" />
-    <Compile Include="Core\CrowbarControllerBase.cs" />
-    <Compile Include="Core\CrowbarRoute.cs" />
+    <Compile Include="CrowbarControllerBase.cs" />
+    <Compile Include="CrowbarRoute.cs" />
     <Compile Include="Core\CsQueryTestController.cs" />
     <Compile Include="Core\CustomConfigTestController.cs" />
     <Compile Include="Core\HttpsTestController.cs" />
     <Compile Include="Core\JsonTestController.cs" />
-    <Compile Include="Core\Model.cs" />
     <Compile Include="Core\QueryStringTestController.cs" />
     <Compile Include="Core\RedirectTestController.cs" />
     <Compile Include="Core\ThrowsController.cs" />
-    <Compile Include="Core\XmlModelBinder.cs" />
-    <Compile Include="Core\XmlResult.cs" />
+    <Compile Include="Domain\Model.cs" />
+    <Compile Include="OutboundUrl.cs" />
+    <Compile Include="XmlModelBinder.cs" />
+    <Compile Include="XmlResult.cs" />
     <Compile Include="Core\XmlTestController.cs" />
     <Compile Include="CrowbarHttpApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,7 +2,7 @@ using System;
 using System.Web.Mvc;
 using Raven.Client;
 
-namespace Crowbar.Web.Core
+namespace Crowbar.Web
 {
     public abstract class CrowbarControllerBase : Controller
     {

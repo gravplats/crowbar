@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using AttributeRouting.Web.Mvc;
-using Crowbar.Web.Core;
 using Raven.Client;
 
 namespace Crowbar.Web

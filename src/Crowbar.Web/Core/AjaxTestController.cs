@@ -1,26 +1,10 @@
-﻿using System;
-using System.Reflection;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AttributeRouting.Web.Mvc;
 
 namespace Crowbar.Web.Core
 {
     public class AjaxTestController : CrowbarControllerBase
     {
-        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-        public sealed class AjaxOnlyAttribute : ActionMethodSelectorAttribute
-        {
-            public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo)
-            {
-                if (controllerContext == null)
-                {
-                    throw new ArgumentNullException("controllerContext");
-                }
-
-                return (controllerContext.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest");
-            }
-        }
-
         [DELETE(CrowbarRoute.Ajax), AjaxOnly]
         public ActionResult Ajax_Delete()
         {

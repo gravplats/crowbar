@@ -1,7 +1,7 @@
 using System.Web.Mvc;
 using System.Xml.Serialization;
 
-namespace Crowbar.Web.Core
+namespace Crowbar.Web
 {
     public class XmlModelBinder : CustomModelBinderAttribute, IModelBinder
     {
