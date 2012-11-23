@@ -149,6 +149,7 @@
     <Compile Include="Core\QueryStringTestController.cs" />
     <Compile Include="Core\RedirectTestController.cs" />
     <Compile Include="Core\ThrowsController.cs" />
+    <Compile Include="Core\XmlTestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

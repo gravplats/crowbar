@@ -1,7 +1,11 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Security;
+using System.Xml;
+using System.Xml.Serialization;
 using Crowbar.AspNetMvc;
 
 namespace Crowbar
@@ -76,10 +80,34 @@ namespace Crowbar
         /// </summary>
         /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
         /// <param name="model">The model that should be converted to JSON.</param>
-        public static void JsonBody(this BrowserContext context, object model)
+        /// <param name="contentType">The content type of the request.</param>/// 
+        public static void JsonBody(this BrowserContext context, object model, string contentType = "application/json")
         {
             string json = Json.Encode(model);
-            context.Body(json, "application/json");
+            context.Body(json, contentType);
+        }
+
+        /// <summary>
+        /// Adds an application/xml request body.
+        /// </summary>
+        /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
+        /// <param name="model">The model that should be converted to XML.</param>
+        /// <param name="contentType">The content type of the request.</param>
+        public static void XmlBody<TModel>(this BrowserContext context, TModel model, string contentType = "application/xml")
+        {
+            using (var buffer = new MemoryStream())
+            using (var writer = new XmlTextWriter(buffer, Encoding.UTF8))
+            {
+                var serializer = new XmlSerializer(typeof(TModel));
+                serializer.Serialize(writer, model);
+
+                writer.Flush();
+
+                byte[] bytes = buffer.ToArray();
+                string xml = Encoding.UTF8.GetString(bytes);
+                
+                context.Body(xml, contentType);
+            }
         }
     }
 }
