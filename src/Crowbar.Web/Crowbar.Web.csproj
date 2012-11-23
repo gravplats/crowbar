@@ -34,14 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AttributeRouting">
-      <HintPath>..\..\lib\AttributeRouting.Core.2.5.3.0\lib\net40\AttributeRouting.dll</HintPath>
+    <Reference Include="AttributeRouting, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\AttributeRouting.Core.3.2\lib\net40\AttributeRouting.dll</HintPath>
     </Reference>
-    <Reference Include="AttributeRouting.Web">
-      <HintPath>..\..\lib\AttributeRouting.Core.Web.2.5.3.0\lib\net40\AttributeRouting.Web.dll</HintPath>
+    <Reference Include="AttributeRouting.Web, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\AttributeRouting.Core.Web.3.2\lib\net40\AttributeRouting.Web.dll</HintPath>
     </Reference>
-    <Reference Include="AttributeRouting.Web.Mvc">
-      <HintPath>..\..\lib\AttributeRouting.2.5.3.0\lib\net40\AttributeRouting.Web.Mvc.dll</HintPath>
+    <Reference Include="AttributeRouting.Web.Mvc, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\AttributeRouting.3.2\lib\net40\AttributeRouting.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto">
       <HintPath>..\..\lib\RavenDB.Database.1.0.960\lib\net40\BouncyCastle.Crypto.dll</HintPath>

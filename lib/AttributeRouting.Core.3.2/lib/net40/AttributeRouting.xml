@@ -36,30 +36,49 @@
             </summary>
             <param name="name">The name of the area to configure</param>
         </member>
+        <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.ScanAssemblyOf``1">
+            <summary>
+            Scans the assembly of the specified controller for routes to register.
+            </summary>
+            <typeparam name="T">The type used to specify the assembly.</typeparam>
+        </member>
         <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.ScanAssembly(System.Reflection.Assembly)">
             <summary>
             Scans the specified assembly for routes to register.
             </summary>
-            <param name="assembly">The assembly</param>
+            <param name="assembly">The assembly.</param>
+        </member>
+        <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.AddRoutesFromAssemblyOf``1">
+            <summary>
+            Appends the routes from all controllers in the specified assembly to the route collection.
+            </summary>
+            <typeparam name="T">The type denoting the assembly.</typeparam>
+        </member>
+        <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.AddRoutesFromAssembly(System.Reflection.Assembly)">
+            <summary>
+            Appends the routes from all controllers in the specified assembly to the route collection.
+            </summary>
+            <param name="assembly">The assembly.</param>
         </member>
         <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.AddRoutesFromControllersOfType(System.Type)">
             <summary>
-            Adds all the routes for all the controllers that derive from the specified controller
-            to the end of the route collection.
+            Appends the routes from all controllers that derive from the specified controller type to the route collection.
             </summary>
-            <param name="baseControllerType">The base controller type</param>
+            <param name="baseControllerType">The base controller type.</param>
         </member>
         <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.AddRoutesFromController(System.Type)">
             <summary>
-            Adds all the routes for the specified controller type to the end of the route collection.
+            Appends the routes from the specified controller type to the end of route collection.
             </summary>
-            <param name="controllerType">The controller type</param>
+            <param name="controllerType">The controller type.</param>
         </member>
-        <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.AddTheRemainingScannedRoutes">
+        <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.AddRoutesFromControllerInternal(System.Type,System.Boolean)">
             <summary>
-            When using AddRoutesFromControllersOfType or AddRoutesFromController to set the precendence of the routes,
-            you must explicitly specify that you want to include the remaining routes discoved while scanning assemblies.
+            Appends the routes from the controller to the promoted controller type list,
+            optionally removing an already added type in order to add it to the end of the list.
             </summary>
+            <param name="controllerType">The controller type.</param>
+            <param name="reorderTypes">Whether to remove and re-add already added controller types.</param>
         </member>
         <member name="M:AttributeRouting.AttributeRoutingConfigurationBase.AddTranslationProvider``1">
             <summary>
@@ -77,7 +96,7 @@
             Type of the framework controller (IController, IHttpController).
             </summary>
         </member>
-        <member name="P:AttributeRouting.AttributeRoutingConfigurationBase.AttributeFactory">
+        <member name="P:AttributeRouting.AttributeRoutingConfigurationBase.AttributeRouteFactory">
             <summary>
             Factory for generating routes used by AttributeRouting.
             </summary>
@@ -754,8 +773,30 @@
             <summary>
             The order of this route among all the routes defined against this action.
             </summary>
+            <remarks>
+            Zero and Positive integers denote top routes: 1 is first, 2 is second, etc....
+            Negative integers denote bottom routes: -1 is last, -2 is second to last, etc....
+            </remarks>
+        </member>
+        <member name="P:AttributeRouting.IRouteAttribute.ActionPrecedence">
+            <summary>
+            The order of this route among all the routes defined against this action.
+            </summary>
+            <remarks>
+            Positive integers (including zero) denote top routes: 1 is first, 2 is second, etc....
+            Negative integers denote bottom routes: -1 is last, -2 is second to last, etc....
+            </remarks>
         </member>
         <member name="P:AttributeRouting.IRouteAttribute.Precedence">
+            <summary>
+            The order of this route among all the routes defined against this controller.
+            </summary>
+            <remarks>
+            Positive integers (including zero) denote top routes: 1 is first, 2 is second, etc....
+            Negative integers denote bottom routes: -1 is last, -2 is second to last, etc....
+            </remarks>
+        </member>
+        <member name="P:AttributeRouting.IRouteAttribute.ControllerPrecedence">
             <summary>
             The order of this route among all the routes defined against this controller.
             </summary>
@@ -764,6 +805,10 @@
             <summary>
             The order of this route among all the routes in the site.
             </summary>
+            <remarks>
+            Positive integers (including zero) denote top routes: 1 is first, 2 is second, etc....
+            Negative integers denote bottom routes: -1 is last, -2 is second to last, etc....
+            </remarks>
         </member>
         <member name="P:AttributeRouting.IRouteAttribute.RouteName">
             <summary>
@@ -813,32 +858,6 @@
             Gets the tri-state value for AppendTrailingSlash.
             </summary>
         </member>
-        <member name="T:AttributeRouting.RouteConstraintAttributeBase">
-            <summary>
-            Defines a constraint for a url parameter defined in a RouteAttribute applied to this action.
-            </summary>
-        </member>
-        <member name="M:AttributeRouting.RouteConstraintAttributeBase.#ctor(System.String)">
-            <summary>
-            Specify a constraint for a url parameter defined in a RouteAttribute applied to this action.
-            </summary>
-            <param name="key">The key of the url parameter</param>
-        </member>
-        <member name="P:AttributeRouting.RouteConstraintAttributeBase.Key">
-            <summary>
-            The key of the url parameter.
-            </summary>
-        </member>
-        <member name="P:AttributeRouting.RouteConstraintAttributeBase.Constraint">
-            <summary>
-            The constraint to apply against url parameters with the specified key.
-            </summary>
-        </member>
-        <member name="P:AttributeRouting.RouteConstraintAttributeBase.ForRouteNamed">
-            <summary>
-            The name of the route to apply this default against.
-            </summary>
-        </member>
         <member name="T:AttributeRouting.RouteConventionAttributeBase">
             <summary>
             Base class that implementors can use to define a custom controller-level route convention.
@@ -858,19 +877,24 @@
             <param name="actionMethod"></param>
             <returns></returns>
         </member>
-        <member name="M:AttributeRouting.RouteConventionAttributeBase.GetRouteDefaultAttributes(System.Reflection.MethodInfo)">
+        <member name="T:AttributeRouting.Framework.RouteNameBuilders">
             <summary>
-            Gets the route defaults to be applied against the given action method.
+            Route name builders for generating conventional route names.
             </summary>
-            <param name="actionMethod"></param>
-            <returns></returns>
         </member>
-        <member name="M:AttributeRouting.RouteConventionAttributeBase.GetRouteConstraintAttributes(System.Reflection.MethodInfo)">
+        <member name="P:AttributeRouting.Framework.RouteNameBuilders.Unique">
             <summary>
-            Gets the route constraints to be applied against the given action method.
+            This builder ensures that every route has a unique name.
+            Preferably, it generates routes names like "Area_Controller_Action".
+            In case of duplicates, it will append the HTTP method (if not a GET route) and/or a unique index to the route.
+            So the most heinous possible form is "Area_Controller_Action_Method_Index".
             </summary>
-            <param name="actionMethod"></param>
-            <returns></returns>
+        </member>
+        <member name="P:AttributeRouting.Framework.RouteNameBuilders.FirstInWins">
+            <summary>
+            This builder generates routes in the form "Area_Controller_Action". 
+            In case of duplicates, the duplicate route is not named, and the builder will return null.
+            </summary>
         </member>
         <member name="T:AttributeRouting.RoutePrefixAttribute">
             <summary>
@@ -924,33 +948,6 @@
             The subdomain that this area is mapped to. By default, areas apply to all subdomains.
             </summary>
         </member>
-        <member name="T:AttributeRouting.RouteDefaultAttribute">
-            <summary>
-            Defines a default value for a url parameter defined in a RouteAttribute applied to this action.
-            </summary>
-        </member>
-        <member name="M:AttributeRouting.RouteDefaultAttribute.#ctor(System.String,System.Object)">
-            <summary>
-            Specify a default value for a url parameter defined in a RouteAttribute applied to this action.
-            </summary>
-            <param name="key">The key of the url parameter</param>
-            <param name="value">The default value for the url parameter</param>
-        </member>
-        <member name="P:AttributeRouting.RouteDefaultAttribute.Key">
-            <summary>
-            The key of the url parameter.
-            </summary>
-        </member>
-        <member name="P:AttributeRouting.RouteDefaultAttribute.Value">
-            <summary>
-            The default value for the url parameter.
-            </summary>
-        </member>
-        <member name="P:AttributeRouting.RouteDefaultAttribute.ForRouteNamed">
-            <summary>
-            The name of the route to apply this default against.
-            </summary>
-        </member>
         <member name="T:AttributeRouting.Framework.RouteSpecification">
             <summary>
             Contains all the information <see cref="T:AttributeRouting.Framework.RouteBuilder"/> needs to create a route.
@@ -965,6 +962,70 @@
         <member name="M:AttributeRouting.Framework.RouteReflector.BuildRouteSpecifications">
             <summary>
             Yields all the information needed by <see cref="T:AttributeRouting.Framework.RouteBuilder"/> to build routes.
+            </summary>
+        </member>
+        <member name="M:AttributeRouting.Framework.RouteReflector.BuildRouteSpecifications(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Builds the reoute specifications for the given controller types.
+            </summary>
+            <param name="controllerTypes">The controller type.</param>
+            <returns>An enumerable of <see cref="T:AttributeRouting.Framework.RouteSpecification"/>.</returns>
+        </member>
+        <member name="M:AttributeRouting.Framework.RouteReflector.GetActionName(System.Reflection.MethodInfo,System.Boolean)">
+            <summary>
+            Gets the action name.
+            </summary>
+            <param name="actionMethod">The <see cref="T:System.Reflection.MethodInfo"/> for the action.</param>
+            <param name="isAsyncController">True if the action's controller is an async controller.</param>
+            <returns>The name of the action.</returns>
+        </member>
+        <member name="M:AttributeRouting.Framework.RouteReflector.GetRouteAttributes(System.Reflection.MethodInfo,AttributeRouting.RouteConventionAttributeBase)">
+            <summary>
+            Gets the route attributes for an action.
+            </summary>
+            <param name="actionMethod">The <see cref="T:System.Reflection.MethodInfo"/> for the action.</param>
+            <param name="convention">The <see cref="T:AttributeRouting.RouteConventionAttributeBase"/> applied to the action's controller.</param>
+            <returns>The route attributes for the action.</returns>
+        </member>
+        <member name="M:AttributeRouting.Framework.RouteReflector.GetAreaUrl(AttributeRouting.RouteAreaAttribute,System.String)">
+            <summary>
+            Gets the area URL prefix.
+            </summary>
+            <param name="routeAreaAttribute">The <see cref="T:AttributeRouting.RouteAreaAttribute"/> for the controller.</param>
+            <param name="subdomain">The configured subdomain for the area.</param>
+            <returns>The URL prefix for the area.</returns>
+        </member>
+        <member name="M:AttributeRouting.Framework.RouteReflector.GetAreaSubdomain(AttributeRouting.RouteAreaAttribute)">
+            <summary>
+            Gets the configured subdomain for an area.
+            </summary>
+            <param name="routeAreaAttribute">The <see cref="T:AttributeRouting.RouteAreaAttribute"/> for the controller.</param>
+            <returns>The subdomain name configured for the area.</returns>
+        </member>
+        <member name="M:AttributeRouting.Framework.RouteReflector.GetRoutePrefix(AttributeRouting.RoutePrefixAttribute,System.Reflection.MethodInfo,AttributeRouting.RouteConventionAttributeBase)">
+            <summary>
+            Gets a controller's route prefix URL.
+            </summary>
+            <param name="routePrefixAttribute">The <see cref="T:AttributeRouting.RoutePrefixAttribute"/> for the controller.</param>
+            <param name="actionMethod">The <see cref="T:System.Reflection.MethodInfo"/> for an action.</param>
+            <param name="convention">The <see cref="T:AttributeRouting.RouteConventionAttributeBase"/> for the controller.</param>
+            <returns>The route prefix URL to apply against the action.</returns>
+        </member>
+        <member name="M:AttributeRouting.Framework.RouteReflector.GetSortableOrder(System.Int32)">
+            <summary>
+            Gets the sortable order for the given value.
+            </summary>
+            <param name="value">An integer sort order, where positive N is Nth, and negative N is Nth from last.</param>
+            <returns>The sortable order corresponding to the given value.</returns>
+        </member>
+        <member name="T:AttributeRouting.Framework.SubdomainParsers">
+            <summary>
+            Subdomain parsers for parsing the subdomain from host names.
+            </summary>
+        </member>
+        <member name="P:AttributeRouting.Framework.SubdomainParsers.ThreeSection">
+            <summary>
+            This parser pulls the first part of a three-section hostanme as the subdomain.
             </summary>
         </member>
     </members>
