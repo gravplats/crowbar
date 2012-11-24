@@ -52,7 +52,9 @@
     <Compile Include="AssertException.cs" />
     <Compile Include="BrowserContext.cs" />
     <Compile Include="BrowserContextExtensions.cs" />
+    <Compile Include="BrowserExtensions.cs" />
     <Compile Include="BrowserResponseAssertExtensions.cs" />
+    <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
@@ -65,6 +67,13 @@
     <Compile Include="MvcApplicationProxyBase.cs" />
     <Compile Include="MvcApplicationProxyFactory.cs" />
     <Compile Include="ProxyBase.cs" />
+    <Compile Include="Views\HttpContextStub.cs" />
+    <Compile Include="Views\CrowbarController.cs" />
+    <Compile Include="Views\HttpBrowserCapabilitiesStub.cs" />
+    <Compile Include="Views\HttpRequestStub.cs" />
+    <Compile Include="PartialViewContext.cs" />
+    <Compile Include="Views\ViewSettings.cs" />
+    <Compile Include="Views\ViewContextStub.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="MvcApplicationFactory.cs" />

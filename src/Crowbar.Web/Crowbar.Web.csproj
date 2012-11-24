@@ -139,6 +139,7 @@
     <Compile Include="Core\AntiForgeryRequestTokenTestController.cs" />
     <Compile Include="Core\DocumentStoreTestController.cs" />
     <Compile Include="Core\FormsAuthTestController.cs" />
+    <Compile Include="Core\FormSubmissionTestController.cs" />
     <Compile Include="CrowbarControllerBase.cs" />
     <Compile Include="CrowbarRoute.cs" />
     <Compile Include="Core\CsQueryTestController.cs" />
@@ -180,6 +181,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CsQueryTest\CsQuery.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\FormSubmissionTest\Form.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

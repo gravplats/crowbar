@@ -12,8 +12,10 @@ namespace Crowbar.Web
 
         public const string DocumentStore               = "/store";
 
-        public const string ExceptionNonSerializable    = "/exception";
-        public const string ExceptionSerializable       = "/exception-non";
+        public const string ExceptionNonSerializable    = "/exception-ns";
+        public const string ExceptionSerializable       = "/exception";
+
+        public const string Form                        = "/form";
 
         public const string JsonResponse                = "/jsonresponse";
         public const string JsonRequest                 = "/jsonrequest";

@@ -8,23 +8,31 @@ namespace Crowbar.Web
 {
     public class CrowbarHttpApplication : HttpApplication
     {
-        public static void RegisterGlobalFilters()
+        private static void RegisterGlobalFilters()
         {
             var filters = GlobalFilters.Filters;
             filters.Add(new HandleErrorAttribute());
         }
 
-        public static void RegisterRoutes()
+        private static void RegisterRoutes()
         {
             var routes = RouteTable.Routes;
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapAttributeRoutes();
         }
 
+        private static void RegisterViewEngines()
+        {
+            var engines = ViewEngines.Engines;
+            engines.Clear();
+            engines.Add(new RazorViewEngine());
+        }
+
         protected void Application_Start()
         {
             RegisterGlobalFilters();
             RegisterRoutes();
+            RegisterViewEngines();
         }
 
         public void SetDocumentStore(IDocumentStore store)

@@ -1,0 +1,4 @@
+﻿@model FormSubmissionTestController.Payload
+<form action="@CrowbarRoute.Form.AsOutbound()" method="post">
+    @Html.TextBoxFor(x => x.Text)
+</form>
