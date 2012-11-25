@@ -1,7 +1,9 @@
 using System;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Helpers;
 using System.Web.Security;
 using System.Xml;
@@ -59,6 +61,12 @@ namespace Crowbar
         /// <param name="timeout">The time, in minutes, for which the forms authentication cookie is valid.</param>
         public static void FormsAuth(this BrowserContext context, string username = "", int timeout = 30)
         {
+            var section = ConfigurationManager.GetSection("system.web/authentication") as AuthenticationSection;
+            if (section == null || section.Mode != AuthenticationMode.Forms)
+            {
+                throw new InvalidOperationException("The web application is not configured to use forms authentication.");
+            }
+
             // This works because we're encrypting and decrypting on the same machine? In the same AppDomain?
             var ticket = new FormsAuthenticationTicket(username, false, timeout);
 
