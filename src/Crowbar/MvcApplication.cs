@@ -9,7 +9,7 @@ namespace Crowbar
     {
         private readonly MvcApplicationProxy proxy;
 
-        public MvcApplication(MvcApplicationProxy proxy)
+        internal MvcApplication(MvcApplicationProxy proxy)
         {
             this.proxy = proxy;
         }
@@ -61,7 +61,7 @@ namespace Crowbar
     {
         private readonly MvcApplicationProxyBase<TContext> proxy;
 
-        public MvcApplication(MvcApplicationProxyBase<TContext> proxy)
+        internal MvcApplication(MvcApplicationProxyBase<TContext> proxy)
         {
             this.proxy = proxy;
         }
