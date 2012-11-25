@@ -44,14 +44,18 @@ namespace Crowbar
                 var valueMap = new Dictionary<string, KeyValuePair<string, object>>();
                 foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(viewModel))
                 {
-                    string name = property.Name.ToCamelCase();
+                    string name = property.Name.ToLower();
                     valueMap[name] = new KeyValuePair<string, object>(name, property.GetValue(viewModel));
                 }
 
                 foreach (var password in passwords)
                 {
-                    object value = valueMap[password.Name].Value;
-                    password.Value = value.ToString();
+                    string name = password.Name.ToLower();
+                    if (valueMap.ContainsKey(name))
+                    {
+                        object value = valueMap[name].Value;
+                        password.Value = value.ToString();
+                    }
                 }
             }
         }
