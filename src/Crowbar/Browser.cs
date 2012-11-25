@@ -105,7 +105,7 @@ namespace Crowbar
                 throw new Exception(string.Format("The MVC application threw an exception: {0}", exception.Message));
             }
 
-            var response = CrowbarContext.Response;
+            var response = CrowbarContext.HttpResponse;
             if (response == null)
             {
                 return new BrowserResponse();
@@ -130,7 +130,7 @@ namespace Crowbar
                 },
                 Headers = headers,
                 ResponseBody = output.ToString(),
-                Response = response,
+                HttpResponse = response,
             };
         }
     }

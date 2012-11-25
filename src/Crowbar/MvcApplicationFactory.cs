@@ -44,9 +44,9 @@ namespace Crowbar
                     CrowbarContext.HttpSessionState = HttpContext.Current.Session;
                 }
 
-                if (CrowbarContext.Response == null)
+                if (CrowbarContext.HttpResponse == null)
                 {
-                    CrowbarContext.Response = HttpContext.Current.Response;
+                    CrowbarContext.HttpResponse = HttpContext.Current.Response;
                 }
             };
 

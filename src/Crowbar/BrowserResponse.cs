@@ -24,12 +24,12 @@ namespace Crowbar
         {
             get
             {
-                if (Response == null)
+                if (HttpResponse == null)
                 {
                     throw new InvalidOperationException("The HTTP response object is null.");
                 }
 
-                return Response.ContentType;
+                return HttpResponse.ContentType;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Crowbar
         /// <summary>
         /// Gets the HTTP response.
         /// </summary>
-        public HttpResponse Response { get; internal set; }
+        public HttpResponse HttpResponse { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP response body.
@@ -56,12 +56,12 @@ namespace Crowbar
             get
             {
                 // When no route is found the response object is null. Are there any other cases when this is also true?
-                if (Response == null)
+                if (HttpResponse == null)
                 {
                     return HttpStatusCode.NotFound;
                 }
 
-                return (HttpStatusCode)Response.StatusCode;
+                return (HttpStatusCode)HttpResponse.StatusCode;
             }
         }
 

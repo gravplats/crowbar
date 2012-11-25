@@ -16,7 +16,7 @@ namespace Crowbar
 
         public static HttpSessionState HttpSessionState { get; set; }
 
-        public static HttpResponse Response { get; set; }
+        public static HttpResponse HttpResponse { get; set; }
 
         public static void Reset()
         {
@@ -29,7 +29,7 @@ namespace Crowbar
             ExceptionContext = null;
 
             HttpSessionState = null;
-            Response = null;
+            HttpResponse = null;
         }
     }
 }
