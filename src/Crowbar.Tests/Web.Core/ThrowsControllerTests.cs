@@ -9,7 +9,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_handle_non_serializable_exceptions()
         {
-            Application.Execute((browser, _) =>
+            Application.Execute(browser =>
             {
                 Assert.Throws<Exception>(() => browser.Post(CrowbarRoute.ExceptionNonSerializable));
             });
@@ -18,7 +18,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_handle_serializable_exceptions()
         {
-            Application.Execute((browser, _) =>
+            Application.Execute(browser =>
             {
                 Assert.Throws<CrowbarException>(() => browser.Post(CrowbarRoute.ExceptionSerializable));
             });

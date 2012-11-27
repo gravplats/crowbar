@@ -11,7 +11,7 @@ namespace Crowbar.Tests.Web.Core
         [TestCase("PUT")]
         public void Should_be_able_to_receive_json(string method)
         {
-            Application.Execute((browser, _) =>
+            Application.Execute(browser =>
             {
                 var response = browser.PerformRequest(method, CrowbarRoute.JsonResponse);
                 response.ShouldBeJson(json => Assert.That(json.payload, Is.EqualTo("text")));
@@ -23,7 +23,7 @@ namespace Crowbar.Tests.Web.Core
         [TestCase("PUT")]
         public void Should_be_able_to_send_json(string method)
         {
-            Application.Execute((browser, _) =>
+            Application.Execute(browser =>
             {
                 var response = browser.PerformRequest(method, CrowbarRoute.JsonRequest, ctx => ctx.JsonBody(new { payload = "text" }));
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

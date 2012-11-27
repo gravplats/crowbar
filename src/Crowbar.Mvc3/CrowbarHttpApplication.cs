@@ -2,12 +2,10 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using AttributeRouting.Web.Mvc;
-using Crowbar.Mvc.Common;
-using Raven.Client;
 
 namespace Crowbar.Web
 {
-    public class CrowbarHttpApplication : HttpApplication, ICrowbarHttpApplication
+    public class CrowbarHttpApplication : HttpApplication
     {
         private static void RegisterGlobalFilters()
         {
@@ -34,11 +32,6 @@ namespace Crowbar.Web
             RegisterGlobalFilters();
             RegisterRoutes();
             RegisterViewEngines();
-        }
-
-        public void SetDocumentStore(IDocumentStore store)
-        {
-            CrowbarControllerBase.Store = store;
         }
     }
 }

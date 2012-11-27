@@ -1,13 +1,10 @@
 using System;
 using System.Web.Mvc;
-using Raven.Client;
 
 namespace Crowbar.Web
 {
     public abstract class CrowbarControllerBase : Controller
     {
-        public static IDocumentStore Store;
-
         protected ActionResult Assert(Func<bool> assertion)
         {
             return assertion() ? HttpOk() : HttpBadRequest();

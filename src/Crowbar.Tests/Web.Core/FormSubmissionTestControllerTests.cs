@@ -8,7 +8,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form()
         {
-            Application.Execute((browser, _) =>
+            Application.Execute(browser =>
             {
                 var payload = new Payload { Text = "text" };
                 var response = browser.Submit("~/Views/FormSubmissionTest/Form.cshtml", payload);
@@ -20,7 +20,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_anti_forgery_request_token()
         {
-            Application.Execute((browser, _) =>
+            Application.Execute(browser =>
             {
                 const string username = "crowbar";
 
