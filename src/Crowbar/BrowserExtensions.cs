@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using Crowbar.Views;
 using CsQuery;
 
@@ -45,7 +46,9 @@ namespace Crowbar
         public static BrowserResponse Submit<TViewModel>(this Browser browser, PartialViewContext partialViewContext, TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> modify = null)
             where TViewModel : class
         {
-            string html = CrowbarController.ToString(partialViewContext, viewModel);
+            HttpCookieCollection cookies;
+
+            string html = CrowbarController.ToString(partialViewContext, viewModel, out cookies);
             var document = CQ.Create(html);
 
             var form = document.Is("form") ? document : document.Find("form").First();
@@ -75,6 +78,15 @@ namespace Crowbar
 
             return browser.PerformRequest(method, action, ctx =>
             {
+                if (cookies != null)
+                {
+                    for (int index = 0; index < cookies.Count; index++)
+                    {
+                        var cookie = cookies.Get(index);
+                        ctx.Cookie(cookie);
+                    }
+                }
+
                 foreach (var value in form.GetFormValues())
                 {
                     ctx.FormValue(value.Key, value.Value);

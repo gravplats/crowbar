@@ -16,6 +16,7 @@ namespace Crowbar.Web
         public const string ExceptionSerializable       = "/exception";
 
         public const string Form                        = "/form";
+        public const string FormAntiForgeryRequestToken = "/formantiforgeryrequesttoken";
 
         public const string JsonResponse                = "/jsonresponse";
         public const string JsonRequest                 = "/jsonrequest";

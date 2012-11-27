@@ -63,7 +63,7 @@
     <Compile Include="Web.Core\AjaxTestControllerTests.cs" />
     <Compile Include="Web.Core\AntiForgeryRequestTokenTestControllerTests.cs" />
     <Compile Include="Web.Core\DocumentStoreTestControllerTests.cs" />
-    <Compile Include="Web.Core\FormAuthTestControllerTests.cs" />
+    <Compile Include="Web.Core\FormsAuthTestControllerTests.cs" />
     <Compile Include="Web.Core\CsQueryTestControllerTests.cs" />
     <Compile Include="Web.Core\CustomConfigTestControllerTests.cs" />
     <Compile Include="Web.Core\FormSubmissionTestControllerTests.cs" />

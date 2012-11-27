@@ -11,7 +11,29 @@ namespace Crowbar.Tests.Web.Core
             Application.Execute((browser, _) =>
             {
                 var payload = new FormSubmissionTestController.Payload { Text = "text" };
-                browser.Submit("~/Views/FormSubmissionTest/Form.cshtml", payload);
+                var response = browser.Submit("~/Views/FormSubmissionTest/Form.cshtml", payload);
+
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            });
+        }
+
+        [Test]
+        public void Should_be_able_to_post_form_with_anti_forgery_request_token()
+        {
+            Application.Execute((browser, _) =>
+            {
+                const string username = "crowbar";
+
+                var context = new PartialViewContext("~/Views/FormSubmissionTest/FormAntiForgeryRequestToken.cshtml");
+                context.SetFormsAuthPrincipal(username);
+
+                var payload = new FormSubmissionTestController.Payload { Text = "text" };
+                var response = browser.Submit(context, payload, ctx =>
+                {
+                    ctx.FormsAuth(username);
+                });
+
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
         }
     }

@@ -15,5 +15,11 @@ namespace Crowbar.Web.Core
         {
             return Assert(() => payload.Text == "text");
         }
+        
+        [POST(CrowbarRoute.FormAntiForgeryRequestToken), ValidateAntiForgeryToken]
+        public ActionResult FormSubmissionAntiForgeryRequestToken_Post(Payload payload)
+        {
+            return Assert(() => payload.Text == "text");
+        }
     }
 }

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Crowbar.Tests.Web.Core
 {
-    public class FormAuthTestControllerTests : TestBase
+    public class FormsAuthTestControllerTests : TestBase
     {
         [TestCase("DELETE")]
         [TestCase("GET")]

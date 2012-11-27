@@ -1,3 +1,5 @@
+using System.Security.Principal;
+
 namespace Crowbar.Views
 {
     public class ViewSettings
@@ -12,5 +14,10 @@ namespace Crowbar.Views
         public bool ClientValidationEnabled { get; set; }
         public bool IsMobileDevice { get; set; }
         public bool UnobtrusiveJavaScriptEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the security principal in which the view should be rendered.
+        /// </summary>
+        public IPrincipal User { get; set; }
     }
 }

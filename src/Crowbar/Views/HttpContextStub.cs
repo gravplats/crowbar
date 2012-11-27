@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Security.Principal;
 using System.Web;
 
 namespace Crowbar.Views
 {
     internal class HttpContextStub : HttpContextBase
     {
+        private readonly ViewSettings settings;
+
         private readonly HttpRequestBase request;
         private readonly HttpResponseBase response;
 
@@ -12,8 +16,10 @@ namespace Crowbar.Views
 
         public HttpContextStub(HttpResponse httpResponse, ViewSettings settings)
         {
+            this.settings = settings;
+
             request = new HttpRequestStub(new HttpRequest("", "http://www.example.com", ""), settings);
-            response = new HttpResponseWrapper(httpResponse);
+            response = new HttpResponseStub(httpResponse);
         }
 
         public override HttpRequestBase Request
@@ -29,6 +35,12 @@ namespace Crowbar.Views
         public override IDictionary Items
         {
             get { return items ?? (items = new Hashtable()); }
+        }
+
+        public override IPrincipal User
+        {
+            get { return settings.User ?? base.User; }
+            set { throw new NotSupportedException(); }
         }
     }
 }

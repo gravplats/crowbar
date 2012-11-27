@@ -20,7 +20,7 @@ namespace Crowbar.Views
             return new ControllerContext(requestContext, new CrowbarController());
         }
 
-        public static string ToString(PartialViewContext partialViewContext, object viewModel)
+        public static string ToString(PartialViewContext partialViewContext, object viewModel, out HttpCookieCollection cookies)
         {
             if (partialViewContext == null)
             {
@@ -73,6 +73,7 @@ namespace Crowbar.Views
                     };
 
                     view.Render(viewContext, httpResponse.Output);
+                    cookies = controllerContext.HttpContext.Response.Cookies;
 
                     httpResponse.Flush();
                 }
