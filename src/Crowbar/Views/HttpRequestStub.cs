@@ -4,12 +4,12 @@ namespace Crowbar.Views
 {
     internal class HttpRequestStub : HttpRequestWrapper
     {
-        private readonly ViewSettings settings;
+        private readonly PartialViewContext partialViewContext;
 
-        public HttpRequestStub(HttpRequest httpRequest, ViewSettings settings)
+        public HttpRequestStub(HttpRequest httpRequest, PartialViewContext partialViewContext)
             : base(httpRequest)
         {
-            this.settings = settings;
+            this.partialViewContext = partialViewContext;
         }
 
         // If we don't override something breaks in ASP.NET MVC 4 due to display modes.
@@ -17,7 +17,7 @@ namespace Crowbar.Views
         {
             get
             {
-                var capabilities = new HttpBrowserCapabilitiesStub(settings);
+                var capabilities = new HttpBrowserCapabilitiesStub(partialViewContext);
                 return new HttpBrowserCapabilitiesWrapper(capabilities);
             }
         }

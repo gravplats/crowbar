@@ -7,18 +7,18 @@ namespace Crowbar.Views
 {
     internal class HttpContextStub : HttpContextBase
     {
-        private readonly ViewSettings settings;
+        private readonly PartialViewContext partialViewContext;
 
         private readonly HttpRequestBase request;
         private readonly HttpResponseBase response;
 
         private IDictionary items;
 
-        public HttpContextStub(HttpResponse httpResponse, ViewSettings settings)
+        public HttpContextStub(HttpResponse httpResponse, PartialViewContext partialViewContext)
         {
-            this.settings = settings;
+            this.partialViewContext = partialViewContext;
 
-            request = new HttpRequestStub(new HttpRequest("", "http://www.example.com", ""), settings);
+            request = new HttpRequestStub(new HttpRequest("", "http://www.example.com", ""), partialViewContext);
             response = new HttpResponseStub(httpResponse);
         }
 
@@ -39,7 +39,7 @@ namespace Crowbar.Views
 
         public override IPrincipal User
         {
-            get { return settings.User ?? base.User; }
+            get { return partialViewContext.User ?? base.User; }
             set { throw new NotSupportedException(); }
         }
     }

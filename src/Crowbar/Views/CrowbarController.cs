@@ -9,13 +9,13 @@ namespace Crowbar.Views
 {
     internal class CrowbarController : Controller
     {
-        private static ControllerContext CreateControllerContext(HttpResponse httpResponse, ViewSettings settings)
+        private static ControllerContext CreateControllerContext(HttpResponse httpResponse, PartialViewContext partialViewContext)
         {
             // The 'controller' route data value is required by VirtualPathProviderViewEngine.
             var routeData = new RouteData();
             routeData.Values["controller"] = typeof(CrowbarController).Name;
 
-            var httpContext = new HttpContextStub(httpResponse, settings);
+            var httpContext = new HttpContextStub(httpResponse, partialViewContext);
             var requestContext = new RequestContext(httpContext, routeData);
             return new ControllerContext(requestContext, new CrowbarController());
         }
@@ -36,10 +36,8 @@ namespace Crowbar.Views
 
             using (var writer = new StringWriter())
             {
-                var viewSettings = partialViewContext.ViewSettings;
-
                 var httpResponse = new HttpResponse(writer);
-                var controllerContext = CreateControllerContext(httpResponse, viewSettings);
+                var controllerContext = CreateControllerContext(httpResponse, partialViewContext);
 
                 var viewEngineResult = ViewEngines.Engines.FindPartialView(controllerContext, viewName);
                 if (viewEngineResult == null)
@@ -68,8 +66,8 @@ namespace Crowbar.Views
 
                     var viewContext = new ViewContextStub(controllerContext, view, viewData, tempData, writer)
                     {
-                        ClientValidationEnabled = viewSettings.ClientValidationEnabled,
-                        UnobtrusiveJavaScriptEnabled = viewSettings.UnobtrusiveJavaScriptEnabled
+                        ClientValidationEnabled = partialViewContext.ClientValidationEnabled,
+                        UnobtrusiveJavaScriptEnabled = partialViewContext.UnobtrusiveJavaScriptEnabled
                     };
 
                     view.Render(viewContext, httpResponse.Output);

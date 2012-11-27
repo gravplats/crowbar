@@ -4,16 +4,16 @@ namespace Crowbar.Views
 {
     internal class HttpBrowserCapabilitiesStub : HttpBrowserCapabilities
     {
-        private readonly ViewSettings settings;
+        private readonly PartialViewContext partialViewContext;
 
-        public HttpBrowserCapabilitiesStub(ViewSettings settings)
+        public HttpBrowserCapabilitiesStub(PartialViewContext partialViewContext)
         {
-            this.settings = settings;
+            this.partialViewContext = partialViewContext;
         }
 
         public override bool IsMobileDevice
         {
-            get { return settings.IsMobileDevice; }
+            get { return partialViewContext.IsMobileDevice; }
         }
     }
 }

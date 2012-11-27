@@ -73,7 +73,6 @@
     <Compile Include="Views\HttpRequestStub.cs" />
     <Compile Include="PartialViewContext.cs" />
     <Compile Include="Views\HttpResponseStub.cs" />
-    <Compile Include="Views\ViewSettings.cs" />
     <Compile Include="Views\ViewContextStub.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />
