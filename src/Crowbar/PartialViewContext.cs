@@ -16,9 +16,9 @@ namespace Crowbar
         }
 
         public bool ClientValidationEnabled { get; set; }
-        
+
         public bool UnobtrusiveJavaScriptEnabled { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the security principal in which the view should be rendered.
         /// </summary>
@@ -30,14 +30,26 @@ namespace Crowbar
         public string ViewName { get; private set; }
 
         /// <summary>
-        /// Sets the security principal, using forms authentication, in which the view should be rendered.
+        /// Sets the security principal, using forms identity, in which the view should be rendered.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="timeout">The time, in minutes, for which the forms authentication cookie is valid.</param>
-        public void SetFormsAuthPrincipal(string username, int timeout = 30)
+        public PartialViewContext SetFormsAuthPrincipal(string username, int timeout = 30)
         {
             var ticket = new FormsAuthenticationTicket(username, false, timeout);
             User = new GenericPrincipal(new FormsIdentity(ticket), new string[0]);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the security principal to an anonymous user (no username), using a generic identity.
+        /// </summary>
+        public PartialViewContext SetAnonymousPrincipal()
+        {
+            User = new GenericPrincipal(new GenericIdentity(""), new string[0]);
+
+            return this;
         }
 
         public static implicit operator PartialViewContext(string viewName)
