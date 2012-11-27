@@ -1,6 +1,7 @@
 using System.Configuration;
 using System.Web.Mvc;
 using AttributeRouting.Web.Mvc;
+using Crowbar.Mvc.Common;
 
 namespace Crowbar.Web.Core
 {

@@ -217,18 +217,6 @@
     <Compile Include="..\Crowbar.Mvc3\CrowbarHttpApplication.cs">
       <Link>CrowbarHttpApplication.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\CrowbarRoute.cs">
-      <Link>CrowbarRoute.cs</Link>
-    </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Domain\Model.cs">
-      <Link>Domain\Model.cs</Link>
-    </Compile>
-    <Compile Include="..\Crowbar.Mvc3\OutboundUrl.cs">
-      <Link>OutboundUrl.cs</Link>
-    </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Payload.cs">
-      <Link>Payload.cs</Link>
-    </Compile>
     <Compile Include="..\Crowbar.Mvc3\XmlModelBinder.cs">
       <Link>XmlModelBinder.cs</Link>
     </Compile>
@@ -263,6 +251,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Crowbar.Mvc.Common\Crowbar.Mvc.Common.csproj">
+      <Project>{8364FDA4-31CE-431A-A6D2-A0B085817309}</Project>
+      <Name>Crowbar.Mvc.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

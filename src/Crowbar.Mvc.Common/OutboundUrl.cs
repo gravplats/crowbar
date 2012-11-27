@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Crowbar.Web
+namespace Crowbar.Mvc.Common
 {
     public class OutboundUrl
     {
@@ -30,7 +30,7 @@ namespace Crowbar.Web
 
             public override string ToString()
             {
-                return String.Join("/", Items);
+                return string.Join("/", Items);
             }
 
             public static implicit operator string(UrlPathCollection collection)
@@ -40,8 +40,8 @@ namespace Crowbar.Web
 
             private static string ToSafeUrl(string value)
             {
-                value = (value ?? String.Empty).Trim().Replace(" ", "-");
-                return SafeUrlPattern.Replace(value, String.Empty).ToLower();
+                value = (value ?? string.Empty).Trim().Replace(" ", "-");
+                return SafeUrlPattern.Replace(value, string.Empty).ToLower();
             }
         }
 
@@ -57,8 +57,8 @@ namespace Crowbar.Web
                 }
                 else
                 {
-                    var pairs = values.Select(x => String.Format("{0}={1}", x.Key, HttpUtility.UrlEncode((string) x.Value.ToString())));
-                    queryString = "?" + String.Join("&", pairs);
+                    var pairs = values.Select(x => string.Format("{0}={1}", x.Key, HttpUtility.UrlEncode((string)x.Value.ToString())));
+                    queryString = "?" + string.Join("&", pairs);
                 }
             }
 
@@ -88,7 +88,7 @@ namespace Crowbar.Web
                 var context = HttpContext.Current;
                 if (context == null)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
 
                 return context.Request.ApplicationPath;

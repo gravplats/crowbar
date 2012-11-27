@@ -1,4 +1,4 @@
-namespace Crowbar.Web
+namespace Crowbar.Mvc.Common
 {
     public class Payload
     {

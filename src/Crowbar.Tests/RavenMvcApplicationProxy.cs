@@ -1,5 +1,5 @@
 using System.Web;
-using Crowbar.Web;
+using Crowbar.Mvc.Common;
 using Raven.Client;
 using Raven.Client.Embedded;
 using Raven.Client.Listeners;
@@ -20,7 +20,7 @@ namespace Crowbar.Tests
         {
             var store = CreateDocumentStore();
 
-            var crowbar = (CrowbarHttpApplication)application;
+            var crowbar = (ICrowbarHttpApplication)application;
             crowbar.SetDocumentStore(store);
 
             return new RavenContext(store);

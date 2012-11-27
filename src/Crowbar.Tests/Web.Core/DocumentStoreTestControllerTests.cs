@@ -1,6 +1,5 @@
 using System.Web;
-using Crowbar.Web;
-using Crowbar.Web.Domain;
+using Crowbar.Mvc.Common;
 using NUnit.Framework;
 
 namespace Crowbar.Tests.Web.Core

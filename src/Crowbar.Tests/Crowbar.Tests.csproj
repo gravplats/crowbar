@@ -83,9 +83,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Crowbar.Mvc3\Crowbar.Mvc3.csproj">
-      <Project>{94B58915-40CC-41DF-B4AC-27653436C2EE}</Project>
-      <Name>Crowbar.Mvc3</Name>
+    <ProjectReference Include="..\Crowbar.Mvc.Common\Crowbar.Mvc.Common.csproj">
+      <Project>{8364FDA4-31CE-431A-A6D2-A0B085817309}</Project>
+      <Name>Crowbar.Mvc.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Crowbar\Crowbar.csproj">
       <Project>{3C0FDDD4-9A22-490E-A3C6-2991124CE803}</Project>

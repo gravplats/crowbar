@@ -1,4 +1,4 @@
-﻿using Crowbar.Web;
+﻿using Crowbar.Mvc.Common;
 using NUnit.Framework;
 
 namespace Crowbar.Tests.Web.Core

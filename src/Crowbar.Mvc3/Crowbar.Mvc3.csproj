@@ -140,9 +140,7 @@
     <Compile Include="Core\DocumentStoreTestController.cs" />
     <Compile Include="Core\FormsAuthTestController.cs" />
     <Compile Include="Core\FormSubmissionTestController.cs" />
-    <Compile Include="Payload.cs" />
     <Compile Include="CrowbarControllerBase.cs" />
-    <Compile Include="CrowbarRoute.cs" />
     <Compile Include="Core\CsQueryTestController.cs" />
     <Compile Include="Core\CustomConfigTestController.cs" />
     <Compile Include="Core\HttpsTestController.cs" />
@@ -150,8 +148,6 @@
     <Compile Include="Core\QueryStringTestController.cs" />
     <Compile Include="Core\RedirectTestController.cs" />
     <Compile Include="Core\ThrowsController.cs" />
-    <Compile Include="Domain\Model.cs" />
-    <Compile Include="OutboundUrl.cs" />
     <Compile Include="XmlModelBinder.cs" />
     <Compile Include="XmlResult.cs" />
     <Compile Include="Core\XmlTestController.cs" />
@@ -175,6 +171,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Crowbar.Mvc.Common\Crowbar.Mvc.Common.csproj">
+      <Project>{8364FDA4-31CE-431A-A6D2-A0B085817309}</Project>
+      <Name>Crowbar.Mvc.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Crowbar\Crowbar.csproj">
       <Project>{3C0FDDD4-9A22-490E-A3C6-2991124CE803}</Project>
       <Name>Crowbar</Name>

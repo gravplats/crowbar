@@ -1,4 +1,4 @@
-﻿namespace Crowbar.Web.Domain
+﻿namespace Crowbar.Mvc.Common
 {
     public class Model
     {
