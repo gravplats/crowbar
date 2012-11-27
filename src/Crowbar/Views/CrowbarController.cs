@@ -9,22 +9,11 @@ namespace Crowbar.Views
 {
     internal class CrowbarController : Controller
     {
-        private static ControllerContext CreateControllerContext(HttpResponse httpResponse, PartialViewContext partialViewContext)
-        {
-            // The 'controller' route data value is required by VirtualPathProviderViewEngine.
-            var routeData = new RouteData();
-            routeData.Values["controller"] = typeof(CrowbarController).Name;
-
-            var httpContext = new HttpContextStub(httpResponse, partialViewContext);
-            var requestContext = new RequestContext(httpContext, routeData);
-            return new ControllerContext(requestContext, new CrowbarController());
-        }
-
         public static string ToString(PartialViewContext partialViewContext, object viewModel, out HttpCookieCollection cookies)
         {
             if (partialViewContext == null)
             {
-                throw new ArgumentException("PartialViewContext");
+                throw new ArgumentException("partialViewContext");
             }
 
             if (viewModel == null)
@@ -36,8 +25,14 @@ namespace Crowbar.Views
 
             using (var writer = new StringWriter())
             {
+                var httpRequest = new HttpRequest("", "http://www.example.com", "");
                 var httpResponse = new HttpResponse(writer);
-                var controllerContext = CreateControllerContext(httpResponse, partialViewContext);
+
+                // There are still dependencies on HttpContext.Currrent in the ASP.NET (MVC) framework, eg., AntiForgeryRequestToken (as of ASP.NET MVC 4).
+                var httpContext = new HttpContext(httpRequest, httpResponse) { User = partialViewContext.User };
+                System.Web.HttpContext.Current = httpContext;
+
+                var controllerContext = CreateControllerContext(httpContext);
 
                 var viewEngineResult = ViewEngines.Engines.FindPartialView(controllerContext, viewName);
                 if (viewEngineResult == null)
@@ -82,6 +77,17 @@ namespace Crowbar.Views
 
                 return writer.ToString();
             }
+        }
+
+        private static ControllerContext CreateControllerContext(HttpContext httpContext)
+        {
+            // The 'controller' route data value is required by VirtualPathProviderViewEngine.
+            var routeData = new RouteData();
+            routeData.Values["controller"] = typeof(CrowbarController).Name;
+
+            var requestContext = new RequestContext(new HttpContextWrapper(httpContext), routeData);
+
+            return new ControllerContext(requestContext, new CrowbarController());
         }
     }
 }

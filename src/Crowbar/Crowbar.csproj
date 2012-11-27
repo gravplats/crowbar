@@ -67,12 +67,8 @@
     <Compile Include="MvcApplicationProxyBase.cs" />
     <Compile Include="MvcApplicationProxyFactory.cs" />
     <Compile Include="ProxyBase.cs" />
-    <Compile Include="Views\HttpContextStub.cs" />
     <Compile Include="Views\CrowbarController.cs" />
-    <Compile Include="Views\HttpBrowserCapabilitiesStub.cs" />
-    <Compile Include="Views\HttpRequestStub.cs" />
     <Compile Include="PartialViewContext.cs" />
-    <Compile Include="Views\HttpResponseStub.cs" />
     <Compile Include="Views\ViewContextStub.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />
