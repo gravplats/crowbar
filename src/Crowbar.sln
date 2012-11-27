@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FF7E376C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Tests", "Crowbar.Tests\Crowbar.Tests.csproj", "{C69860BA-69B9-4B90-BDD1-417C856DF98A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Web", "Crowbar.Web\Crowbar.Web.csproj", "{94B58915-40CC-41DF-B4AC-27653436C2EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Mvc3", "Crowbar.Mvc3\Crowbar.Mvc3.csproj", "{94B58915-40CC-41DF-B4AC-27653436C2EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
