@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>RavenDB.Database</id>
+    <version>1.0.960</version>
+    <title>RavenDB Database</title>
+    <authors>Hibernating Rhinos</authors>
+    <owners>Hibernating Rhinos</owners>
+    <licenseUrl>http://www.ravendb.net/licensing</licenseUrl>
+    <projectUrl>http://www.ravendb.net/</projectUrl>
+    <iconUrl>http://static.ravendb.net/logo-for-nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Use this package if you want extend RavenDB. Don't use this package if you just want to work with existing RavenDB server, in order to so just use the client API which is in the RavenDB.Client package. RavenDB is a document database for the .NET platform, offering a flexible data model design to fit the needs of real world systems.</description>
+    <summary>This package allows you to extend RavenDB database.</summary>
+    <tags>nosql ravendb raven document database</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="[4.0.8]" />
+      <dependency id="NLog" version="[2.0.0.2000]" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework=".NETFramework4.0" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
