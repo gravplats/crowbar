@@ -25,22 +25,6 @@ namespace Crowbar.Web.Core
             return HttpOk();
         }
 
-        [DELETE(CrowbarRoute.AntiForgeryTokenSalt), ValidateAntiForgeryToken(Salt = Salt)]
-        public ActionResult AntiForgeryTokenSalt_Delete()
-        {
-            return HttpOk();
-        }
-
-        [POST(CrowbarRoute.AntiForgeryTokenSalt), ValidateAntiForgeryToken(Salt = Salt)]
-        public ActionResult AntiForgeryTokenSalt_Post()
-        {
-            return HttpOk();
-        }
-
-        [PUT(CrowbarRoute.AntiForgeryTokenSalt), ValidateAntiForgeryToken(Salt = Salt)]
-        public ActionResult AntiForgeryTokenSalt_Put()
-        {
-            return HttpOk();
-        }
+        // Using a salt is deprecated in ASP.NET MVC 4: http://stackoverflow.com/questions/10851283/antiforgerytoken-deprecated-in-asp-net-mvc-4-rc
     }
 }

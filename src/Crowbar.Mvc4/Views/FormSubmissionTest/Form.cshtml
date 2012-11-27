@@ -1,4 +1,5 @@
-﻿@model Payload
+﻿@using Crowbar.Web
+@model Payload
 <form action="@CrowbarRoute.Form.AsOutbound()" method="post">
     @Html.TextBoxFor(x => x.Text)
 </form>

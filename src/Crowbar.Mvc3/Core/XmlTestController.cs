@@ -5,11 +5,6 @@ namespace Crowbar.Web.Core
 {
     public class XmlTestController : CrowbarControllerBase
     {
-        public class Payload
-        {
-            public string Text { get; set; }
-        }
-
         [DELETE(CrowbarRoute.XmlResponse)]
         public ActionResult XmlResponse_Delete()
         {

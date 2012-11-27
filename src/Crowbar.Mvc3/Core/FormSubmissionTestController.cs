@@ -5,11 +5,6 @@ namespace Crowbar.Web.Core
 {
     public class FormSubmissionTestController : CrowbarControllerBase
     {
-        public class Payload
-        {
-            public string Text { get; set; }
-        }
-
         [POST(CrowbarRoute.Form)]
         public ActionResult FormSubmission_Post(Payload payload)
         {

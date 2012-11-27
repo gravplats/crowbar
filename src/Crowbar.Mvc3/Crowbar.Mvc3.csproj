@@ -140,6 +140,7 @@
     <Compile Include="Core\DocumentStoreTestController.cs" />
     <Compile Include="Core\FormsAuthTestController.cs" />
     <Compile Include="Core\FormSubmissionTestController.cs" />
+    <Compile Include="Payload.cs" />
     <Compile Include="CrowbarControllerBase.cs" />
     <Compile Include="CrowbarRoute.cs" />
     <Compile Include="Core\CsQueryTestController.cs" />

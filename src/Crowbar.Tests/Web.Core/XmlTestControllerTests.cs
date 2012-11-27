@@ -5,11 +5,6 @@ namespace Crowbar.Tests.Web.Core
 {
     public class XmlTestControllerTests : TestBase
     {
-        public class Payload
-        {
-            public string Text { get; set; }
-        }
-
         [TestCase("DELETE")]
         [TestCase("GET")]
         [TestCase("POST")]

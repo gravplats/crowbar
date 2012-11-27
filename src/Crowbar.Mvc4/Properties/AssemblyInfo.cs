@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Crowbar.Mvc3")]
+[assembly: AssemblyTitle("Crowbar.Mvc4")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Crowbar.Mvc3")]
+[assembly: AssemblyProduct("Crowbar.Mvc4")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b5bafc50-c65a-40a4-9267-678ec9a881c2")]
+[assembly: Guid("529a742f-ff64-4637-9368-de79d34fa81e")]
 
 // Version information for an assembly consists of the following four values:
 //

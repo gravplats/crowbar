@@ -1,4 +1,4 @@
-﻿using Crowbar.Web.Core;
+﻿using Crowbar.Web;
 using NUnit.Framework;
 
 namespace Crowbar.Tests.Web.Core
@@ -10,7 +10,7 @@ namespace Crowbar.Tests.Web.Core
         {
             Application.Execute((browser, _) =>
             {
-                var payload = new FormSubmissionTestController.Payload { Text = "text" };
+                var payload = new Payload { Text = "text" };
                 var response = browser.Submit("~/Views/FormSubmissionTest/Form.cshtml", payload);
 
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -27,7 +27,7 @@ namespace Crowbar.Tests.Web.Core
                 var context = new PartialViewContext("~/Views/FormSubmissionTest/FormAntiForgeryRequestToken.cshtml");
                 context.SetFormsAuthPrincipal(username);
 
-                var payload = new FormSubmissionTestController.Payload { Text = "text" };
+                var payload = new Payload { Text = "text" };
                 var response = browser.Submit(context, payload, ctx =>
                 {
                     ctx.FormsAuth(username);

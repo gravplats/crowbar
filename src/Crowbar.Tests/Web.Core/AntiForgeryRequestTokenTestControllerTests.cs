@@ -36,19 +36,5 @@ namespace Crowbar.Tests.Web.Core
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
         }
-
-        [TestCase("DELETE")]
-        [TestCase("POST")]
-        [TestCase("PUT")]
-        public void Should_be_able_to_perform_a_request_with_an_anti_forgery_token_with_salt(string method)
-        {
-            Application.Execute((browser, _) =>
-            {
-                var response = browser.PerformRequest(method, CrowbarRoute.AntiForgeryTokenSalt, ctx =>
-                    ctx.AntiForgeryRequestToken(salt: AntiForgeryRequestTokenTestController.Salt));
-
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            });
-        }
     }
 }
