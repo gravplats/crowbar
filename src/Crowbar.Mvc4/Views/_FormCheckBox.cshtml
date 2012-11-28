@@ -1,0 +1,6 @@
+﻿@model CheckBoxPayload
+<form action="@CrowbarRoute.SubmitCheckBox.AsOutbound()" method="post">
+    @Html.TextBoxFor(x => x.SanityCheck)
+    @Html.CheckBoxFor(x => x.Condition)
+    <button>OK</button>
+</form>

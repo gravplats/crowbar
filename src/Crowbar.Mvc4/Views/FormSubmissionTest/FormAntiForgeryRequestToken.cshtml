@@ -1,6 +1,0 @@
-﻿@using Crowbar.Mvc.Common
-@model Payload
-<form action="@CrowbarRoute.FormAntiForgeryRequestToken.AsOutbound()" method="post">
-    @Html.AntiForgeryToken()
-    @Html.TextBoxFor(x => x.Text)
-</form>

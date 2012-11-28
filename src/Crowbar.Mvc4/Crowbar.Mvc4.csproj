@@ -88,41 +88,41 @@
     <Compile Include="..\Crowbar.Mvc3\AjaxOnlyAttribute.cs">
       <Link>AjaxOnlyAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\AjaxTestController.cs">
-      <Link>Core\AjaxTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\AjaxRequestController.cs">
+      <Link>Core\AjaxRequestController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\AntiForgeryRequestTokenTestController.cs">
-      <Link>Core\AntiForgeryRequestTokenTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\AntiForgeryRequestTokenController.cs">
+      <Link>Core\AntiForgeryRequestTokenController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\CsQueryTestController.cs">
-      <Link>Core\CsQueryTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\CrowbarExceptionController.cs">
+      <Link>Core\CrowbarExceptionController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\CustomConfigTestController.cs">
-      <Link>Core\CustomConfigTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\CustomConfigController.cs">
+      <Link>Core\CustomConfigController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\FormsAuthTestController.cs">
-      <Link>Core\FormsAuthTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\FormsAuthController.cs">
+      <Link>Core\FormsAuthController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\FormSubmissionTestController.cs">
-      <Link>Core\FormSubmissionTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\HttpsRequestController.cs">
+      <Link>Core\HttpsRequestController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\HttpsTestController.cs">
-      <Link>Core\HttpsTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\JsonBodyController.cs">
+      <Link>Core\JsonBodyController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\JsonTestController.cs">
-      <Link>Core\JsonTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\QueryStringController.cs">
+      <Link>Core\QueryStringController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\QueryStringTestController.cs">
-      <Link>Core\QueryStringTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\ShouldBeController.cs">
+      <Link>Core\ShouldBeController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\RedirectTestController.cs">
-      <Link>Core\RedirectTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\StatusCodeController.cs">
+      <Link>Core\StatusCodeController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\ThrowsController.cs">
-      <Link>Core\ThrowsController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\SubmitController.cs">
+      <Link>Core\SubmitController.cs</Link>
     </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\XmlTestController.cs">
-      <Link>Core\XmlTestController.cs</Link>
+    <Compile Include="..\Crowbar.Mvc3\Core\XmlBodyController.cs">
+      <Link>Core\XmlBodyController.cs</Link>
     </Compile>
     <Compile Include="..\Crowbar.Mvc3\CrowbarControllerBase.cs">
       <Link>CrowbarControllerBase.cs</Link>
@@ -153,17 +153,11 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CsQueryTest\CsQuery.cshtml" />
+    <Content Include="Views\ShouldBeHtml.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FormSubmissionTest\Form.cshtml" />
-    <Content Include="Views\FormSubmissionTest\FormAntiForgeryRequestToken.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_Layout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\_FormTextBox.cshtml" />
+    <Content Include="Views\_FormAntiForgeryRequestToken.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Crowbar.Mvc.Common\Crowbar.Mvc.Common.csproj">
@@ -172,7 +166,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FormSubmissionTest\FormCheckBox.cshtml" />
+    <Content Include="Views\_FormCheckBox.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,6 +1,6 @@
 namespace Crowbar.Mvc.Common
 {
-    public class Payload
+    public class TextBoxPayload
     {
         public string Text { get; set; }
     }

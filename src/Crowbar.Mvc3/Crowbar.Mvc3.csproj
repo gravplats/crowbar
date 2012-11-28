@@ -68,21 +68,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AjaxOnlyAttribute.cs" />
-    <Compile Include="Core\AjaxTestController.cs" />
-    <Compile Include="Core\AntiForgeryRequestTokenTestController.cs" />
-    <Compile Include="Core\FormsAuthTestController.cs" />
-    <Compile Include="Core\FormSubmissionTestController.cs" />
+    <Compile Include="Core\AjaxRequestController.cs" />
+    <Compile Include="Core\AntiForgeryRequestTokenController.cs" />
+    <Compile Include="Core\FormsAuthController.cs" />
+    <Compile Include="Core\SubmitController.cs" />
     <Compile Include="CrowbarControllerBase.cs" />
-    <Compile Include="Core\CsQueryTestController.cs" />
-    <Compile Include="Core\CustomConfigTestController.cs" />
-    <Compile Include="Core\HttpsTestController.cs" />
-    <Compile Include="Core\JsonTestController.cs" />
-    <Compile Include="Core\QueryStringTestController.cs" />
-    <Compile Include="Core\RedirectTestController.cs" />
-    <Compile Include="Core\ThrowsController.cs" />
+    <Compile Include="Core\ShouldBeController.cs" />
+    <Compile Include="Core\CustomConfigController.cs" />
+    <Compile Include="Core\HttpsRequestController.cs" />
+    <Compile Include="Core\JsonBodyController.cs" />
+    <Compile Include="Core\QueryStringController.cs" />
+    <Compile Include="Core\StatusCodeController.cs" />
+    <Compile Include="Core\CrowbarExceptionController.cs" />
     <Compile Include="XmlModelBinder.cs" />
     <Compile Include="XmlResult.cs" />
-    <Compile Include="Core\XmlTestController.cs" />
+    <Compile Include="Core\XmlBodyController.cs" />
     <Compile Include="CrowbarHttpApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -96,8 +96,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -109,16 +107,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\CsQueryTest\CsQuery.cshtml" />
+    <Content Include="Views\ShouldBeHtml.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FormSubmissionTest\Form.cshtml" />
+    <Content Include="Views\_FormTextBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FormSubmissionTest\FormAntiForgeryRequestToken.cshtml" />
+    <Content Include="Views\_FormAntiForgeryRequestToken.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\FormSubmissionTest\FormCheckBox.cshtml" />
+    <Content Include="Views\_FormCheckBox.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

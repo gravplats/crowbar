@@ -2,36 +2,35 @@ namespace Crowbar.Mvc.Common
 {
     public static class CrowbarRoute
     {
-        public const string Ajax                        = "/ajax";
-        public const string AntiForgeryToken            = "/token";
-        public const string Authentication              = "/authentication";
+        public const string AntiForgeryRequestToken         = "/anti-forgery-request-token";
+        public const string AjaxRequest                     = "/ajax-request";
+        
+        public const string CustomConfig                    = "/custom-config";
 
-        public const string CsQuery                     = "/csquery";
-        public const string CustomConfig                = "/config";
+        public const string FormsAuth                       = "/forms-auth";
 
-        public const string DocumentStore               = "/store";
+        public const string ExceptionNonSerializable        = "/exception-non-serializable";
+        public const string ExceptionSerializable           = "/exception-serializable";
 
-        public const string ExceptionNonSerializable    = "/exception-ns";
-        public const string ExceptionSerializable       = "/exception";
+        public const string HttpsRequest                    = "/https-request";
 
-        public const string Form                        = "/form";
-        public const string FormAntiForgeryRequestToken = "/form-antiforgeryrequesttoken";
-        public const string FormCheckBox                = "/form-checkbox";
+        public const string JsonBody                        = "/json-body";
 
-        public const string JsonResponse                = "/jsonresponse";
-        public const string JsonRequest                 = "/jsonrequest";
+        public const string QueryString                     = "/query-string";
 
-        public const string Query                       = "/query";
+        public const string RedirectPermanent               = "/redirect-permanently";
+        public const string RedirectTarget                  = "/redirect-target";
+        public const string RedirectTemporary               = "/redirect-temporarily";
 
-        public const string Redirected                  = "/redirected";
-        public const string RedirectPermanent           = "/redirectperm";
-        public const string RedirectTemporary           = "/redirecttemp";
-        public const string Root                        = "/";
+        public const string ShouldBeHtml                    = "/should-be-html";
+        public const string ShouldBeJson                    = "/should-be-json";
+        public const string ShouldBeXml                     = "/should-be-xml";
 
-        public const string Secure                      = "/secure";
+        public const string SubmitAntiForgeryRequestToken   = "/submit-antiforgeryrequesttoken";
+        public const string SubmitCheckBox                  = "/submit-checkbox";
+        public const string SubmitTextBox                   = "/submit-textbox";
 
-        public const string XmlResponse                 = "/xmlresponse";
-        public const string XmlRequest                  = "/xmlrequest";
+        public const string XmlBody                         = "/xml-body";
         
         public static string AsOutbound(this string route, object values = null)
         {

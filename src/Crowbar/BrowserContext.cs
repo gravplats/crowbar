@@ -137,7 +137,7 @@ namespace Crowbar
         /// </summary>
         /// <param name="key">The name of the entry.</param>
         /// <param name="value">The value of the entry.</param>
-        public void Query(string key, string value)
+        public void QueryString(string key, string value)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -159,7 +159,7 @@ namespace Crowbar
                 foreach (string kvp in kvps)
                 {
                     string[] parameter = kvp.Split('=');
-                    Query(parameter[0], parameter[1]);
+                    QueryString(parameter[0], parameter[1]);
                 }
 
                 path = path.Substring(0, querySeparatorIndex);
