@@ -6,8 +6,8 @@ namespace Crowbar.Web.Core
 {
     public class SubmitController : CrowbarControllerBase
     {
-        [POST(CrowbarRoute.SubmitTextBox)]
-        public ActionResult SubmitTextBox_Post(TextBoxPayload payload)
+        [POST(CrowbarRoute.SubmitAntiForgeryRequestToken), ValidateAntiForgeryToken]
+        public ActionResult SubmitAntiForgeryRequestToken_Post(TextBoxPayload payload)
         {
             return Assert(() => payload.Text == "text");
         }
@@ -17,9 +17,15 @@ namespace Crowbar.Web.Core
         {
             return Assert(() => payload.Condition.ToString() == payload.SanityCheck);
         }
+        
+        [POST(CrowbarRoute.SubmitDropDown)]
+        public ActionResult SubmitDropDown_Post(DropDownPayload payload)
+        {
+            return Assert(() => payload.Value == "2");
+        }
 
-        [POST(CrowbarRoute.SubmitAntiForgeryRequestToken), ValidateAntiForgeryToken]
-        public ActionResult SubmitAntiForgeryRequestToken_Post(TextBoxPayload payload)
+        [POST(CrowbarRoute.SubmitTextBox)]
+        public ActionResult SubmitTextBox_Post(TextBoxPayload payload)
         {
             return Assert(() => payload.Text == "text");
         }

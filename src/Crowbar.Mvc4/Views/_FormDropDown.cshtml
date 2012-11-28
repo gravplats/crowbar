@@ -1,0 +1,5 @@
+﻿@model DropDownPayload
+<form action="@CrowbarRoute.SubmitDropDown.AsOutbound()" method="post">
+    @Html.DropDownListFor(x => x.Value, Model.Values.Select(x => new SelectListItem { Text = x.Text, Value = x.Value, Selected = x.Selected }))
+    <button>OK</button>
+</form>

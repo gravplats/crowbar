@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckBoxPayload.cs" />
+    <Compile Include="DropDownPayload.cs" />
     <Compile Include="OutboundUrl.cs" />
     <Compile Include="CrowbarRoute.cs" />
     <Compile Include="Payload.cs" />
