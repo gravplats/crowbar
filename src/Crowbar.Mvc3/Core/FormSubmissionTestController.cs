@@ -11,7 +11,13 @@ namespace Crowbar.Web.Core
         {
             return Assert(() => payload.Text == "text");
         }
-        
+
+        [POST(CrowbarRoute.FormCheckBox)]
+        public ActionResult FormSubmissionCheckBox_Post(CheckBoxPayload payload)
+        {
+            return Assert(() => payload.Condition.ToString() == payload.SanityCheck);
+        }
+
         [POST(CrowbarRoute.FormAntiForgeryRequestToken), ValidateAntiForgeryToken]
         public ActionResult FormSubmissionAntiForgeryRequestToken_Post(Payload payload)
         {

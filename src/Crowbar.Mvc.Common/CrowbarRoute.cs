@@ -15,7 +15,8 @@ namespace Crowbar.Mvc.Common
         public const string ExceptionSerializable       = "/exception";
 
         public const string Form                        = "/form";
-        public const string FormAntiForgeryRequestToken = "/formantiforgeryrequesttoken";
+        public const string FormAntiForgeryRequestToken = "/form-antiforgeryrequesttoken";
+        public const string FormCheckBox                = "/form-checkbox";
 
         public const string JsonResponse                = "/jsonresponse";
         public const string JsonRequest                 = "/jsonrequest";
@@ -31,7 +32,7 @@ namespace Crowbar.Mvc.Common
 
         public const string XmlResponse                 = "/xmlresponse";
         public const string XmlRequest                  = "/xmlrequest";
-
+        
         public static string AsOutbound(this string route, object values = null)
         {
             return new OutboundUrl(route, values);

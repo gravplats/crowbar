@@ -87,9 +87,12 @@ namespace Crowbar
                     }
                 }
 
-                foreach (var value in form.GetFormValues())
+                foreach (var formValue in form.GetFormValues())
                 {
-                    ctx.FormValue(value.Key, value.Value);
+                    foreach (string value in formValue)
+                    {
+                        ctx.FormValue(formValue.Key, value);
+                    }
                 }
 
                 if (customize != null)

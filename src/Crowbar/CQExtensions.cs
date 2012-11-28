@@ -7,10 +7,9 @@ namespace Crowbar
 {
     internal static class CQExtensions
     {
-        public static Dictionary<string, string> GetFormValues(this CQ form)
+        public static ILookup<string, string> GetFormValues(this CQ form)
         {
-            var values = new Dictionary<string, string>();
-
+            var values = new List<KeyValuePair<string, string>>();
             foreach (var input in form.Find("input, textarea").ToLookup(x => x.Name, x => x))
             {
                 foreach (var dom in input)
@@ -22,17 +21,17 @@ namespace Crowbar
                     }
 
                     // Possible BUG: <textarea /> elements get initial \r\n, thus we're currenly trimming: perhaps only for textareas.
-                    values.Add(input.Key, dom.Value.Trim());
+                    values.Add(new KeyValuePair<string, string>(input.Key, dom.Value.Trim()));
                 }
             }
 
             foreach (var select in form.Find("select"))
             {
                 var value = CQ.Create(select).Val();
-                values.Add(select.Name, value);
+                values.Add(new KeyValuePair<string, string>(select.Name, value));
             }
 
-            return values;
+            return values.ToLookup(x => x.Key, x => x.Value);
         }
 
         // If we're using Html.PasswordFor<TModel, TProperty>() the value will NOT be set thus we need to fake it.
