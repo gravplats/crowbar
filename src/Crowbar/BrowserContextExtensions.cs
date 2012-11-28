@@ -28,6 +28,15 @@ namespace Crowbar
         /// <param name="applicationPath">The application path.</param>
         public static void AntiForgeryRequestToken(this BrowserContext context, string username = "", string salt = "", string domain = null, string path = null, string applicationPath = "/")
         {
+            if (context.MvcMajorVersion != 3)
+            {
+                string message = "Anti-Forgery Request Token is currently only supported when using " +
+                                 "ASP.NET MVC 3. The underlying implementation changed as of ASP.NET MVC 4 " +
+                                 "and is not compatible with the implementation in ASP.NET MVC 3.";
+
+                throw new CrowbarNotSupportedException(message);
+            }
+
             var serializer = new AntiForgeryDataSerializer();
 
             var cookieToken = AntiForgeryData.NewToken();
