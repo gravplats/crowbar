@@ -21,7 +21,8 @@ namespace Crowbar
             {
                 using (var context = CreateContext(application, testBaseDirectory))
                 {
-                    script.Delegate(new Browser(), context);
+                    var browser = CreateBrowser();
+                    script.Delegate(browser, context);
                 }
             }
             catch (Exception exception)

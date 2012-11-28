@@ -14,7 +14,8 @@ namespace Crowbar
         {
             try
             {
-                script.Delegate(new Browser());
+                var browser = CreateBrowser();
+                script.Delegate(browser);
             }
             catch (Exception exception)
             {

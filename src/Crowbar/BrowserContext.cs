@@ -11,8 +11,9 @@ namespace Crowbar
     {
         private readonly ISimulatedWorkerRequestContext context;
 
-        public BrowserContext(string method)
+        public BrowserContext(int mvcMajorVersion, string method)
         {
+            MvcMajorVersion = mvcMajorVersion;
             context = this;
             context.Cookies = new HttpCookieCollection();
             context.FormValues = new NameValueCollection();
@@ -23,6 +24,8 @@ namespace Crowbar
 
             context.Headers["Content-Type"] = "application/octet-stream";
         }
+
+        internal int MvcMajorVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the body.

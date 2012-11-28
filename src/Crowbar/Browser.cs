@@ -10,6 +10,13 @@ namespace Crowbar
     /// </summary>
     public class Browser
     {
+        private readonly int mvcMajorVersion;
+
+        public Browser(int mvcMajorVersion)
+        {
+            this.mvcMajorVersion = mvcMajorVersion;
+        }
+
         /// <summary>
         /// Performs a DELETE request against the host application.
         /// </summary>
@@ -73,7 +80,7 @@ namespace Crowbar
                 throw new ArgumentNullException("path");
             }
 
-            var context = new BrowserContext(method);
+            var context = new BrowserContext(mvcMajorVersion, method);
             if (initialize != null)
             {
                 initialize(context);
