@@ -24,6 +24,12 @@ namespace Crowbar.Web.Core
             return Assert(() => payload.Value == "2");
         }
 
+        [POST(CrowbarRoute.SubmitTextArea)]
+        public ActionResult SubmitTextArea_Post(TextBoxPayload payload)
+        {
+            return Assert(() => payload.Text == "text");
+        }
+        
         [POST(CrowbarRoute.SubmitTextBox)]
         public ActionResult SubmitTextBox_Post(TextBoxPayload payload)
         {

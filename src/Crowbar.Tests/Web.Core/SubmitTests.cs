@@ -49,6 +49,18 @@ namespace Crowbar.Tests.Web.Core
         }
 
         [Test]
+        public void Should_be_able_to_post_form_with_textarea()
+        {
+            Application.Execute(browser =>
+            {
+                var payload = new TextBoxPayload { Text = "text" };
+                var response = browser.Submit("~/Views/_FormTextArea.cshtml", payload);
+
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            });
+        }
+
+        [Test]
         public void Should_be_able_to_post_form_with_drop_down()
         {
             Application.Execute(browser =>

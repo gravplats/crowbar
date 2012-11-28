@@ -29,6 +29,7 @@ namespace Crowbar.Mvc.Common
         public const string SubmitAntiForgeryRequestToken   = "/submit-antiforgeryrequesttoken";
         public const string SubmitCheckBox                  = "/submit-checkbox";
         public const string SubmitDropDown                  = "/submit-dropdown";
+        public const string SubmitTextArea                  = "/submit-textarea";
         public const string SubmitTextBox                   = "/submit-textbox";
 
         public const string XmlBody                         = "/xml-body";

@@ -1,0 +1,5 @@
+﻿@model TextBoxPayload
+<form action="@CrowbarRoute.SubmitTextArea.AsOutbound()" method="post">
+    @Html.TextAreaFor(x => x.Text)
+    <button>OK</button>
+</form>
