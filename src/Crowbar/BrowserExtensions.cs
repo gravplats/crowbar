@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web;
-using Crowbar.Views;
 using CsQuery;
 
 namespace Crowbar
@@ -12,25 +11,51 @@ namespace Crowbar
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
         /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
-        /// <param name="partialViewContext">The name of the partial view which contains the form element that should be submitted.</param>
-        /// <param name="viewModel">The form payload.</param>
+        /// <param name="html">The HTML that contains the form element that should be submitted.</param>
+        /// <param name="viewModel">The form payload (used for overrides).</param>
         /// <param name="customize">Customize the request prior to submission.</param>
-        /// <param name="modify">Modify the form prior to performing the request.</param>
+        /// <param name="overrides">Modify the form prior to performing the request.</param>
+        /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, PartialViewContext partialViewContext, TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> modify = null)
+        public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
             where TViewModel : class
         {
-            Action<BrowserContext> context = ctx =>
+            return browser.Submit(html, viewModel, AsAjaxRequest(customize), overrides, cookies);
+        }
+
+        /// <summary>
+        /// Loads a rendered form from the server.
+        /// </summary>
+        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="path">The path that is being requested.</param>
+        /// <param name="customize">Customize the request prior to submission.</param>
+        /// <returns>A continuation.</returns>
+        public static BrowserLoadContinuation Load(this Browser browser, string path, Action<BrowserContext> customize = null)
+        {
+            var response = browser.Get(path, customize);
+            if (response.StatusCode != HttpStatusCode.OK)
             {
-                ctx.AjaxRequest();
+                string message = string.Format("Could not load resource '{0}' from server: {1}.", path, response.StatusCode);
+                throw new InvalidOperationException(message);
+            }
 
-                if (customize != null)
-                {
-                    customize(ctx);
-                }
-            };
+            string html = response.ResponseBody;
 
-            return browser.Submit(partialViewContext, viewModel, context, modify);
+            return new BrowserLoadContinuation(browser, html);
+        }
+
+        /// <summary>
+        /// Renders a form from the server out-of-band.
+        /// </summary>
+        /// <typeparam name="TViewModel">The type of form payload.</typeparam>
+        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="partialViewContext">The name of the partial view which contains the form element that should be submitted.</param>
+        /// <param name="viewModel">The form payload.</param>
+        /// <returns>A continuation.</returns>
+        public static BrowserRenderContinuation<TViewModel> Render<TViewModel>(this Browser browser, PartialViewContext partialViewContext, TViewModel viewModel)
+            where TViewModel : class
+        {
+            return new BrowserRenderContinuation<TViewModel>(browser, partialViewContext, viewModel);
         }
 
         /// <summary>
@@ -38,17 +63,20 @@ namespace Crowbar
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
         /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
-        /// <param name="partialViewContext">The name of the partial view which contains the form element that should be submitted.</param>
-        /// <param name="viewModel">The form payload.</param>
+        /// <param name="html">The HTML that contains the form element that should be submitted.</param>
+        /// <param name="viewModel">The form payload (used for overrides).</param>
         /// <param name="customize">Customize the request prior to submission.</param>
-        /// <param name="modify">Modify the form prior to performing the request.</param>
+        /// <param name="overrides">Modify the form prior to performing the request.</param>
+        /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse Submit<TViewModel>(this Browser browser, PartialViewContext partialViewContext, TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> modify = null)
+        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
             where TViewModel : class
         {
-            HttpCookieCollection cookies;
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                throw new ArgumentException("Cannot be null or empty.", "html");
+            }
 
-            string html = CrowbarController.ToString(partialViewContext, viewModel, out cookies);
             var document = CQ.Create(html);
 
             var form = document.Is("form") ? document : document.Find("form").First();
@@ -57,11 +85,14 @@ namespace Crowbar
                 throw new InvalidOperationException("Missing form element in HTML.");
             }
 
-            form.SetPasswordFields(viewModel);
-
-            if (modify != null)
+            if (viewModel != null)
             {
-                modify(form, viewModel);
+                form.SetPasswordFields(viewModel);
+
+                if (overrides != null)
+                {
+                    overrides(form, viewModel);
+                }
             }
 
             string method = form.Attr("method");
@@ -100,6 +131,19 @@ namespace Crowbar
                     customize(ctx);
                 }
             });
+        }
+
+        internal static Action<BrowserContext> AsAjaxRequest(Action<BrowserContext> customize)
+        {
+            return ctx =>
+            {
+                ctx.AjaxRequest();
+
+                if (customize != null)
+                {
+                    customize(ctx);
+                }
+            };
         }
     }
 }

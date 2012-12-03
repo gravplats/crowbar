@@ -11,16 +11,6 @@ namespace Crowbar.Views
     {
         public static string ToString(PartialViewContext partialViewContext, object viewModel, out HttpCookieCollection cookies)
         {
-            if (partialViewContext == null)
-            {
-                throw new ArgumentException("partialViewContext");
-            }
-
-            if (viewModel == null)
-            {
-                throw new ArgumentNullException("viewModel");
-            }
-
             string viewName = partialViewContext.ViewName;
 
             using (var writer = new StringWriter())

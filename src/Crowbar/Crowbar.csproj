@@ -53,6 +53,8 @@
     <Compile Include="BrowserContext.cs" />
     <Compile Include="BrowserContextExtensions.cs" />
     <Compile Include="BrowserExtensions.cs" />
+    <Compile Include="BrowserLoadContinuation.cs" />
+    <Compile Include="BrowserRenderContinuation.cs" />
     <Compile Include="BrowserResponseAssertExtensions.cs" />
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />

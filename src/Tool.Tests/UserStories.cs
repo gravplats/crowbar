@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Security;
 using Crowbar;
@@ -40,7 +39,8 @@ namespace Tool.Tests
                     Password = "admin"
                 };
 
-                var response = browser.Submit(new PartialViewContext("_LoginForm").SetAnonymousPrincipal(), form);
+                var view = new PartialViewContext("_LoginForm").SetAnonymousPrincipal();
+                var response = browser.Render(view, form).Submit();
 
                 response.ShouldHaveTemporarilyRedirectTo("/app");
                 Assert.That(response.HttpResponse.Cookies.AllKeys.Any(name => name == FormsAuthentication.FormsCookieName), Is.True);
@@ -66,7 +66,7 @@ namespace Tool.Tests
                 view.SetFormsAuthPrincipal("invalid"); // simulate invalid anti-forgery request token.
 
                 // Obviously the MVC application should handle this more gracefully, this is just an example.
-                var exception = Assert.Throws<CrowbarException>(() => browser.Submit(view, form));
+                var exception = Assert.Throws<CrowbarException>(() => browser.Render(view, form).Submit());
                 Assert.That(exception.InnerException, Is.TypeOf<HttpAntiForgeryException>());
             });
         }
@@ -85,7 +85,7 @@ namespace Tool.Tests
                     Password = "incorrect"
                 };
 
-                var response = browser.Submit("_LoginForm", form);
+                var response = browser.Render("_LoginForm", form).Submit();
                 response.ShouldHaveTemporarilyRedirectTo("/");
             });
         }

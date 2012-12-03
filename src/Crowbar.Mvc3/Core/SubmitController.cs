@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using AttributeRouting.Web.Mvc;
 using Crowbar.Mvc.Common;
 
@@ -16,12 +17,41 @@ namespace Crowbar.Web.Core
         public ActionResult SubmitCheckBox_Post(CheckBoxPayload payload)
         {
             return Assert(() => payload.Condition.ToString() == payload.SanityCheck);
-        }
+        }        
         
+        [GET(CrowbarRoute.SubmitCheckBox)]
+        public ActionResult SubmitCheckBox_Get()
+        {
+            return PartialView("_FormCheckBox");
+        }
+
         [POST(CrowbarRoute.SubmitDropDown)]
         public ActionResult SubmitDropDown_Post(DropDownPayload payload)
         {
             return Assert(() => payload.Value == "2");
+        }
+
+        [GET(CrowbarRoute.SubmitDropDown)]
+        public ActionResult SubmitDropDown_Get()
+        {
+            var model = new DropDownPayload
+            {
+                Values = new List<DropDownPayload.DropDownItem>
+                {
+                    new DropDownPayload.DropDownItem
+                    {
+                        Text = "black",
+                        Value = "1"
+                    },
+                    new DropDownPayload.DropDownItem
+                    {
+                        Text = "white",
+                        Value = "2"
+                    },
+                }
+            };
+
+            return PartialView("_FormDropDown", model);
         }
 
         [POST(CrowbarRoute.SubmitTextArea)]
@@ -29,11 +59,23 @@ namespace Crowbar.Web.Core
         {
             return Assert(() => payload.Text == "text");
         }
-        
+
+        [GET(CrowbarRoute.SubmitTextArea)]
+        public ActionResult SubmitTextArea_Get()
+        {
+            return PartialView("_FormTextArea");
+        }
+
         [POST(CrowbarRoute.SubmitTextBox)]
         public ActionResult SubmitTextBox_Post(TextBoxPayload payload)
         {
             return Assert(() => payload.Text == "text");
+        }
+
+        [GET(CrowbarRoute.SubmitTextBox)]
+        public ActionResult SubmitTextBox_Get(TextBoxPayload payload)
+        {
+            return PartialView("_FormTextBox");
         }
     }
 }
