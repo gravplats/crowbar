@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar", "Crowbar\Crowbar.csproj", "{3C0FDDD4-9A22-490E-A3C6-2991124CE803}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FF7E376C-1701-4B15-976B-F774778CE04B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{0DBE009E-145D-41C7-8DAB-191ED19A87A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar", "Crowbar\Crowbar.csproj", "{3C0FDDD4-9A22-490E-A3C6-2991124CE803}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Tests", "Crowbar.Tests\Crowbar.Tests.csproj", "{C69860BA-69B9-4B90-BDD1-417C856DF98A}"
 EndProject
@@ -12,8 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Mvc4", "Crowbar.Mvc4\Crowbar.Mvc4.csproj", "{ADEFD424-F5BA-4696-A9B5-AB6779704635}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Mvc.Common", "Crowbar.Mvc.Common\Crowbar.Mvc.Common.csproj", "{8364FDA4-31CE-431A-A6D2-A0B085817309}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{0DBE009E-145D-41C7-8DAB-191ED19A87A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tool.Web", "Tool.Web\Tool.Web.csproj", "{1234385F-3316-4515-A7C6-47A3B9A6CA5E}"
 EndProject
