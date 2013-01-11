@@ -25,6 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Web", "Raven.Web\Rave
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D67C93F-D663-4C43-99B4-D334B1DE6C3E}"
 	ProjectSection(SolutionItems) = preProject
+		..\HowToBuild.txt = ..\HowToBuild.txt
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 	EndProjectSection
