@@ -21,6 +21,10 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,7 +79,6 @@
   <ItemGroup>
     <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="Core\AjaxRequestController.cs" />
-    <Compile Include="Core\AntiForgeryRequestTokenController.cs" />
     <Compile Include="Core\FormsAuthController.cs" />
     <Compile Include="Core\SubmitController.cs" />
     <Compile Include="CrowbarControllerBase.cs" />

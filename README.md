@@ -33,7 +33,6 @@ Table of Contents
     * [HttpsRequest](#section-browsercontext-httpsrequest)
     * [Query](#section-browsercontext-query)
     * [Extensions](#section-browsercontext-extensions)
-        * AntiForgeryRequestToken
         * FormsAuth
         * JsonBody
         * XmlBody
@@ -296,10 +295,6 @@ var response = browser.PerformRequest("<method>", "<route>", ctx => {
 ### Extensions
 
 Crowbar provides several extension method to `BrowserContext`.
-
-#### AntiForgeryRequestToken (experimental - only works with ASP.NET MVC 3)
-
-Supplies an anti-forgery request token (cookie and form value) with the request.
 
 #### FormsAuth
 

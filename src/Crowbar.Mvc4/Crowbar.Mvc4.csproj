@@ -16,6 +16,10 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,9 +94,6 @@
     </Compile>
     <Compile Include="..\Crowbar.Mvc3\Core\AjaxRequestController.cs">
       <Link>Core\AjaxRequestController.cs</Link>
-    </Compile>
-    <Compile Include="..\Crowbar.Mvc3\Core\AntiForgeryRequestTokenController.cs">
-      <Link>Core\AntiForgeryRequestTokenController.cs</Link>
     </Compile>
     <Compile Include="..\Crowbar.Mvc3\Core\CrowbarExceptionController.cs">
       <Link>Core\CrowbarExceptionController.cs</Link>

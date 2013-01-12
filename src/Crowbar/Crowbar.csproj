@@ -48,8 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedBrowserResponse.cs" />
-    <Compile Include="AspNetMvc\AntiForgeryDataSerializer.cs" />
-    <Compile Include="AspNetMvc\AntiForgeryData.cs" />
     <Compile Include="AssertException.cs" />
     <Compile Include="BrowserContext.cs" />
     <Compile Include="BrowserContextExtensions.cs" />
@@ -86,9 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AspNetMvc\License.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

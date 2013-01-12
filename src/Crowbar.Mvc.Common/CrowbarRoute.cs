@@ -2,7 +2,6 @@ namespace Crowbar.Mvc.Common
 {
     public static class CrowbarRoute
     {
-        public const string AntiForgeryRequestToken         = "/anti-forgery-request-token";
         public const string AjaxRequest                     = "/ajax-request";
         
         public const string CustomConfig                    = "/custom-config";

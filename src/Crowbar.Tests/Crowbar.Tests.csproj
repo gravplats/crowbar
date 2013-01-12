@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Web.Core\AjaxRequestsTests.cs" />
-    <Compile Include="Web.Core\AntiForgeryRequestTokenTests.cs" />
     <Compile Include="Web.Core\FormsAuthTests.cs" />
     <Compile Include="Web.Core\ShouldBeTests.cs" />
     <Compile Include="Web.Core\CustomConfigTests.cs" />
