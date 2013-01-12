@@ -57,11 +57,9 @@
     <Compile Include="BrowserResponseAssertExtensions.cs" />
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
-    <Compile Include="CrowbarNotSupportedException.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="IHideObjectMembers.cs" />
-    <Compile Include="IMvcApplicationProxy.cs" />
     <Compile Include="ISimulatedWorkerRequestContext.cs" />
     <Compile Include="BrowserResponse.cs" />
     <Compile Include="MvcApplication.cs" />
