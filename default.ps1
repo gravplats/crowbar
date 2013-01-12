@@ -2,14 +2,15 @@
 include .\extensions.ps1
 
 properties {
-    $path             = resolve-path .
-    $buildDirectory   = "$path\build\"
-    $nugetDirectory   = "$path\nuget"
-    $releaseDirectory = "$path\release\"
-    $sourceDirectory  = "$path\src"
-    $solution         = "$sourceDirectory\Crowbar.sln"	
-    $toolsDirectory   = "$path\tools\"
-    $version          = "0.9"
+    $path              = resolve-path .
+    $buildDirectory    = "$path\build"
+	$binariesDirectory = "$buildDirectory\binaries\"
+    $nugetDirectory    = "$buildDirectory\nuget\"
+    $releaseDirectory  = "$buildDirectory\release\"
+    $sourceDirectory   = "$path\src"
+    $solution          = "$sourceDirectory\Crowbar.sln"	
+    $toolsDirectory    = "$path\tools\"
+    $version           = "0.9"
 }
 
 $framework = '4.0'
@@ -17,11 +18,11 @@ $framework = '4.0'
 task default -depends release
 
 task clean {
-    Remove-Item -Force -Recurse -ErrorAction SilentlyContinue -LiteralPath $buildDirectory, $nugetDirectory, $releaseDirectory
+    Remove-Item -Force -Recurse -ErrorAction SilentlyContinue -LiteralPath $buildDirectory
 }
 
 task build -depends clean {
-    New-Item $buildDirectory -ItemType Directory | Out-Null
+    New-Item $binariesDirectory -ItemType Directory | Out-Null
 
     Generate-Assembly-Info `
         -file "$sourceDirectory\Crowbar\Properties\AssemblyInfo.cs" `
@@ -31,17 +32,17 @@ task build -depends clean {
         -version $version `
         -copyright "Copyright (C) Mattias Rydengren 2012-2013" `
 
-    msbuild $solution /p:OutDir=$buildDirectory /p:Configuration=Release | Out-Null
+    msbuild $solution /p:OutDir=$binariesDirectory /p:Configuration=Release | Out-Null
 }
 
 task release -depends build {
     New-Item $releaseDirectory -ItemType Directory | Out-Null
 
     & $toolsDirectory\7-zip\7za.exe a $releaseDirectory\crowbar-$version-release-net-4.0.zip `
-        $buildDirectory\Crowbar.dll `
-        $buildDirectory\Crowbar.pdb `
-        $buildDirectory\Crowbar.xml `
-        license.txt | Out-Null
+        $binariesDirectory\Crowbar.dll `
+        $binariesDirectory\Crowbar.pdb `
+        $binariesDirectory\Crowbar.xml `
+        LICENSE | Out-Null
 }
 
 task nuget -depends release {
@@ -58,9 +59,9 @@ task nuget -depends release {
         -tags "crowbar testing"
         
     Copy-Item -Destination $nugetDirectory\lib\net40 -LiteralPath `
-        $buildDirectory\Crowbar.dll, `
-        $buildDirectory\Crowbar.pdb, `
-        $buildDirectory\Crowbar.xml 
+        $binariesDirectory\Crowbar.dll, `
+        $binariesDirectory\Crowbar.pdb, `
+        $binariesDirectory\Crowbar.xml 
     
     & $toolsDirectory\nuget-cli\nuget.exe pack $nugetDirectory\Crowbar.nuspec -o $nugetDirectory | Out-Null
     Remove-Item -LiteralPath $nugetDirectory\lib, $nugetDirectory\Crowbar.nuspec -Force -Recurse -ErrorAction SilentlyContinue
