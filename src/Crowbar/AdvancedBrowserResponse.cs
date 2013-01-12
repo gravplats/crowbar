@@ -3,6 +3,9 @@ using System.Web.SessionState;
 
 namespace Crowbar
 {
+    /// <summary>
+    /// Provides access to various states during an HTTP request cycle.
+    /// </summary>
     public class AdvancedBrowserResponse
     {
         /// <summary>

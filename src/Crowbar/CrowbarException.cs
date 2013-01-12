@@ -9,7 +9,7 @@ namespace Crowbar
     [Serializable]
     public class CrowbarException : Exception
     {
-        public CrowbarException(string message, Exception innerException) : base(message, innerException) { }
+        internal CrowbarException(string message, Exception innerException) : base(message, innerException) { }
 
         protected CrowbarException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 

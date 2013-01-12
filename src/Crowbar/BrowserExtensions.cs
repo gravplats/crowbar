@@ -4,6 +4,9 @@ using CsQuery;
 
 namespace Crowbar
 {
+    /// <summary>
+    /// Provides extra functionality of the <see cref="Browser"/> class.
+    /// </summary>
     public static class BrowserExtensions
     {
         /// <summary>

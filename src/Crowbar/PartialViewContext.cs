@@ -8,6 +8,10 @@ namespace Crowbar
     /// </summary>
     public class PartialViewContext
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="PartialViewContext"/>.
+        /// </summary>
+        /// <param name="viewName">The name of the partial view that should be rendered.</param>
         public PartialViewContext(string viewName)
         {
             ViewName = viewName;
@@ -15,8 +19,14 @@ namespace Crowbar
             UnobtrusiveJavaScriptEnabled = true;    // Read from Web.config?
         }
 
+        /// <summary>
+        /// Gets or sets whether client-side validation should be enabled when rendering the partial view.
+        /// </summary>
         public bool ClientValidationEnabled { get; set; }
 
+        /// <summary>
+        /// Gets or sets whether unobtrusive JavaScript should be enabled when rendering the partial view.
+        /// </summary>
         public bool UnobtrusiveJavaScriptEnabled { get; set; }
 
         /// <summary>
@@ -52,6 +62,11 @@ namespace Crowbar
             return this;
         }
 
+        /// <summary>
+        /// Converts a string to a <see cref="PartialViewContext"/> object.
+        /// </summary>
+        /// <param name="viewName">The name of the partial view that should be rendered.</param>
+        /// <returns></returns>
         public static implicit operator PartialViewContext(string viewName)
         {
             return new PartialViewContext(viewName);

@@ -12,6 +12,10 @@ namespace Crowbar
     {
         private readonly int mvcMajorVersion;
 
+        /// <summary>
+        /// Creates an instance of <see cref="Browser"/>.
+        /// </summary>
+        /// <param name="mvcMajorVersion">The major version of the MVC framework.</param>
         public Browser(int mvcMajorVersion)
         {
             this.mvcMajorVersion = mvcMajorVersion;

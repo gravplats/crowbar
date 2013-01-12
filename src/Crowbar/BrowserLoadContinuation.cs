@@ -4,6 +4,9 @@ using CsQuery;
 
 namespace Crowbar
 {
+    /// <summary>
+    /// Represents a continuation in a fluent interface.
+    /// </summary>
     public class BrowserLoadContinuation : IHideObjectMembers
     {
         private readonly Browser browser;

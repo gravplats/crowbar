@@ -11,6 +11,11 @@ namespace Crowbar
     {
         private readonly ISimulatedWorkerRequestContext context;
 
+        /// <summary>
+        /// Creates an instance of <see cref="BrowserContext"/>.
+        /// </summary>
+        /// <param name="mvcMajorVersion">The major version of the MVC framework</param>
+        /// <param name="method">The HTTP method.</param>
         public BrowserContext(int mvcMajorVersion, string method)
         {
             MvcMajorVersion = mvcMajorVersion;
@@ -32,22 +37,28 @@ namespace Crowbar
         /// </summary>
         string ISimulatedWorkerRequestContext.BodyString { get; set; }
 
+        /// <summary>
+        /// Gets or sets cookies.
+        /// </summary>
         HttpCookieCollection ISimulatedWorkerRequestContext.Cookies { get; set; }
 
         /// <summary>
-        /// Gets or sets the forms values.
+        /// Gets or sets the form values.
         /// </summary>
         NameValueCollection ISimulatedWorkerRequestContext.FormValues { get; set; }
 
         /// <summary>
-        /// Gets or sets the headers that should be used for the request.
+        /// Gets or sets the headers.
         /// </summary>
         NameValueCollection ISimulatedWorkerRequestContext.Headers { get; set; }
 
+        /// <summary>
+        /// Gets or set the HTTP method.
+        /// </summary>
         string ISimulatedWorkerRequestContext.Method { get; set; }
 
         /// <summary>
-        /// Gets or sets the protocol that should be used for the request.
+        /// Gets or sets the protocol.
         /// </summary>
         string ISimulatedWorkerRequestContext.Protocol { get; set; }
 

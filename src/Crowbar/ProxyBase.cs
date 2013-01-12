@@ -4,8 +4,16 @@ using System.Web;
 
 namespace Crowbar
 {
+    /// <summary>
+    /// A common base class for any MVC application proxy.
+    /// </summary>
     public abstract class ProxyBase : MarshalByRefObject
     {
+        /// <summary>
+        /// Initializes the proxy.
+        /// </summary>
+        /// <param name="initialize">The initialization code.</param>
+        /// <param name="directory">The directory in which the test is run.</param>
         public abstract void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory);
 
         public override object InitializeLifetimeService()
