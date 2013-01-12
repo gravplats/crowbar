@@ -51,6 +51,7 @@ Table of Contents
         * ShouldBeXml
         * ShouldHavePermanentlyRedirectedTo
         * ShouldHaveTemporarilyRedirectTo
+* [Samples](#section-samples)
 
 <a name="section-mvcapplication"></a>
 MvcApplication
@@ -405,3 +406,8 @@ Asserts that the HTTP status code is 'HTTP Status 302 Found', that the header _L
 ``` csharp
 response.ShouldHaveTemporarilyRedirectTo("/location");
 ```
+<a name="section-samples"></a>
+Samples
+-------
+
+The project contains two sample projects: Raven.Web/Raven.Tests and Tool.Web/Tool.Tests. The Raven sample project shows how to implement a custom user-defined proxy and context.
