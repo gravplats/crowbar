@@ -60,6 +60,12 @@
             property.
             </summary>
         </member>
+        <member name="P:CsQuery.Config.WebRequestFactory">
+            <summary>
+            A method that returns a new HttpWebRequest. This is mostly useful for providing an alternate
+            implementation for testing.
+            </summary>
+        </member>
         <member name="P:CsQuery.Config.DocType">
             <summary>
             Default document type. This is the parsing mode that will be used when creating documents
@@ -386,11 +392,28 @@
         </member>
         <member name="M:CsQuery.CQ.Create(System.IO.Stream)">
              <summary>
-             Create a new CQ object from a stream of HTML text.
+             Create a new CQ object from a stream of HTML text, attempting to automatically detect the
+             character set encoding from BOM. 
              </summary>
             
              <param name="html">
              An open Stream.
+             </param>
+            
+             <returns>
+             A new CQ object.
+             </returns>
+        </member>
+        <member name="M:CsQuery.CQ.Create(System.IO.Stream,System.Text.Encoding)">
+             <summary>
+             Create a new CQ from a stream of HTML text in the specified encoding.
+             </summary>
+            
+             <param name="html">
+             An open Stream.
+             </param>
+             <param name="encoding">
+             The character set encoding.
              </param>
             
              <returns>
@@ -410,13 +433,16 @@
              A new CQ object.
              </returns>
         </member>
-        <member name="M:CsQuery.CQ.Create(System.IO.Stream,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
+        <member name="M:CsQuery.CQ.Create(System.IO.Stream,System.Text.Encoding,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
              <summary>
              Create a new CQ object from a stream of HTML, treating the HTML as a content document.
              </summary>
             
              <param name="html">
              An open Stream.
+             </param>
+             <param name="encoding">
+             The character set encoding.
              </param>
              <param name="parsingMode">
              (optional) the mode.
@@ -515,7 +541,23 @@
              </summary>
             
              <param name="html">
-             A n open Stream
+             An open Stream
+             </param>
+            
+             <returns>
+             The new document.
+             </returns>
+        </member>
+        <member name="M:CsQuery.CQ.CreateDocument(System.IO.Stream,System.Text.Encoding)">
+             <summary>
+             Creeate a new DOM from HTML text using full HTML5 tag generation.
+             </summary>
+            
+             <param name="html">
+             An open Stream.
+             </param>
+             <param name="encoding">
+             The character set encoding.
              </param>
             
              <returns>
@@ -1671,7 +1713,8 @@
         </member>
         <member name="M:CsQuery.CQ.Clone">
              <summary>
-             Create a deep copy of the set of matched elements.
+             Create a deep copy of the set of matched elements. Clone makes copies of the actual elements
+             in a selection set; it doesn't simply make a copy of a selector's results.
              </summary>
             
              <returns>
@@ -3956,13 +3999,12 @@
              Get the combined text contents of this and all child elements.
              </summary>
             
+             <param name="sb">
+             The StribgBuilder object to write to
+             </param>
              <param name="obj">
              The object.
              </param>
-            
-             <returns>
-             A string containing the text contents of the selection.
-             </returns>
         </member>
         <member name="M:CsQuery.CQ.SetChildText(CsQuery.IDomElement,System.String)">
              <summary>
@@ -4380,7 +4422,7 @@
              (optional) type of the document.
              </param>
         </member>
-        <member name="M:CsQuery.CQ.#ctor(System.IO.Stream,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
+        <member name="M:CsQuery.CQ.#ctor(System.IO.Stream,System.Text.Encoding,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
              <summary>
              Create a new CQ object from an HTML stream.
              <see cref="M:CsQuery.CQ.Create(System.Char[])"/>
@@ -4388,6 +4430,9 @@
             
              <param name="html">
              The html source of the new document.
+             </param>
+             <param name="encoding">
+             The character set encoding.
              </param>
              <param name="parsingMode">
              The HTML parsing mode.
@@ -4544,7 +4589,7 @@
              The elements to provide the source for this object's DOM.
              </param>
         </member>
-        <member name="M:CsQuery.CQ.CreateNew(CsQuery.CQ,System.IO.TextReader,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
+        <member name="M:CsQuery.CQ.CreateNew(CsQuery.CQ,System.IO.Stream,System.Text.Encoding,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
              <summary>
              Bind this instance to a new DomFragment created from HTML in a specific HTML tag context.
              </summary>
@@ -4554,6 +4599,9 @@
              </param>
              <param name="html">
              The HTML.
+             </param>
+             <param name="encoding">
+             The character set encoding.
              </param>
              <param name="parsingMode">
              The HTML parsing mode.
@@ -5340,6 +5388,11 @@
             
              <seealso cref="P:CsQuery.IDomObject.ChildrenAllowed"/>
         </member>
+        <member name="P:CsQuery.IDomNode.Index">
+            <summary>
+            Gets zero-based index of this object relative to its siblings including all node types.
+            </summary>
+        </member>
         <member name="P:CsQuery.IDomNode.ChildNodes">
             <summary>
             Return an INodeList of the direct children of this node.
@@ -5820,6 +5873,15 @@
              https://developer.mozilla.org/en/DOM/element.innerHTML
              </url>
         </member>
+        <member name="P:CsQuery.IDomObject.OuterHTML">
+             <summary>
+             Gets or sets the outer HTML.
+             </summary>
+            
+             <url>
+             https://developer.mozilla.org/en-US/docs/DOM/element.outerHTML
+             </url>
+        </member>
         <member name="P:CsQuery.IDomObject.InnerText">
              <summary>
              Gets or sets the text content of a node and its descendants.
@@ -6009,11 +6071,6 @@
             Gets the depth of this node relative to the Document node, which has depth zero.
             </summary>
         </member>
-        <member name="P:CsQuery.IDomObject.Index">
-            <summary>
-            Gets zero-based index of this object relative to its siblings including all node types.
-            </summary>
-        </member>
         <member name="P:CsQuery.IDomObject.PathID">
             <summary>
             Gets a unique ID for this element among its siblings
@@ -6061,6 +6118,24 @@
             cache, it prevents us from having to check to see if there's an owning document and access it
             directly. This is an optimizaton as this happens often.
             </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.DomObject.GetPath">
+             <summary>
+             Gets the full path to this document.
+             </summary>
+            
+             <returns>
+             The path.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Implementation.DomObject.GetDepth">
+             <summary>
+             Gets the depth of the current node.
+             </summary>
+            
+             <returns>
+             The depth.
+             </returns>
         </member>
         <member name="M:CsQuery.Implementation.DomObject.Render">
              <summary>
@@ -6156,7 +6231,7 @@
              </summary>
             
              <exception cref="T:System.InvalidOperationException">
-             Thrown when the requested operation is invalid.
+             Thrown when the the node has no parent.
              </exception>
         </member>
         <member name="M:CsQuery.Implementation.DomObject.DescendantCount">
@@ -6629,6 +6704,15 @@
             Gets or sets or gets the HTML of an elements descendants.
             </summary>
         </member>
+        <member name="P:CsQuery.Implementation.DomObject.OuterHTML">
+             <summary>
+             Gets or sets the outer HTML.
+             </summary>
+            
+             <url>
+             https://developer.mozilla.org/en-US/docs/DOM/element.outerHTML
+             </url>
+        </member>
         <member name="P:CsQuery.Implementation.DomObject.ChildNodes">
             <summary>
             Gets the child nodes.
@@ -6658,7 +6742,7 @@
         </member>
         <member name="P:CsQuery.Implementation.DomObject.Depth">
             <summary>
-            Gets the depth.
+            Gets the depth of the current node.
             </summary>
         </member>
         <member name="P:CsQuery.Implementation.DomObject.ChildElements">
@@ -7979,6 +8063,13 @@
             For input elements, the "value" property of this element. Returns null for other element
             types.
             </summary>
+            <remarks>
+            TODO: Value is only mapped to an attribute on certain elements. The HasValueProperty method 
+            resolves this. When setting the Value property for any other element, it should still track
+            the value but never render it.
+            We do just the opposite; we don't return the value in that situation but always render it.
+            This should be fixed to work like the DOM so setting Value doesn't render. 
+            </remarks>
         </member>
         <member name="P:CsQuery.Implementation.DomElement.NodeType">
             <summary>
@@ -8101,6 +8192,15 @@
             <summary>
             A sequence of all unique class names defined on this element.
             </summary>
+        </member>
+        <member name="P:CsQuery.Implementation.DomElement.OuterHTML">
+             <summary>
+             Gets or sets the outer HTML.
+             </summary>
+            
+             <url>
+             https://developer.mozilla.org/en-US/docs/DOM/element.outerHTML
+             </url>
         </member>
         <member name="P:CsQuery.Implementation.DomElement.CsQuery#IAttributeCollection#Item(System.String)">
              <summary>
@@ -9981,6 +10081,11 @@
             The parameter value may be quoted: if the first character is a double- or single-quote, then a matching quote terminates the parameter value..
             </summary>
         </member>
+        <member name="T:CsQuery.Engine.PseudoClassSelectors.RegexExtension">
+            <summary>
+            Port of James Padolsey's regex jQuery selector: http://james.padolsey.com/javascript/regex-selector-for-jquery/
+            </summary>
+        </member>
         <member name="T:CsQuery.Engine.PseudoSelectorFilter">
             <summary>
             A base class for filter-type selectors that implements a simple iterator function and calls
@@ -10194,6 +10299,19 @@
             
              <returns>
              A sequence of children that match.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Engine.PseudoClassSelectors.RegexExtension.ParameterQuoted(System.Int32)">
+             <summary>
+             Allow but do not require quotes around the parameters for :regex.
+             </summary>
+            
+             <param name="index">
+             Zero-based index of the parameter.
+             </param>
+            
+             <returns>
+             OptionallyQuoted.
              </returns>
         </member>
         <member name="T:CsQuery.Engine.PseudoClassSelectors.Contains">
@@ -11955,6 +12073,12 @@
             <param name="html4SpecificAdditionalErrorChecks"><c>true</c>  if HTML 4-specific checks were enabled,
             <c>false</c> otherwise</param>
         </member>
+        <member name="P:HtmlParserSharp.Common.EncodingDetectedEventArgs.AcceptEncoding">
+            <summary>
+            When true, the client has decided to accept the charset-encoding for the document and the
+            current processing must be suspended. (Set true to stop encoding).
+            </summary>
+        </member>
         <member name="T:HtmlParserSharp.Common.ITokenHandler">
             <summary>
             <code>Tokenizer</code> reports tokens through this interface.
@@ -13024,6 +13148,11 @@
             
             @return the col
         </member>
+        <member name="P:HtmlParserSharp.Core.Tokenizer.IsSuspended">
+            <summary>
+            Gets a value indicating whether the parsing has been suspended.
+            </summary>
+        </member>
         <member name="T:HtmlParserSharp.Core.TreeBuilderConstants">
             <summary>
             Moved the constants (and pseude-enums) out of the TreeBuilder class.
@@ -13389,18 +13518,34 @@
             Element factory to build a CsQuery DOM using HtmlParserSharp.
             </summary>
         </member>
+        <member name="F:CsQuery.HtmlParser.ElementFactory.tokenizerBlockSize">
+            <summary>
+            Size of the blocks to read from the input stream (char[] = 2x bytes)
+            </summary>
+        </member>
+        <member name="F:CsQuery.HtmlParser.ElementFactory.preprocessorBlockSize">
+            <summary>
+            Size of the preprocessor block; the maximum number of bytes in which the character set
+            encoding can be changed. This must be at least as large (IN BYTES!) as the tokenizer block or the
+            tokenizer won't quit before moving outside the preprocessor block.
+            </summary>
+        </member>
         <member name="M:CsQuery.HtmlParser.ElementFactory.#cctor">
             <summary>
             Static constructor.
             </summary>
         </member>
-        <member name="M:CsQuery.HtmlParser.ElementFactory.Create(System.IO.TextReader,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
+        <member name="M:CsQuery.HtmlParser.ElementFactory.Create(System.IO.Stream,System.Text.Encoding,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
              <summary>
              Creates a new document from a Stream of HTML using the options passed.
              </summary>
             
              <param name="html">
              The HTML input.
+             </param>
+             <param name="streamEncoding">
+             The character set encoding used by the stream. If null, the BOM will be inspected, and it
+             will default to UTF8 if no encoding can be identified.
              </param>
              <param name="parsingMode">
              (optional) the parsing mode.
@@ -13416,13 +13561,39 @@
              A new document.
              </returns>
         </member>
-        <member name="M:CsQuery.HtmlParser.ElementFactory.Parse(System.IO.TextReader)">
+        <member name="F:CsQuery.HtmlParser.ElementFactory.charSetEncoding">
+            <summary>
+            The character set encoding that's currently active.
+            </summary>
+        </member>
+        <member name="F:CsQuery.HtmlParser.ElementFactory.reEncode">
+            <summary>
+            This flag can be set during parsing if the character set encoding found in a meta tag is
+            different than the stream's current encoding.
+            </summary>
+        </member>
+        <member name="F:CsQuery.HtmlParser.ElementFactory.activeStream">
+            <summary>
+            The active stream.
+            </summary>
+        </member>
+        <member name="M:CsQuery.HtmlParser.ElementFactory.Parse(System.IO.Stream,System.Text.Encoding)">
              <summary>
              Given a TextReader, create a new IDomDocument from the input.
              </summary>
             
-             <param name="reader">
+             <exception cref="T:System.IO.InvalidDataException">
+             Thrown when an invalid data error condition occurs.
+             </exception>
+             <exception cref="T:System.InvalidOperationException">
+             Thrown when the requested operation is invalid.
+             </exception>
+            
+             <param name="html">
              The HTML input.
+             </param>
+             <param name="encoding">
+             The encoding.
              </param>
             
              <returns>
@@ -13458,6 +13629,18 @@
              <returns>
              The a new TextReader which is a clone of the original.
              </returns>
+        </member>
+        <member name="M:CsQuery.HtmlParser.ElementFactory.tokenizer_EncodingDeclared(System.Object,HtmlParserSharp.Common.EncodingDetectedEventArgs)">
+             <summary>
+             Event is called by the tokenizer when a content-encoding meta tag is found. We should just always return true.
+             </summary>
+            
+             <param name="sender">
+             The tokenizer
+             </param>
+             <param name="e">
+             Encoding detected event information.
+             </param>
         </member>
         <member name="M:CsQuery.HtmlParser.ElementFactory.ConfigureDefaultContextMap">
             <summary>
@@ -13575,12 +13758,1781 @@
             Element is a form input control
             </summary>
         </member>
-        <member name="T:CsQuery.Implementation.TextReaderCombiner">
+        <member name="T:CsQuery.Implementation.CombinedStream">
+            <summary>
+            Creates a single virtual stream out of multiple input streams.
+            </summary>
+        </member>
+        <member name="T:CsQuery.Implementation.BaseStream">
+            <summary>
+            Base stream implementation
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.BaseStream.Flush">
+            <summary>
+            When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.BaseStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            When overridden in a derived class, sets the position within the current stream.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.BaseStream.SetLength(System.Int64)">
+            <summary>
+            When overridden in a derived class, sets the length of the current stream.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.BaseStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            When overridden in a derived class, reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.BaseStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.BaseStream.ReadByte">
+            <summary>
+            Reads a byte from the stream and advances the position within the stream by one byte, or returns -1 if at the end of the stream.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.BaseStream.WriteByte(System.Byte)">
+            <summary>
+            Writes a byte to the current position in the stream and advances the position within the stream by one byte.
+            </summary>
+        </member>
+        <member name="P:CsQuery.Implementation.BaseStream.CanRead">
+            <summary>
+            When overridden in a derived class, gets a value indicating whether the current stream supports reading.
+            </summary>
+        </member>
+        <member name="P:CsQuery.Implementation.BaseStream.CanSeek">
+            <summary>
+            When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
+            </summary>
+        </member>
+        <member name="P:CsQuery.Implementation.BaseStream.CanWrite">
+            <summary>
+            When overridden in a derived class, gets a value indicating whether the current stream supports writing.
+            </summary>
+        </member>
+        <member name="P:CsQuery.Implementation.BaseStream.Length">
+            <summary>
+            When overridden in a derived class, gets the length in bytes of the stream.
+            </summary>
+        </member>
+        <member name="P:CsQuery.Implementation.BaseStream.Position">
+            <summary>
+            When overridden in a derived class, gets or sets the position within the current stream.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.CombinedStream.#ctor(System.IO.Stream[])">
+             <summary>
+             Creates a single virtual stream out of multiple input streams.
+             </summary>
+            
+             <param name="streams">
+             The streams.
+             </param>
+        </member>
+        <member name="M:CsQuery.Implementation.CombinedStream.#ctor(System.Collections.Generic.IEnumerable{System.IO.Stream})">
+             <summary>
+             Creates a single virtual stream out of multiple input streams.
+             </summary>
+            
+             <param name="streams">
+             The streams.
+             </param>
+        </member>
+        <member name="M:CsQuery.Implementation.CombinedStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary> Reads from the next stream available </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.CombinedStream.Dispose(System.Boolean)">
+            <summary> Disposes of all remaining streams. </summary>
+        </member>
+        <member name="P:CsQuery.Implementation.CombinedStream.CanRead">
+            <summary>
+            Gets a value indicating whether we can read.
+            </summary>
+        </member>
+        <member name="T:HttpWebAdapters.IHttpWebRequest">
+            <summary>
+            Interface for an HttpWebRequest object.
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.GetResponse">
+             <summary>
+             Gets the response for the HttpWebRequest.
+             </summary>
+            
+             <returns>
+             The response.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.GetRequestStream">
+             <summary>
+             Gets a <see cref="T:System.IO.Stream"></see> object to use to write request data.
+             </summary>
+            
+             <returns>
+             A <see cref="T:System.IO.Stream"></see> to use to write request data.
+             </returns>
+            
+             <exception cref="T:System.InvalidOperationException">The <see cref="M:HttpWebAdapters.IHttpWebRequest.GetRequestStream"></see> method is called more than once.-or- <see cref="P:HttpWebAdapters.IHttpWebRequest.TransferEncoding"></see> is set to a value and <see cref="P:HttpWebAdapters.IHttpWebRequest.SendChunked"></see> is false. </exception>
+             <exception cref="T:System.ObjectDisposedException">In a .NET Compact Framework application, a request stream with zero content length was not obtained and closed correctly. For more information about handling zero content length requests, see Network Programming in the .NET Compact Framework.</exception>
+             <exception cref="T:System.Net.WebException"><see cref="M:HttpWebAdapters.IHttpWebRequest.Abort"></see> was previously called.-or- The time-out period for the request expired.-or- An error occurred while processing the request. </exception>
+             <exception cref="T:System.NotSupportedException">The request cache validator indicated that the response for this request can be served from the cache; however, requests that write data must not use the cache. This exception can occur if you are using a custom cache validator that is incorrectly implemented. </exception>
+             <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:HttpWebAdapters.IHttpWebRequest.Method"></see> property is GET or HEAD.-or- <see cref="P:HttpWebAdapters.IHttpWebRequest.KeepAlive"></see> is true, <see cref="P:HttpWebAdapters.IHttpWebRequest.AllowWriteStreamBuffering"></see> is false, <see cref="P:HttpWebAdapters.IHttpWebRequest.ContentLength"></see> is -1, <see cref="P:HttpWebAdapters.IHttpWebRequest.SendChunked"></see> is false, and <see cref="P:HttpWebAdapters.IHttpWebRequest.Method"></see> is POST or PUT. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.Abort">
+            <summary>
+            Cancels a request to an Internet resource.
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.AddRange(System.Int32,System.Int32)">
+             <summary>
+             Adds a byte range header to the request for a specified range.
+             </summary>
+            
+             <param name="to">The position at which to stop sending data. </param>
+             <param name="from">The position at which to start sending data. </param>
+             <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+             <exception cref="T:System.ArgumentOutOfRangeException">from is greater than to-or- from or to is less than 0. </exception>
+             <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.AddRange(System.Int32)">
+             <summary>
+             Adds a byte range header to a request for a specific range from the beginning or end of the requested data.
+             </summary>
+            
+             <param name="range">The starting or ending point of the range. </param>
+             <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+             <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.AddRange(System.String,System.Int32,System.Int32)">
+             <summary>
+             Adds a range header to a request for a specified range.
+             </summary>
+            
+             <param name="from">The position at which to start sending data. </param>
+             <param name="to">The position at which to stop sending data. </param>
+             <param name="rangeSpecifier">The description of the range. </param>
+             <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+             <exception cref="T:System.ArgumentNullException">rangeSpecifier is null. </exception>
+             <exception cref="T:System.ArgumentOutOfRangeException">from is greater than to-or- from or to is less than 0. </exception>
+             <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.AddRange(System.String,System.Int32)">
+             <summary>
+             Adds a range header to a request for a specific range from the beginning or end of the requested data.
+             </summary>
+            
+             <param name="range">The starting or ending point of the range. </param>
+             <param name="rangeSpecifier">The description of the range. </param>
+             <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+             <exception cref="T:System.ArgumentNullException">rangeSpecifier is null. </exception>
+             <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)">
+             <summary>
+             Begins an asynchronous request for an Internet resource.
+             </summary>
+            
+             <param name="callback">
+             The callback.
+             </param>
+             <param name="state">
+             The state.
+             </param>
+            
+             <returns>
+             An System.IAsyncResult that references the asynchronous request.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.EndGetResponse(System.IAsyncResult)">
+             <summary>
+             Ends an asynchronous request for an Internet resource.
+             </summary>
+            
+             <param name="result">
+             The result.
+             </param>
+            
+             <returns>
+             Returns a System.Net.WebResponse.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)">
+             <summary>
+             Provides an asynchronous version of the System.Net.WebRequest.GetRequestStream() method.
+             </summary>
+            
+             <param name="callback">
+             The callback.
+             </param>
+             <param name="state">
+             The state.
+             </param>
+            
+             <returns>
+             An System.IAsyncResult that references the asynchronous request.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequest.EndGetRequestStream(System.IAsyncResult)">
+             <summary>
+             returns a System.IO.Stream for writing data to the Internet resource.
+             </summary>
+            
+             <param name="result">
+             The result.
+             </param>
+            
+             <returns>
+             A System.IO.Stream to write data to.
+             </returns>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Method">
+            <summary>
+            Gets or sets the HTTP method.
+            </summary>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.AllowAutoRedirect">
+             <summary>
+             Gets or sets a value that indicates whether the request should follow redirection responses.
+             </summary>
+            
+             <returns>
+             true if the request should automatically follow redirection responses from the Internet resource; otherwise, false. The default value is true.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.AllowWriteStreamBuffering">
+             <summary>
+             Gets or sets a value that indicates whether to buffer the data sent to the Internet resource.
+             </summary>
+            
+             <returns>
+             true to enable buffering of the data sent to the Internet resource; false to disable buffering. The default is true.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.HaveResponse">
+             <summary>
+             Gets a value that indicates whether a response has been received from an Internet resource.
+             </summary>
+            
+             <returns>
+             true if a response has been received; otherwise, false.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.KeepAlive">
+             <summary>
+             Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
+             </summary>
+            
+             <returns>
+            true if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, false. The default is true.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Pipelined">
+             <summary>
+            Gets or sets a value that indicates whether to pipeline the request to the Internet resource.
+             </summary>
+            
+             <returns>
+            true if the request should be pipelined; otherwise, false. The default is true.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.PreAuthenticate">
+             <summary>
+            Gets or sets a value that indicates whether to send an authenticate header with the request.
+             </summary>
+            
+             <returns>
+            true to send a WWW-authenticate HTTP header with requests after authentication has taken place; otherwise, false. The default is false.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.UnsafeAuthenticatedConnectionSharing">
+             <summary>
+            Gets or sets a value that indicates whether to allow high-speed NTLM-authenticated connection sharing.
+             </summary>
+            
+             <returns>
+            true to keep the authenticated connection open; otherwise, false.
+             </returns>
+             <PermissionSet><IPermission class="System.Net.WebPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.SendChunked">
+             <summary>
+            Gets or sets a value that indicates whether to send data in segments to the Internet resource.
+             </summary>
+            
+             <returns>
+            true to send data to the Internet resource in segments; otherwise, false. The default value is false.
+             </returns>
+            
+             <exception cref="T:System.InvalidOperationException">The request has been started by calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see> method. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.AutomaticDecompression">
+             <summary>
+            Gets or sets the type of decompression that is used.
+             </summary>
+            
+             <returns>
+            A T:System.Net.DecompressionMethods object that indicates the type of decompression that is used. 
+             </returns>
+            
+             <exception cref="T:System.InvalidOperationException">The object's current state does not allow this property to be set.</exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.MaximumResponseHeadersLength">
+             <summary>
+            Gets or sets the maximum allowed length of the response headers.
+             </summary>
+            
+             <returns>
+            The length, in kilobytes (1024 bytes), of the response headers.
+             </returns>
+            
+             <exception cref="T:System.InvalidOperationException">The property is set after the request has already been submitted. </exception>
+             <exception cref="T:System.ArgumentOutOfRangeException">The value is less than 0 and is not equal to -1. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.ClientCertificates">
+             <summary>
+            Gets or sets the collection of security certificates that are associated with this request.
+             </summary>
+            
+             <returns>
+            The <see cref="T:System.Security.Cryptography.X509Certificates.X509CertificateCollection"></see> that contains the security certificates associated with this request.
+             </returns>
+            
+             <exception cref="T:System.ArgumentNullException">The value specified for a set operation is null. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.CookieContainer">
+             <summary>
+            Gets or sets the cookies associated with the request.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Net.CookieContainer"></see> that contains the cookies associated with this request.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.RequestUri">
+             <summary>
+            Gets the original Uniform Resource Identifier (URI) of the request.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Uri"></see> that contains the URI of the Internet resource passed to the <see cref="M:System.Net.WebRequest.Create(System.String)"></see> method.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.ContentLength">
+             <summary>
+            Gets or sets the Content-length HTTP header.
+             </summary>
+            
+             <returns>
+            The number of bytes of data to send to the Internet resource. The default is -1, which indicates the property has not been set and that there is no request data to send.
+             </returns>
+            
+             <exception cref="T:System.ArgumentOutOfRangeException">The new <see cref="P:System.Net.HttpWebRequest.ContentLength"></see> value is less than 0. </exception>
+             <exception cref="T:System.InvalidOperationException">The request has been started by calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see> method. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Timeout">
+             <summary>
+            Gets or sets the time-out value for the <see cref="M:System.Net.HttpWebRequest.GetResponse"></see> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see> methods.
+             </summary>
+            
+             <returns>
+            The number of milliseconds to wait before the request times out. The default is 100,000 milliseconds (100 seconds).
+             </returns>
+            
+             <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than zero and is not <see cref="F:System.Threading.Timeout.Infinite"></see>.</exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.ReadWriteTimeout">
+             <summary>
+            Gets or sets a time-out when writing to or reading from a stream.
+             </summary>
+            
+             <returns>
+            The number of milliseconds before the writing or reading times out. The default value is 300,000 milliseconds (5 minutes).
+             </returns>
+            
+             <exception cref="T:System.ArgumentOutOfRangeException">The value specified for a set operation is less than or equal to zero and is not equal to <see cref="F:System.Threading.Timeout.Infinite"></see></exception>
+             <exception cref="T:System.InvalidOperationException">The request has already been sent. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Address">
+             <summary>
+            Gets the Uniform Resource Identifier (URI) of the Internet resource that actually responds to the request.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Uri"></see> that identifies the Internet resource that actually responds to the request. The default is the URI used by the <see cref="M:System.Net.WebRequest.Create(System.String)"></see> method to initialize the request.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.ServicePoint">
+             <summary>
+            Gets the service point to use for the request.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Net.ServicePoint"></see> that represents the network connection to the Internet resource.
+             </returns>
+             <PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.MaximumAutomaticRedirections">
+             <summary>
+            Gets or sets the maximum number of redirects that the request follows.
+             </summary>
+            
+             <returns>
+            The maximum number of redirection responses that the request follows. The default value is 50.
+             </returns>
+            
+             <exception cref="T:System.ArgumentException">The value is set to 0 or less. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Credentials">
+             <summary>
+            Gets or sets authentication information for the request.
+             </summary>
+            
+             <returns>
+            An <see cref="T:System.Net.ICredentials"></see> that contains the authentication credentials associated with the request. The default is null.
+             </returns>
+             <PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.UseDefaultCredentials">
+             <summary>
+            Gets or sets a <see cref="T:System.Boolean"></see> value that controls whether default credentials are sent with requests.
+             </summary>
+            
+             <returns>
+            true if the default credentials are used; otherwise false. The default value is false.
+             </returns>
+            
+             <exception cref="T:System.InvalidOperationException">You attempted to set this property after the request was sent.</exception><PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="USERNAME" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.ConnectionGroupName">
+             <summary>
+            Gets or sets the name of the connection group for the request.
+             </summary>
+            
+             <returns>
+            The name of the connection group for this request. The default value is null.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Headers">
+             <summary>
+            Specifies a collection of the name/value pairs that make up the HTTP headers.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Net.WebHeaderCollection"></see> that contains the name/value pairs that make up the headers for the HTTP request.
+             </returns>
+            
+             <exception cref="T:System.InvalidOperationException">The request has been started by calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see> method. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Proxy">
+             <summary>
+            Gets or sets proxy information for the request.
+             </summary>
+            
+             <returns>
+            The <see cref="T:System.Net.IWebProxy"></see> object to use to proxy the request. The default value is set by calling the <see cref="P:System.Net.GlobalProxySelection.Select"></see> property.
+             </returns>
+            
+             <exception cref="T:System.Security.SecurityException">The caller does not have permission for the requested operation. </exception>
+             <exception cref="T:System.ArgumentNullException"><see cref="P:System.Net.HttpWebRequest.Proxy"></see> is set to null. </exception>
+             <exception cref="T:System.InvalidOperationException">The request has been started by calling <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see>. </exception><PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /><IPermission class="System.Net.WebPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.ProtocolVersion">
+             <summary>
+            Gets or sets the version of HTTP to use for the request.
+             </summary>
+            
+             <returns>
+            The HTTP version to use for the request. The default is <see cref="F:System.Net.HttpVersion.Version11"></see>.
+             </returns>
+            
+             <exception cref="T:System.ArgumentException">The HTTP version is set to a value other than 1.0 or 1.1. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.ContentType">
+             <summary>
+            Gets or sets the value of the Content-type HTTP header.
+             </summary>
+            
+             <returns>
+            The value of the Content-type HTTP header. The default value is null.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.MediaType">
+             <summary>
+            Gets or sets the media type of the request.
+             </summary>
+            
+             <returns>
+            The media type of the request. The default value is null.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.TransferEncoding">
+             <summary>
+            Gets or sets the value of the Transfer-encoding HTTP header.
+             </summary>
+            
+             <returns>
+            The value of the Transfer-encoding HTTP header. The default value is null.
+             </returns>
+            
+             <exception cref="T:System.InvalidOperationException"><see cref="P:System.Net.HttpWebRequest.TransferEncoding"></see> is set when <see cref="P:System.Net.HttpWebRequest.SendChunked"></see> is false. </exception>
+             <exception cref="T:System.ArgumentException"><see cref="P:System.Net.HttpWebRequest.TransferEncoding"></see> is set to the value "Chunked". </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Connection">
+             <summary>
+            Gets or sets the value of the Connection HTTP header.
+             </summary>
+            
+             <returns>
+            The value of the Connection HTTP header. The default value is null.
+             </returns>
+            
+             <exception cref="T:System.ArgumentException">The value of <see cref="P:System.Net.HttpWebRequest.Connection"></see> is set to Keep-alive or Close. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Accept">
+             <summary>
+            Gets or sets the value of the Accept HTTP header.
+             </summary>
+            
+             <returns>
+            The value of the Accept HTTP header. The default value is null.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Referer">
+             <summary>
+            Gets or sets the value of the Referer HTTP header.
+             </summary>
+            
+             <returns>
+            The value of the Referer HTTP header. The default value is null.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.UserAgent">
+             <summary>
+            Gets or sets the value of the User-agent HTTP header.
+             </summary>
+            
+             <returns>
+            The value of the User-agent HTTP header. The default value is null.The value for this property is stored in <see cref="T:System.Net.WebHeaderCollection"></see>. If WebHeaderCollection is set, the property value is lost.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.Expect">
+             <summary>
+            Gets or sets the value of the Expect HTTP header.
+             </summary>
+            
+             <returns>
+            The contents of the Expect HTTP header. The default value is null.The value for this property is stored in <see cref="T:System.Net.WebHeaderCollection"></see>. If WebHeaderCollection is set, the property value is lost.
+             </returns>
+            
+             <exception cref="T:System.ArgumentException">Expect is set to a string that contains "100-continue" as a substring. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebRequest.IfModifiedSince">
+             <summary>
+            Gets or sets the value of the If-Modified-Since HTTP header.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.DateTime"></see> that contains the contents of the If-Modified-Since HTTP header. The default value is the current date and time.
+             </returns>
+             <PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="T:HttpWebAdapters.IHttpWebRequestFactory">
+            <summary>
+            Interface for an object that creates HttpWebRequest objects.
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebRequestFactory.Create(System.Uri)">
+             <summary>
+             Creates a concrete HttpWebRequest
+             </summary>
+            
+             <param name="url">
+             URL of the document.
+             </param>
+            
+             <returns>
+             A new HttpWebRequest
+             </returns>
+        </member>
+        <member name="T:HttpWebAdapters.IHttpWebResponse">
+            <summary>
+            Interface for an HTTP web response.
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebResponse.GetResponseHeader(System.String)">
+             <summary>
+            Gets the contents of a header that was returned with the response.
+             </summary>
+            
+             <returns>
+            The contents of the specified header.
+             </returns>
+            
+             <param name="headerName">The header value to return. </param>
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebResponse.Close">
+             <summary>
+            When overridden by a descendant class, closes the response stream.
+             </summary>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="M:HttpWebAdapters.IHttpWebResponse.GetResponseStream">
+             <summary>
+            When overridden in a descendant class, returns the data stream from the Internet resource.
+             </summary>
+            
+             <returns>
+            An instance of the <see cref="T:System.IO.Stream"></see> class for reading data from the Internet resource.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.Cookies">
+             <summary>
+            Gets or sets the cookies that are associated with this response.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Net.CookieCollection"></see> that contains the cookies that are associated with this response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.ContentEncoding">
+             <summary>
+            Gets the method that is used to encode the body of the response.
+             </summary>
+            
+             <returns>
+            A string that describes the method that is used to encode the body of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.CharacterSet">
+             <summary>
+            Gets the character set of the response.
+             </summary>
+            
+             <returns>
+            A string that contains the character set of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.Server">
+             <summary>
+            Gets the name of the server that sent the response.
+             </summary>
+            
+             <returns>
+            A string that contains the name of the server that sent the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.LastModified">
+             <summary>
+            Gets the last date and time that the contents of the response were modified.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.DateTime"></see> that contains the date and time that the contents of the response were modified.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.StatusCode">
+             <summary>
+            Gets the status of the response.
+             </summary>
+            
+             <returns>
+            One of the <see cref="T:System.Net.HttpStatusCode"></see> values.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.StatusDescription">
+             <summary>
+            Gets the status description returned with the response.
+             </summary>
+            
+             <returns>
+            A string that describes the status of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.ProtocolVersion">
+             <summary>
+            Gets the version of the HTTP protocol that is used in the response.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Version"></see> that contains the HTTP protocol version of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.Method">
+             <summary>
+            Gets the method that is used to return the response.
+             </summary>
+            
+             <returns>
+            A string that contains the HTTP method that is used to return the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.IsFromCache">
+             <summary>
+            Gets a <see cref="T:System.Boolean"></see> value that indicates whether this response was obtained from the cache.
+             </summary>
+            
+             <returns>
+            true if the response was taken from the cache; otherwise, false.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.IsMutuallyAuthenticated">
+             <summary>
+            Gets a <see cref="T:System.Boolean"></see> value that indicates whether mutual authentication occurred.
+             </summary>
+            
+             <returns>
+            true if both client and server were authenticated; otherwise, false.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.ContentLength">
+             <summary>
+            When overridden in a descendant class, gets or sets the content length of data being received.
+             </summary>
+            
+             <returns>
+            The number of bytes returned from the Internet resource.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.ContentType">
+             <summary>
+            When overridden in a derived class, gets or sets the content type of the data being received.
+             </summary>
+            
+             <returns>
+            A string that contains the content type of the response.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.ResponseUri">
+             <summary>
+            When overridden in a derived class, gets the URI of the Internet resource that actually responded to the request.
+             </summary>
+            
+             <returns>
+            An instance of the <see cref="T:System.Uri"></see> class that contains the URI of the Internet resource that actually responded to the request.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.IHttpWebResponse.Headers">
+             <summary>
+            When overridden in a derived class, gets a collection of header name-value pairs associated with this request.
+             </summary>
+            
+             <returns>
+            An instance of the <see cref="T:System.Net.WebHeaderCollection"></see> class that contains header values associated with this response.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="T:HttpWebAdapters.BasicAuthHttpWebRequestFactory">
+            <summary>
+            Creates a web request that does basic auth
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.BasicAuthHttpWebRequestFactory.#ctor(System.String,System.String)">
+             <summary>
+             Creates a web request that does basic auth.
+             </summary>
+            
+             <param name="username">
+             HTTP username.
+             </param>
+             <param name="password">
+             HTTP password.
+             </param>
+        </member>
+        <member name="M:HttpWebAdapters.BasicAuthHttpWebRequestFactory.Create(System.String)">
+             <summary>
+             Creates a web request for a url
+             </summary>
+            
+             <param name="url">
+             URL of the document.
+             </param>
+            
+             <returns>
+             A new IHttpWebRequest
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.BasicAuthHttpWebRequestFactory.Create(System.Uri)">
+             <summary>
+             Creates a concrete HttpWebRequest for a URI
+             </summary>
+            
+             <param name="url">
+             URI of the document.
+             </param>
+            
+             <returns>
+             A new IHttpWebRequest.
+             </returns>
+        </member>
+        <member name="T:HttpWebAdapters.Adapters.HttpWebRequestAdapter">
+            <summary>
+            HTTP web request adapter.
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.#ctor(System.Net.HttpWebRequest)">
+             <summary>
+             Creates an HttpWebRequestAdapter from a .NET HttpWebRequest
+             </summary>
+            
+             <param name="request">
+             The HttpWebRequestAdapter.
+             </param>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.GetResponse">
+             <summary>
+             Gets the response for the HttpWebRequest.
+             </summary>
+            
+             <returns>
+             The response.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.BeginGetResponse(System.AsyncCallback,System.Object)">
+             <summary>
+             Begins an asynchronous request for an Internet resource.
+             </summary>
+            
+             <param name="callback">
+             The callback.
+             </param>
+             <param name="state">
+             The state.
+             </param>
+            
+             <returns>
+             An System.IAsyncResult that references the asynchronous request.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.EndGetResponse(System.IAsyncResult)">
+             <summary>
+             Ends an asynchronous request for an Internet resource.
+             </summary>
+            
+             <param name="result">
+             The result.
+             </param>
+            
+             <returns>
+             Returns a System.Net.WebResponse.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.BeginGetRequestStream(System.AsyncCallback,System.Object)">
+             <summary>
+             Provides an asynchronous version of the System.Net.WebRequest.GetRequestStream() method.
+             </summary>
+            
+             <param name="callback">
+             The callback.
+             </param>
+             <param name="state">
+             The state.
+             </param>
+            
+             <returns>
+             An System.IAsyncResult that references the asynchronous request.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.EndGetRequestStream(System.IAsyncResult)">
+             <summary>
+             returns a System.IO.Stream for writing data to the Internet resource.
+             </summary>
+            
+             <param name="result">
+             The result.
+             </param>
+            
+             <returns>
+             A System.IO.Stream to write data to.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.GetRequestStream">
+            <summary>
+            Gets a <see cref="T:System.IO.Stream"></see> object to use to write request data.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.IO.Stream"></see> to use to write request data.
+            </returns>
+            
+            <exception cref="T:System.InvalidOperationException">The <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see> method is called more than once.-or- <see cref="P:System.Net.HttpWebRequest.TransferEncoding"></see> is set to a value and <see cref="P:System.Net.HttpWebRequest.SendChunked"></see> is false. </exception>
+            <exception cref="T:System.ObjectDisposedException">In a .NET Compact Framework application, a request stream with zero content length was not obtained and closed correctly. For more information about handling zero content length requests, see Network Programming in the .NET Compact Framework.</exception>
+            <exception cref="T:System.Net.WebException"><see cref="M:System.Net.HttpWebRequest.Abort"></see> was previously called.-or- The time-out period for the request expired.-or- An error occurred while processing the request. </exception>
+            <exception cref="T:System.NotSupportedException">The request cache validator indicated that the response for this request can be served from the cache; however, requests that write data must not use the cache. This exception can occur if you are using a custom cache validator that is incorrectly implemented. </exception>
+            <exception cref="T:System.Net.ProtocolViolationException">The <see cref="P:System.Net.HttpWebRequest.Method"></see> property is GET or HEAD.-or- <see cref="P:System.Net.HttpWebRequest.KeepAlive"></see> is true, <see cref="P:System.Net.HttpWebRequest.AllowWriteStreamBuffering"></see> is false, <see cref="P:System.Net.HttpWebRequest.ContentLength"></see> is -1, <see cref="P:System.Net.HttpWebRequest.SendChunked"></see> is false, and <see cref="P:System.Net.HttpWebRequest.Method"></see> is POST or PUT. </exception><PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Net.DnsPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Net.WebPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /></PermissionSet>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Abort">
+            <summary>
+            Cancels a request to an Internet resource.
+            </summary>
+            <PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.AddRange(System.Int32,System.Int32)">
+            <summary>
+            Adds a byte range header to the request for a specified range.
+            </summary>
+            
+            <param name="to">The position at which to stop sending data. </param>
+            <param name="from">The position at which to start sending data. </param>
+            <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">from is greater than to-or- from or to is less than 0. </exception>
+            <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.AddRange(System.Int32)">
+            <summary>
+            Adds a byte range header to a request for a specific range from the beginning or end of the requested data.
+            </summary>
+            
+            <param name="range">The starting or ending point of the range. </param>
+            <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+            <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.AddRange(System.String,System.Int32,System.Int32)">
+            <summary>
+            Adds a range header to a request for a specified range.
+            </summary>
+            
+            <param name="from">The position at which to start sending data. </param>
+            <param name="to">The position at which to stop sending data. </param>
+            <param name="rangeSpecifier">The description of the range. </param>
+            <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+            <exception cref="T:System.ArgumentNullException">rangeSpecifier is null. </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">from is greater than to-or- from or to is less than 0. </exception>
+            <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebRequestAdapter.AddRange(System.String,System.Int32)">
+            <summary>
+            Adds a range header to a request for a specific range from the beginning or end of the requested data.
+            </summary>
+            
+            <param name="range">The starting or ending point of the range. </param>
+            <param name="rangeSpecifier">The description of the range. </param>
+            <exception cref="T:System.ArgumentException">rangeSpecifier is invalid. </exception>
+            <exception cref="T:System.ArgumentNullException">rangeSpecifier is null. </exception>
+            <exception cref="T:System.InvalidOperationException">The range header could not be added. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Method">
+            <summary>
+            Gets or sets the HTTP method.
+            </summary>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.AllowAutoRedirect">
+            <summary>
+            Gets or sets a value that indicates whether the request should follow redirection responses.
+            </summary>
+            
+            <returns>
+            true if the request should automatically follow redirection responses from the Internet resource; otherwise, false. The default value is true.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.AllowWriteStreamBuffering">
+            <summary>
+            Gets or sets a value that indicates whether to buffer the data sent to the Internet resource.
+            </summary>
+            
+            <returns>
+            true to enable buffering of the data sent to the Internet resource; false to disable buffering. The default is true.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.HaveResponse">
+            <summary>
+            Gets a value that indicates whether a response has been received from an Internet resource.
+            </summary>
+            
+            <returns>
+            true if a response has been received; otherwise, false.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.KeepAlive">
+            <summary>
+            Gets or sets a value that indicates whether to make a persistent connection to the Internet resource.
+            </summary>
+            
+            <returns>
+            true if the request to the Internet resource should contain a Connection HTTP header with the value Keep-alive; otherwise, false. The default is true.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Pipelined">
+            <summary>
+            Gets or sets a value that indicates whether to pipeline the request to the Internet resource.
+            </summary>
+            
+            <returns>
+            true if the request should be pipelined; otherwise, false. The default is true.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.PreAuthenticate">
+            <summary>
+            Gets or sets a value that indicates whether to send an authenticate header with the request.
+            </summary>
+            
+            <returns>
+            true to send a WWW-authenticate HTTP header with requests after authentication has taken place; otherwise, false. The default is false.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.UnsafeAuthenticatedConnectionSharing">
+            <summary>
+            Gets or sets a value that indicates whether to allow high-speed NTLM-authenticated connection sharing.
+            </summary>
+            
+            <returns>
+            true to keep the authenticated connection open; otherwise, false.
+            </returns>
+            <PermissionSet><IPermission class="System.Net.WebPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.SendChunked">
+            <summary>
+            Gets or sets a value that indicates whether to send data in segments to the Internet resource.
+            </summary>
+            
+            <returns>
+            true to send data to the Internet resource in segments; otherwise, false. The default value is false.
+            </returns>
+            
+            <exception cref="T:System.InvalidOperationException">The request has been started by calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see> method. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.AutomaticDecompression">
+            <summary>
+            Gets or sets the type of decompression that is used.
+            </summary>
+            
+            <returns>
+            A T:System.Net.DecompressionMethods object that indicates the type of decompression that is used. 
+            </returns>
+            
+            <exception cref="T:System.InvalidOperationException">The object's current state does not allow this property to be set.</exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.MaximumResponseHeadersLength">
+            <summary>
+            Gets or sets the maximum allowed length of the response headers.
+            </summary>
+            
+            <returns>
+            The length, in kilobytes (1024 bytes), of the response headers.
+            </returns>
+            
+            <exception cref="T:System.InvalidOperationException">The property is set after the request has already been submitted. </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">The value is less than 0 and is not equal to -1. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.ClientCertificates">
+            <summary>
+            Gets or sets the collection of security certificates that are associated with this request.
+            </summary>
+            
+            <returns>
+            The <see cref="T:System.Security.Cryptography.X509Certificates.X509CertificateCollection"></see> that contains the security certificates associated with this request.
+            </returns>
+            
+            <exception cref="T:System.ArgumentNullException">The value specified for a set operation is null. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.CookieContainer">
+            <summary>
+            Gets or sets the cookies associated with the request.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.Net.CookieContainer"></see> that contains the cookies associated with this request.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.RequestUri">
+            <summary>
+            Gets the original Uniform Resource Identifier (URI) of the request.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.Uri"></see> that contains the URI of the Internet resource passed to the <see cref="M:System.Net.WebRequest.Create(System.String)"></see> method.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.ContentLength">
+            <summary>
+            Gets or sets the Content-length HTTP header.
+            </summary>
+            
+            <returns>
+            The number of bytes of data to send to the Internet resource. The default is -1, which indicates the property has not been set and that there is no request data to send.
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">The new <see cref="P:System.Net.HttpWebRequest.ContentLength"></see> value is less than 0. </exception>
+            <exception cref="T:System.InvalidOperationException">The request has been started by calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see> method. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Timeout">
+            <summary>
+            Gets or sets the time-out value for the <see cref="M:System.Net.HttpWebRequest.GetResponse"></see> and <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see> methods.
+            </summary>
+            
+            <returns>
+            The number of milliseconds to wait before the request times out. The default is 100,000 milliseconds (100 seconds).
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than zero and is not <see cref="F:System.Threading.Timeout.Infinite"></see>.</exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.ReadWriteTimeout">
+            <summary>
+            Gets or sets a time-out when writing to or reading from a stream.
+            </summary>
+            
+            <returns>
+            The number of milliseconds before the writing or reading times out. The default value is 300,000 milliseconds (5 minutes).
+            </returns>
+            
+            <exception cref="T:System.ArgumentOutOfRangeException">The value specified for a set operation is less than or equal to zero and is not equal to <see cref="F:System.Threading.Timeout.Infinite"></see></exception>
+            <exception cref="T:System.InvalidOperationException">The request has already been sent. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Address">
+            <summary>
+            Gets the Uniform Resource Identifier (URI) of the Internet resource that actually responds to the request.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.Uri"></see> that identifies the Internet resource that actually responds to the request. The default is the URI used by the <see cref="M:System.Net.WebRequest.Create(System.String)"></see> method to initialize the request.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.ServicePoint">
+            <summary>
+            Gets the service point to use for the request.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.Net.ServicePoint"></see> that represents the network connection to the Internet resource.
+            </returns>
+            <PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.MaximumAutomaticRedirections">
+            <summary>
+            Gets or sets the maximum number of redirects that the request follows.
+            </summary>
+            
+            <returns>
+            The maximum number of redirection responses that the request follows. The default value is 50.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">The value is set to 0 or less. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Credentials">
+            <summary>
+            Gets or sets authentication information for the request.
+            </summary>
+            
+            <returns>
+            An <see cref="T:System.Net.ICredentials"></see> that contains the authentication credentials associated with the request. The default is null.
+            </returns>
+            <PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.UseDefaultCredentials">
+            <summary>
+            Gets or sets a <see cref="T:System.Boolean"></see> value that controls whether default credentials are sent with requests.
+            </summary>
+            
+            <returns>
+            true if the default credentials are used; otherwise false. The default value is false.
+            </returns>
+            
+            <exception cref="T:System.InvalidOperationException">You attempted to set this property after the request was sent.</exception><PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Read="USERNAME" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.ConnectionGroupName">
+            <summary>
+            Gets or sets the name of the connection group for the request.
+            </summary>
+            
+            <returns>
+            The name of the connection group for this request. The default value is null.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Headers">
+            <summary>
+            Specifies a collection of the name/value pairs that make up the HTTP headers.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.Net.WebHeaderCollection"></see> that contains the name/value pairs that make up the headers for the HTTP request.
+            </returns>
+            
+            <exception cref="T:System.InvalidOperationException">The request has been started by calling the <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see> method. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Proxy">
+            <summary>
+            Gets or sets proxy information for the request.
+            </summary>
+            
+            <returns>
+            The <see cref="T:System.Net.IWebProxy"></see> object to use to proxy the request. The default value is set by calling the <see cref="P:System.Net.GlobalProxySelection.Select"></see> property.
+            </returns>
+            
+            <exception cref="T:System.Security.SecurityException">The caller does not have permission for the requested operation. </exception>
+            <exception cref="T:System.ArgumentNullException"><see cref="P:System.Net.HttpWebRequest.Proxy"></see> is set to null. </exception>
+            <exception cref="T:System.InvalidOperationException">The request has been started by calling <see cref="M:System.Net.HttpWebRequest.GetRequestStream"></see>, <see cref="M:System.Net.HttpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)"></see>, <see cref="M:System.Net.HttpWebRequest.GetResponse"></see>, or <see cref="M:System.Net.HttpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)"></see>. </exception><PermissionSet><IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /><IPermission class="System.Net.WebPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.ProtocolVersion">
+            <summary>
+            Gets or sets the version of HTTP to use for the request.
+            </summary>
+            
+            <returns>
+            The HTTP version to use for the request. The default is <see cref="F:System.Net.HttpVersion.Version11"></see>.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">The HTTP version is set to a value other than 1.0 or 1.1. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.ContentType">
+            <summary>
+            Gets or sets the value of the Content-type HTTP header.
+            </summary>
+            
+            <returns>
+            The value of the Content-type HTTP header. The default value is null.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.MediaType">
+            <summary>
+            Gets or sets the media type of the request.
+            </summary>
+            
+            <returns>
+            The media type of the request. The default value is null.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.TransferEncoding">
+            <summary>
+            Gets or sets the value of the Transfer-encoding HTTP header.
+            </summary>
+            
+            <returns>
+            The value of the Transfer-encoding HTTP header. The default value is null.
+            </returns>
+            
+            <exception cref="T:System.InvalidOperationException"><see cref="P:System.Net.HttpWebRequest.TransferEncoding"></see> is set when <see cref="P:System.Net.HttpWebRequest.SendChunked"></see> is false. </exception>
+            <exception cref="T:System.ArgumentException"><see cref="P:System.Net.HttpWebRequest.TransferEncoding"></see> is set to the value "Chunked". </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Connection">
+            <summary>
+            Gets or sets the value of the Connection HTTP header.
+            </summary>
+            
+            <returns>
+            The value of the Connection HTTP header. The default value is null.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">The value of <see cref="P:System.Net.HttpWebRequest.Connection"></see> is set to Keep-alive or Close. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Accept">
+            <summary>
+            Gets or sets the value of the Accept HTTP header.
+            </summary>
+            
+            <returns>
+            The value of the Accept HTTP header. The default value is null.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Referer">
+            <summary>
+            Gets or sets the value of the Referer HTTP header.
+            </summary>
+            
+            <returns>
+            The value of the Referer HTTP header. The default value is null.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.UserAgent">
+            <summary>
+            Gets or sets the value of the User-agent HTTP header.
+            </summary>
+            
+            <returns>
+            The value of the User-agent HTTP header. The default value is null.The value for this property is stored in <see cref="T:System.Net.WebHeaderCollection"></see>. If WebHeaderCollection is set, the property value is lost.
+            </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.Expect">
+            <summary>
+            Gets or sets the value of the Expect HTTP header.
+            </summary>
+            
+            <returns>
+            The contents of the Expect HTTP header. The default value is null.The value for this property is stored in <see cref="T:System.Net.WebHeaderCollection"></see>. If WebHeaderCollection is set, the property value is lost.
+            </returns>
+            
+            <exception cref="T:System.ArgumentException">Expect is set to a string that contains "100-continue" as a substring. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebRequestAdapter.IfModifiedSince">
+            <summary>
+            Gets or sets the value of the If-Modified-Since HTTP header.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.DateTime"></see> that contains the contents of the If-Modified-Since HTTP header. The default value is the current date and time.
+            </returns>
+            <PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="T:HttpWebAdapters.HttpWebRequestFactory">
+            <summary>
+            Defaut HTTP web request factory; creates instances of .NET framework classes.
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.HttpWebRequestFactory.Create(System.String)">
+             <summary>
+             Creates an HttpWebRequestAdapter wrapping a .NET framework HttpWebRequest object.
+             </summary>
+            
+             <param name="url">
+             URL of the document.
+             </param>
+            
+             <returns>
+             A new HttpWebRequestAdapter
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.HttpWebRequestFactory.Create(System.Uri)">
+             <summary>
+             Creates an HttpWebRequestAdapter wrapping a .NET framework HttpWebRequest object.
+             </summary>
+            
+             <param name="url">
+             URL of the document.
+             </param>
+            
+             <returns>
+             A new HttpWebRequestAdapter
+             </returns>
+        </member>
+        <member name="T:HttpWebAdapters.HttpWebRequestMethod">
+            <summary>
+            An HTTP web request method (GET or POST).
+            </summary>
+        </member>
+        <member name="F:HttpWebAdapters.HttpWebRequestMethod.GET">
+            <summary>
+            The GET method
+            </summary>
+        </member>
+        <member name="F:HttpWebAdapters.HttpWebRequestMethod.POST">
+            <summary>
+            The POST method
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.HttpWebRequestMethod.ToString">
+             <summary>
+             Returns a string that represents the current object.
+             </summary>
+            
+             <returns>
+             A string representation of the web method.
+             </returns>
+        </member>
+        <member name="M:HttpWebAdapters.HttpWebRequestMethod.Parse(System.String)">
+             <summary>
+             Creates a new HttpWebRequestMethod from a string
+             </summary>
+            
+             <param name="s">
+             The string.
+             </param>
+            
+             <returns>
+             A new HttpWebRequestMethod
+             </returns>
+        </member>
+        <member name="T:HttpWebAdapters.Adapters.HttpWebResponseAdapter">
+            <summary>
+            HTTP web response adapter
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebResponseAdapter.#ctor(System.Net.WebResponse)">
+             <summary>
+             Create a new HttpWebResponseAdapter from a .NET WebResponse
+             </summary>
+            
+             <param name="response">
+             The HttpWebResponseAdapter.
+             </param>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebResponseAdapter.GetResponseHeader(System.String)">
+             <summary>
+            Gets the contents of a header that was returned with the response.
+             </summary>
+            
+             <returns>
+            The contents of the specified header.
+             </returns>
+            
+             <param name="headerName">The header value to return. </param>
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebResponseAdapter.Close">
+             <summary>
+            When overridden by a descendant class, closes the response stream.
+             </summary>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebResponseAdapter.GetResponseStream">
+             <summary>
+            When overridden in a descendant class, returns the data stream from the Internet resource.
+             </summary>
+            
+             <returns>
+            An instance of the <see cref="T:System.IO.Stream"></see> class for reading data from the Internet resource.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="M:HttpWebAdapters.Adapters.HttpWebResponseAdapter.Dispose">
+             <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+             </summary>
+             <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.Cookies">
+             <summary>
+            Gets or sets the cookies that are associated with this response.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Net.CookieCollection"></see> that contains the cookies that are associated with this response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.ContentEncoding">
+             <summary>
+            Gets the method that is used to encode the body of the response.
+             </summary>
+            
+             <returns>
+            A string that describes the method that is used to encode the body of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.CharacterSet">
+             <summary>
+            Gets the character set of the response.
+             </summary>
+            
+             <returns>
+            A string that contains the character set of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.Server">
+             <summary>
+            Gets the name of the server that sent the response.
+             </summary>
+            
+             <returns>
+            A string that contains the name of the server that sent the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.LastModified">
+             <summary>
+            Gets the last date and time that the contents of the response were modified.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.DateTime"></see> that contains the date and time that the contents of the response were modified.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.StatusCode">
+             <summary>
+            Gets the status of the response.
+             </summary>
+            
+             <returns>
+            One of the <see cref="T:System.Net.HttpStatusCode"></see> values.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.StatusDescription">
+             <summary>
+            Gets the status description returned with the response.
+             </summary>
+            
+             <returns>
+            A string that describes the status of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.ProtocolVersion">
+             <summary>
+            Gets the version of the HTTP protocol that is used in the response.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Version"></see> that contains the HTTP protocol version of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.Method">
+             <summary>
+            Gets the method that is used to return the response.
+             </summary>
+            
+             <returns>
+            A string that contains the HTTP method that is used to return the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.IsFromCache">
+             <summary>
+            Gets a <see cref="T:System.Boolean"></see> value that indicates whether this response was obtained from the cache.
+             </summary>
+            
+             <returns>
+            true if the response was taken from the cache; otherwise, false.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.IsMutuallyAuthenticated">
+             <summary>
+            Gets a <see cref="T:System.Boolean"></see> value that indicates whether mutual authentication occurred.
+             </summary>
+            
+             <returns>
+            true if both client and server were authenticated; otherwise, false.
+             </returns>
+            
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.ContentLength">
+             <summary>
+            When overridden in a descendant class, gets or sets the content length of data being received.
+             </summary>
+            
+             <returns>
+            The number of bytes returned from the Internet resource.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.ContentType">
+             <summary>
+            When overridden in a derived class, gets or sets the content type of the data being received.
+             </summary>
+            
+             <returns>
+            A string that contains the content type of the response.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.ResponseUri">
+             <summary>
+            When overridden in a derived class, gets the URI of the Internet resource that actually responded to the request.
+             </summary>
+            
+             <returns>
+            An instance of the <see cref="T:System.Uri"></see> class that contains the URI of the Internet resource that actually responded to the request.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.Adapters.HttpWebResponseAdapter.Headers">
+             <summary>
+            When overridden in a derived class, gets a collection of header name-value pairs associated with this request.
+             </summary>
+            
+             <returns>
+            An instance of the <see cref="T:System.Net.WebHeaderCollection"></see> class that contains header values associated with this response.
+             </returns>
+            
+             <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="T:HttpWebAdapters.WebResponseStub">
+            <summary>
+            A basic implementation for a WebResponse
+            </summary>
+        </member>
+        <member name="M:HttpWebAdapters.WebResponseStub.GetResponseHeader(System.String)">
+             <summary>
+            Gets the contents of a header that was returned with the response.
+             </summary>
+            
+             <returns>
+            The contents of the specified header.
+             </returns>
+            
+             <param name="headerName">The header value to return. </param>
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.Cookies">
+             <summary>
+            Gets or sets the cookies that are associated with this response.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Net.CookieCollection"></see> that contains the cookies that are associated with this response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.ContentEncoding">
+             <summary>
+            Gets the method that is used to encode the body of the response.
+             </summary>
+            
+             <returns>
+            A string that describes the method that is used to encode the body of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.CharacterSet">
+             <summary>
+            Gets the character set of the response.
+             </summary>
+            
+             <returns>
+            A string that contains the character set of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.Server">
+             <summary>
+            Gets the name of the server that sent the response.
+             </summary>
+            
+             <returns>
+            A string that contains the name of the server that sent the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.LastModified">
+             <summary>
+            Gets the last date and time that the contents of the response were modified.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.DateTime"></see> that contains the date and time that the contents of the response were modified.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.StatusCode">
+             <summary>
+            Gets the status of the response.
+             </summary>
+            
+             <returns>
+            One of the <see cref="T:System.Net.HttpStatusCode"></see> values.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.StatusDescription">
+             <summary>
+            Gets the status description returned with the response.
+             </summary>
+            
+             <returns>
+            A string that describes the status of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.ProtocolVersion">
+             <summary>
+            Gets the version of the HTTP protocol that is used in the response.
+             </summary>
+            
+             <returns>
+            A <see cref="T:System.Version"></see> that contains the HTTP protocol version of the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="P:HttpWebAdapters.WebResponseStub.Method">
+             <summary>
+            Gets the method that is used to return the response.
+             </summary>
+            
+             <returns>
+            A string that contains the HTTP method that is used to return the response.
+             </returns>
+            
+             <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+        </member>
+        <member name="T:CsQuery.Implementation.CombinedTextReader">
             <summary>
             Creates a virtual TextReader from several other streams.
             </summary>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.#ctor(System.IO.TextReader[])">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.#ctor(System.IO.TextReader[])">
              <summary>
              Create a new virtual TextReader by combining, in sequence, the streams provided as parameters to the constructor
              </summary>
@@ -13589,18 +15541,18 @@
              A variable-length parameters list containing readers.
              </param>
         </member>
-        <member name="F:CsQuery.Implementation.TextReaderCombiner.Readers">
+        <member name="F:CsQuery.Implementation.CombinedTextReader.Readers">
             <summary>
             The readers.
             </summary>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.Close">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.Close">
             <summary>
             Closes the <see cref="T:System.IO.TextReader" /> and releases any system resources associated
             with the TextReader.
             </summary>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.Dispose(System.Boolean)">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.Dispose(System.Boolean)">
              <summary>
              Releases the unmanaged resources used by the <see cref="T:System.IO.TextReader" /> and
              optionally releases the managed resources.
@@ -13611,7 +15563,7 @@
              resources.
              </param>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.Peek">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.Peek">
              <summary>
              Reads the next character without changing the state of the reader or the character source.
              Returns the next available character without actually reading it from the input stream.
@@ -13622,7 +15574,7 @@
              available or the stream does not support seeking.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.Read">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.Read">
              <summary>
              Reads the next character from the input stream and advances the character position by one
              character.
@@ -13633,7 +15585,7 @@
              default implementation returns -1.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.Read(System.Char[],System.Int32,System.Int32)">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.Read(System.Char[],System.Int32,System.Int32)">
              <summary>
              Reads a maximum of <paramref name="count" /> characters from the current stream and writes
              the data to <paramref name="buffer" />, beginning at <paramref name="index" />.
@@ -13675,7 +15627,7 @@
              An I/O error occurs.
              </exception>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.ReadBlock(System.Char[],System.Int32,System.Int32)">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.ReadBlock(System.Char[],System.Int32,System.Int32)">
              <summary>
              Reads a maximum of <paramref name="count" /> characters from the current stream, and writes
              the data to <paramref name="buffer" />, beginning at <paramref name="index" />.
@@ -13700,7 +15652,7 @@
              have been read.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.ReadLine">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.ReadLine">
              <summary>
              Reads a line of characters from the current stream and returns the data as a string. Note:
              this method will not combine data from two boundary streams into a single line; the end of a
@@ -13712,7 +15664,7 @@
              The next line from the input stream, or null if all characters have been read.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.ReadToEnd">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.ReadToEnd">
              <summary>
              Reads all characters from the current position to the end of the TextReader and returns them
              as one string.
@@ -13722,7 +15674,7 @@
              A string containing all characters from the current position to the end of the TextReader.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.CreateObjRef(System.Type)">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.CreateObjRef(System.Type)">
              <summary>
              Creates object reference. (Overridden because it's implemented by the base class and we want
              to be sure that anything trying to use this will fail).
@@ -13740,7 +15692,7 @@
              Always fails.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.InitializeLifetimeService">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.InitializeLifetimeService">
              <summary>
              Initializes the lifetime service. (Overridden because it's implemented by the base class and we want
              to be sure that anything trying to use this will fail).
@@ -13754,7 +15706,7 @@
              Always fails
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.NextReader">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.NextReader">
              <summary>
              Advance to the next reader
              </summary>
@@ -13763,7 +15715,7 @@
              true if it succeeds, false if it fails.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.GetHashCode">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.GetHashCode">
              <summary>
              Returns a hash code for this object.
              </summary>
@@ -13772,7 +15724,7 @@
              The hash code for this object.
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.TextReaderCombiner.Equals(System.Object)">
+        <member name="M:CsQuery.Implementation.CombinedTextReader.Equals(System.Object)">
              <summary>
              Tests if this object is considered equal to another.
              </summary>
@@ -13785,9 +15737,80 @@
              true if the objects are considered equal, false if they are not.
              </returns>
         </member>
-        <member name="P:CsQuery.Implementation.TextReaderCombiner.Current">
+        <member name="P:CsQuery.Implementation.CombinedTextReader.Current">
             <summary>
             Gets the current stream
+            </summary>
+        </member>
+        <member name="T:CsQuery.Implementation.TrueStringComparer">
+            <summary>
+            A string comparer that is not concerned with anything other than the raw value of the characters. No encoding, no culture.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Implementation.TrueStringComparer.Compare(System.String,System.String)">
+             <summary>
+             Compares two string objects to determine their relative ordering.
+             </summary>
+            
+             <param name="x">
+             String to be compared.
+             </param>
+             <param name="y">
+             String to be compared.
+             </param>
+            
+             <returns>
+             Negative if 'x' is less than 'y', 0 if they are equal, or positive if it is greater.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Implementation.TrueStringComparer.CompareEqualLength(System.String,System.String)">
+             <summary>
+             Marginally faster when just testing equality than using Compare
+             </summary>
+            
+             <param name="x">
+             String to be compared.
+             </param>
+             <param name="y">
+             String to be compared.
+             </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Implementation.TrueStringComparer.Equals(System.String,System.String)">
+             <summary>
+             Tests if two string objects are considered equal.
+             </summary>
+            
+             <param name="x">
+             String to be compared.
+             </param>
+             <param name="y">
+             String to be compared.
+             </param>
+            
+             <returns>
+             true if the objects are considered equal, false if they are not.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Implementation.TrueStringComparer.GetHashCode(System.String)">
+             <summary>
+             Calculates the hash code for this object.
+             </summary>
+            
+             <param name="obj">
+             The object.
+             </param>
+            
+             <returns>
+             The hash code for this object.
+             </returns>
+        </member>
+        <member name="P:CsQuery.Implementation.TrueStringComparer.Comparer">
+            <summary>
+            Gets an instance of TrueStringComparer
             </summary>
         </member>
         <member name="T:CsQuery.Output.HtmlEncoderFull">
@@ -14144,25 +16167,13 @@
              A string.
              </returns>
         </member>
-        <member name="M:CsQuery.Output.FormatDefault.RenderElements(System.Collections.Generic.IEnumerable{CsQuery.IDomObject},System.IO.TextWriter)">
-             <summary>
-             Renders the sequence of elements.
-             </summary>
-            
-             <param name="elements">
-             The elements.
-             </param>
-             <param name="writer">
-             The writer to which output is written.
-             </param>
-        </member>
         <member name="M:CsQuery.Output.FormatDefault.RenderElement(CsQuery.IDomObject,System.IO.TextWriter,System.Boolean)">
              <summary>
              Gets the HTML representation of this element and its children.
              </summary>
             
              <param name="element">
-             Options for how to render the HTML.
+             The element to render.
              </param>
              <param name="writer">
              The writer to which output is written.
@@ -14173,7 +16184,65 @@
         </member>
         <member name="M:CsQuery.Output.FormatDefault.RenderChildren(CsQuery.IDomObject,System.IO.TextWriter)">
              <summary>
-             Renders all the children of the passed node.
+             Renders the children of this element.
+             </summary>
+            
+             <param name="element">
+             The element to render.
+             </param>
+             <param name="writer">
+             The writer to which output is written.
+             </param>
+        </member>
+        <member name="M:CsQuery.Output.FormatDefault.RenderElementInternal(CsQuery.IDomObject,System.IO.TextWriter,System.Boolean)">
+             <summary>
+             Gets the HTML representation of this element and its children. (This is the implementation -
+             it will not flush the stack)
+             </summary>
+            
+             <param name="element">
+             The element to render.
+             </param>
+             <param name="writer">
+             The writer to which output is written.
+             </param>
+             <param name="includeChildren">
+             true to include, false to exclude the children.
+             </param>
+        </member>
+        <member name="M:CsQuery.Output.FormatDefault.EndElement(CsQuery.IDomObject)">
+             <summary>
+             Adds the element close tag to the output stack.
+             </summary>
+            
+             <param name="element">
+             The element.
+             </param>
+        </member>
+        <member name="M:CsQuery.Output.FormatDefault.RenderStack(System.IO.TextWriter)">
+             <summary>
+             Process the output stack.
+             </summary>
+            
+             <exception cref="T:System.NotImplementedException">
+             Thrown when the requested operation is unimplemented.
+             </exception>
+        </member>
+        <member name="M:CsQuery.Output.FormatDefault.RenderElements(System.Collections.Generic.IEnumerable{CsQuery.IDomObject},System.IO.TextWriter)">
+             <summary>
+             Renders a sequence of elements.
+             </summary>
+            
+             <param name="elements">
+             The elements.
+             </param>
+             <param name="writer">
+             The writer to which output is written.
+             </param>
+        </member>
+        <member name="M:CsQuery.Output.FormatDefault.RenderElementCloseTag(CsQuery.IDomObject,System.IO.TextWriter)">
+             <summary>
+             Renders the element close tag.
              </summary>
             
              <param name="element">
@@ -14181,6 +16250,15 @@
              </param>
              <param name="writer">
              The writer to which output is written.
+             </param>
+        </member>
+        <member name="M:CsQuery.Output.FormatDefault.ParseChildren(CsQuery.IDomObject)">
+             <summary>
+             Renders all the children of the passed node.
+             </summary>
+            
+             <param name="element">
+             The element.
              </param>
         </member>
         <member name="M:CsQuery.Output.FormatDefault.RenderTextNode(CsQuery.IDomObject,System.IO.TextWriter,System.Boolean)">
@@ -14255,6 +16333,46 @@
         <member name="M:CsQuery.Output.FormatDefault.MergeDefaultOptions">
             <summary>
             Merge options with defaults when needed.
+            </summary>
+        </member>
+        <member name="P:CsQuery.Output.FormatDefault.OutputStack">
+            <summary>
+            Stack of the output tree
+            </summary>
+        </member>
+        <member name="T:CsQuery.Output.FormatDefault.NodeStackElement">
+            <summary>
+            An element that captures the state of a element on the output stack.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Output.FormatDefault.NodeStackElement.#ctor(CsQuery.IDomObject,System.Boolean,System.Boolean)">
+             <summary>
+             Constructor.
+             </summary>
+            
+             <param name="element">
+             The element.
+             </param>
+             <param name="isRaw">
+             true if this object is raw.
+             </param>
+             <param name="isClose">
+             true if this object is close.
+             </param>
+        </member>
+        <member name="F:CsQuery.Output.FormatDefault.NodeStackElement.Element">
+            <summary>
+            The element.
+            </summary>
+        </member>
+        <member name="F:CsQuery.Output.FormatDefault.NodeStackElement.IsRaw">
+            <summary>
+            The text node should be output as raw (un-encoded) text.
+            </summary>
+        </member>
+        <member name="F:CsQuery.Output.FormatDefault.NodeStackElement.IsClose">
+            <summary>
+            The is a closing tag only.
             </summary>
         </member>
         <member name="T:CsQuery.OutputFormatters">
@@ -14347,6 +16465,11 @@
         <member name="P:CsQuery.OutputFormatters.PlainText">
             <summary>
             An OutputFormatter that returns a basic ASCII version of the HTML document.
+            </summary>
+        </member>
+        <member name="T:CsQuery.Promises.Timeout`1">
+            <summary>
+            A promise that resolves or fails after a certain amount of time
             </summary>
         </member>
         <member name="T:CsQuery.Promises.IPromise`1">
@@ -14474,6 +16597,250 @@
              <returns>
              A promise.
              </returns>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.#ctor(System.Int32)">
+             <summary>
+             Create a new Timeout that rejects after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.#ctor(System.Int32,`0)">
+             <summary>
+             Create a new Timeout that rejects with the provided parameter value after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+             <param name="parameterValue">
+             The parameter value.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.#ctor(System.Int32,System.Boolean)">
+             <summary>
+             Create a new Timeout that resolves or rejects with the provided parameter value after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+             <param name="resolveOnTimeout">
+             true to resolve the promise on the timeout, false to reject it.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.#ctor(System.Int32,`0,System.Boolean)">
+             <summary>
+             Create a new Timeout that resolves or rejects with the provided parameter value after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+             <param name="parameterValue">
+             The parameter value.
+             </param>
+             <param name="resolveOnTimeout">
+             true to resolve the promise on the timeout, false to reject it.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Stop(System.Boolean)">
+             <summary>
+             Stops the timer with the specified resolution.
+             </summary>
+            
+             <param name="resolve">
+             True to resolve the promise, false to reject it.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Stop">
+            <summary>
+            Stops the timer with it's default resolution
+            </summary>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Timer_Elapsed(System.Object,System.Timers.ElapsedEventArgs)">
+             <summary>
+             Event handler called when the specified time has elapsed.
+             </summary>
+            
+             <param name="sender">
+             The timer object.
+             </param>
+             <param name="e">
+             Elapsed event information.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.CompletePromise(System.Boolean)">
+            <summary>
+            Completes the promise promise using the specified resolution
+            </summary>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Then(CsQuery.Promises.PromiseAction{`0},CsQuery.Promises.PromiseAction{`0})">
+             <summary>
+             Chains delegates that will be executed on success or failure of a promise.
+             </summary>
+            
+             <param name="success">
+             The delegate to call upon successful resolution of the promise.
+             </param>
+             <param name="failure">
+             (optional) The delegate to call upon unsuccessful resolution of the promise.
+             </param>
+            
+             <returns>
+             A new promise which will resolve when this promise has resolved.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Then(CsQuery.Promises.PromiseFunction{`0},CsQuery.Promises.PromiseFunction{`0})">
+             <summary>
+             Chains delegates that will be executed on success or failure of a promise.
+             </summary>
+            
+             <param name="success">
+             The delegate to call upon successful resolution of the promise.
+             </param>
+             <param name="failure">
+             (optional) The delegate to call upon unsuccessful resolution of the promise.
+             </param>
+            
+             <returns>
+             A new promise which will resolve when this promise has resolved.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Then(System.Delegate,System.Delegate)">
+             <summary>
+             Chains delegates that will be executed on success or failure of a promise.
+             </summary>
+            
+             <param name="success">
+             The delegate to call upon successful resolution of the promise.
+             </param>
+             <param name="failure">
+             (optional) The delegate to call upon unsuccessful resolution of the promise.
+             </param>
+            
+             <returns>
+             A new promise which will resolve when this promise has resolved.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Then(System.Action,System.Action)">
+             <summary>
+             Chains delegates that will be executed on success or failure of a promise.
+             </summary>
+            
+             <param name="success">
+             The delegate to call upon successful resolution of the promise.
+             </param>
+             <param name="failure">
+             (optional) The delegate to call upon unsuccessful resolution of the promise.
+             </param>
+            
+             <returns>
+             A new promise which will resolve when this promise has resolved.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.Then(System.Func{CsQuery.Promises.IPromise},System.Func{CsQuery.Promises.IPromise})">
+             <summary>
+             Chains delegates that will be executed on success or failure of a promise.
+             </summary>
+            
+             <param name="success">
+             The delegate to call upon successful resolution of the promise.
+             </param>
+             <param name="failure">
+             (optional) The delegate to call upon unsuccessful resolution of the promise.
+             </param>
+            
+             <returns>
+             A new promise which will resolve when this promise has resolved.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.CsQuery#Promises#IPromise#Then(CsQuery.Promises.PromiseAction{System.Object},CsQuery.Promises.PromiseAction{System.Object})">
+             <summary>
+             Chains delegates that will be executed on success or failure of a promise.
+             </summary>
+            
+             <param name="success">
+             The delegate to call upon successful resolution of the promise.
+             </param>
+             <param name="failure">
+             (optional) The delegate to call upon unsuccessful resolution of the promise.
+             </param>
+            
+             <returns>
+             A new promise which will resolve when this promise has resolved.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout`1.CsQuery#Promises#IPromise#Then(CsQuery.Promises.PromiseFunction{System.Object},CsQuery.Promises.PromiseFunction{System.Object})">
+             <summary>
+             Chains delegates that will be executed on success or failure of a promise.
+             </summary>
+            
+             <param name="success">
+             The delegate to call upon successful resolution of the promise.
+             </param>
+             <param name="failure">
+             (optional) The delegate to call upon unsuccessful resolution of the promise.
+             </param>
+            
+             <returns>
+             A new promise which will resolve when this promise has resolved.
+             </returns>
+        </member>
+        <member name="T:CsQuery.Promises.Timeout">
+            <summary>
+            A promise that resolves or fails after a certain amount of time
+            </summary>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout.#ctor(System.Int32)">
+             <summary>
+             Create a new Timeout that rejects after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout.#ctor(System.Int32,System.Object)">
+             <summary>
+             Create a new Timeout that rejects with the provided parameter value after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+             <param name="parameterValue">
+             The parameter value.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout.#ctor(System.Int32,System.Boolean)">
+             <summary>
+             Create a new Timeout that resolves or rejects with the provided parameter value after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+             <param name="succeedOnTimeout">
+             true to resolve the promise on the timeout, false to reject it.
+             </param>
+        </member>
+        <member name="M:CsQuery.Promises.Timeout.#ctor(System.Int32,System.Object,System.Boolean)">
+             <summary>
+             Create a new Timeout that resolves or rejects with the provided parameter value after the specified time.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+             <param name="parameterValue">
+             The parameter value.
+             </param>
+             <param name="succeedOnTimeout">
+             true to resolve the promise on the timeout, false to reject it.
+             </param>
         </member>
         <member name="T:CsQuery.StringScanner.CharacterData">
             <summary>
@@ -17674,17 +20041,15 @@
              A new promise which will resolve when this promise has resolved.
              </returns>
         </member>
-        <member name="M:CsQuery.Promises.WhenAll.Timer_Elapsed(System.Object,System.Timers.ElapsedEventArgs)">
-             <summary>
-             Event handler. Called by Timer for elapsed events.
-             </summary>
-            
-             <param name="sender">
-             Source of the event.
-             </param>
-             <param name="e">
-             Elapsed event information.
-             </param>
+        <member name="M:CsQuery.Promises.WhenAll.PromiseResolve">
+            <summary>
+            Called when a client promise is resolved.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Promises.WhenAll.PromiseReject">
+            <summary>
+            Called when a client promise is rejected.
+            </summary>
         </member>
         <member name="T:CsQuery.When">
             <summary>
@@ -17743,6 +20108,39 @@
              A new IPromise object.
              </returns>
         </member>
+        <member name="M:CsQuery.When.Timeout(System.Int32)">
+             <summary>
+             Return a promise that fails after the specified time. This is like Timer, but fails rather
+             than succeeds after the time has elapsed.
+             </summary>
+            
+             <param name="timeoutMilliseconds">
+             The timeout in milliseconds.
+             </param>
+            
+             <returns>
+             A promise.
+             </returns>
+        </member>
+        <member name="M:CsQuery.When.Timer(System.Int32)">
+             <summary>
+             Return a promise that resolves successfully after the specified time. 
+             </summary>
+            
+             <param name="timerMilliseconds">
+             The timeout in milliseconds.
+             </param>
+            
+             <returns>
+             A promise.
+             </returns>
+        </member>
+        <member name="P:CsQuery.When.Debug">
+            <summary>
+            Gets or sets a value indicating whether objects in the Promises library should be created in
+            debug mode. This affects Deferred.FailOnResolutionExceptions.
+            </summary>
+        </member>
         <member name="T:CsQuery.Promises.Deferred`1">
              <summary>
              A strongly-typed deferred object
@@ -17756,6 +20154,11 @@
             <summary>
             A Deferred object. Deferred objects implement the IPromise interface, and have methods for
             resolving or rejecting the promise.
+            </summary>
+        </member>
+        <member name="M:CsQuery.Promises.Deferred.#ctor">
+            <summary>
+            Default constuctor for a Deferred object.
             </summary>
         </member>
         <member name="F:CsQuery.Promises.Deferred.NextDeferred">
@@ -17875,11 +20278,11 @@
         </member>
         <member name="M:CsQuery.Promises.Deferred.GetParameters(System.Boolean)">
              <summary>
-             Gets the param,eter
+             Gets the parameters that should be invoked on the success/fail delegate.
              </summary>
             
              <param name="useParms">
-             true to use parameters.
+             When true, the target delegate has parameters and this should return a non-null result.
              </param>
             
              <returns>
@@ -17904,6 +20307,15 @@
         <member name="P:CsQuery.Promises.Deferred.Failure">
             <summary>
             The failure delegate
+            </summary>
+        </member>
+        <member name="P:CsQuery.Promises.Deferred.FailOnResolutionExceptions">
+            <summary>
+            When false (default), errors thrown during promise resoluton will be turned into a rejected
+            promise. If this is true, no error handling will occur, meaning that errors could bubble, or
+            in the event that a promise was resolved by an asynchronous event, be unhandled. Typically,
+            you would only want this to be false when debugging, as it could result in unhandled
+            exceptions.
             </summary>
         </member>
         <member name="M:CsQuery.Promises.Deferred`1.Then(CsQuery.Promises.PromiseAction{`0},CsQuery.Promises.PromiseAction{`0})">
@@ -18191,9 +20603,24 @@
              A unique identifier that can be used to track this request when it resolves.
              </returns>
         </member>
+        <member name="M:CsQuery.Web.AsyncWebRequestManager.StartAsyncWebRequest(CsQuery.Web.ICsqWebRequest,System.Action{CsQuery.Web.ICsqWebResponse},System.Action{CsQuery.Web.ICsqWebResponse})">
+             <summary>
+             Start an async request from an ICsqWebRequest object
+             </summary>
+            
+             <param name="request">
+             The URL of the remote server.
+             </param>
+             <param name="success">
+             A delegate to invoke upon successful completion of the request.
+             </param>
+             <param name="fail">
+             A delegate to invoke when a request fails.
+             </param>
+        </member>
         <member name="M:CsQuery.Web.AsyncWebRequestManager.StartAsyncWebRequest(System.String,System.Action{CsQuery.Web.ICsqWebResponse},System.Action{CsQuery.Web.ICsqWebResponse},System.Int32,CsQuery.Web.ServerConfig)">
              <summary>
-             Start an async request, and return a unique ID that identifies it.
+             Start an async request identified by a user-supplied ID.
              </summary>
             
              <param name="url">
@@ -18268,7 +20695,8 @@
         </member>
         <member name="P:CsQuery.Web.ICsqWebRequest.Id">
             <summary>
-            A unique ID for this request. This will be automatically generated if not assigned.
+            An ID that uniquely identifies this request; will be returned with the response for
+            asynchronous requests.
             </summary>
         </member>
         <member name="P:CsQuery.Web.ICsqWebResponse.Html">
@@ -19198,16 +21626,19 @@
              A new IDomDocument object
              </returns>
         </member>
-        <member name="M:CsQuery.Implementation.DomDocument.Create(System.IO.TextReader,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
+        <member name="M:CsQuery.Implementation.DomDocument.Create(System.IO.Stream,System.Text.Encoding,CsQuery.HtmlParsingMode,CsQuery.HtmlParsingOptions,CsQuery.DocType)">
              <summary>
-             Creates a new DomDocument (or derived) object
+             Creates a new DomDocument (or derived) object.
              </summary>
             
              <param name="html">
-             The HTML source for the document
+             The HTML source for the document.
+             </param>
+             <param name="encoding">
+             (optional) the character set encoding.
              </param>
              <param name="parsingMode">
-             (optional) the parsing mode.
+             (optional) the HTML parsing mode.
              </param>
              <param name="parsingOptions">
              (optional) options for controlling the parsing.
@@ -19217,7 +21648,7 @@
              </param>
             
              <returns>
-             A new IDomDocument object
+             A new IDomDocument object.
              </returns>
         </member>
         <member name="M:CsQuery.Implementation.DomDocument.#ctor">
@@ -19803,7 +22234,7 @@
              </summary>
             
              <remarks>
-             TODO: R&amp;R. This has to do with GetTagOpener etc.
+             TODO: Remove this. This has to do with GetTagOpener etc.
              </remarks>
             
              <value>
@@ -19834,9 +22265,9 @@
             the comment. Null values will be converted to an empty string.
             </summary>
         </member>
-        <member name="P:CsQuery.Implementation.DomComment.Text">
+        <member name="P:CsQuery.Implementation.DomComment.NodeValue">
             <summary>
-            Gets or sets the text of the comment.
+            Gets or sets the node value. For CDATA nodes, this is the content.
             </summary>
         </member>
         <member name="T:CsQuery.Implementation.DomDocumentType">
@@ -21894,6 +24325,28 @@
             <param name="separator"></param>
             <returns></returns>
         </member>
+        <member name="M:CsQuery.ExtensionMethods.Internal.ExtensionMethods.Reverse(System.Text.StringBuilder)">
+             <summary>
+             Reverse the contents of the StringBuilder
+             </summary>
+            
+             <param name="text">
+             The StringBuilder
+             </param>
+        </member>
+        <member name="M:CsQuery.ExtensionMethods.Internal.ExtensionMethods.Reverse(System.String)">
+             <summary>
+             Reverse a string
+             </summary>
+            
+             <param name="text">
+             The string
+             </param>
+            
+             <returns>
+             A new string
+             </returns>
+        </member>
         <member name="M:CsQuery.ExtensionMethods.Internal.ExtensionMethods.Substring(System.Char[],System.Int32,System.Int32)">
              <summary>
              Return a substring from a character array starting at the startIndex provided of the
@@ -22155,11 +24608,25 @@
         </member>
         <member name="M:CsQuery.Web.CsqWebRequest.#ctor(System.String)">
              <summary>
-             Constructor.
+             Creates a new CsqWebRequest for a given URL using the default IHttpWebRequestFactory.
              </summary>
             
              <param name="url">
              URL of the document.
+             </param>
+        </member>
+        <member name="M:CsQuery.Web.CsqWebRequest.#ctor(System.String,HttpWebAdapters.IHttpWebRequestFactory)">
+             <summary>
+             Creates a new CsqWebRequest for a URL using the provided IHttpWebRequestFactory. (Usually,
+             you should use the default constructor, unless replacing the .NET framework HttpWebRequest
+             object for testing or some other purpose)
+             </summary>
+            
+             <param name="url">
+             URL of the document.
+             </param>
+             <param name="webRequestFactory">
+             The web request factory.
              </param>
         </member>
         <member name="M:CsQuery.Web.CsqWebRequest.GetAsync(System.Action{CsQuery.Web.ICsqWebResponse},System.Action{CsQuery.Web.ICsqWebResponse})">
@@ -22167,6 +24634,26 @@
              Initiates an asynchronous GET request.
              </summary>
             
+             <param name="success">
+             A delegate that will be invoked with the response data structure upon successful resolution
+             of the request.
+             </param>
+             <param name="fail">
+             A delegate that will be invoked with the response data structure upon failure.
+             </param>
+            
+             <returns>
+             A ManualResetEvent object for this asynchronous operation.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Web.CsqWebRequest.GetAsync(HttpWebAdapters.IHttpWebRequest,System.Action{CsQuery.Web.ICsqWebResponse},System.Action{CsQuery.Web.ICsqWebResponse})">
+             <summary>
+             Initiates an asynchronous GET request from an IHttpWebRequest object.
+             </summary>
+            
+             <param name="request">
+             The request.
+             </param>
              <param name="success">
              A delegate that will be invoked with the response data structure upon successful resolution
              of the request.
@@ -22188,9 +24675,22 @@
              The HTML returned by a successful request
              </returns>
         </member>
+        <member name="M:CsQuery.Web.CsqWebRequest.Get(HttpWebAdapters.IHttpWebRequest)">
+             <summary>
+             Initiate a synchronous GET request from an existing IHttpWebRequest object
+             </summary>
+            
+             <param name="request">
+             The request.
+             </param>
+            
+             <returns>
+             The HTML returned by a successful request.
+             </returns>
+        </member>
         <member name="M:CsQuery.Web.CsqWebRequest.GetWebRequest">
              <summary>
-             Gets a general-purpose web request object.
+             Gets a new HttpWebRequest object for the URL bound to this CsqWebRequest.
              </summary>
             
              <returns>
@@ -22233,6 +24733,19 @@
             
              <returns>
              The data returned by the POST request.
+             </returns>
+        </member>
+        <member name="M:CsQuery.Web.CsqWebRequest.GetResponseStreamReader(HttpWebAdapters.IHttpWebRequest)">
+             <summary>
+             Gets response stream from a webrequest using the correct encoding.
+             </summary>
+            
+             <param name="request">
+             The request.
+             </param>
+            
+             <returns>
+             The response stream.
              </returns>
         </member>
         <member name="P:CsQuery.Web.CsqWebRequest.Url">
@@ -22291,7 +24804,7 @@
             return the HTML as a CQ object.
             </summary>
         </member>
-        <member name="M:CsQuery.Web.AsyncWebRequest.#ctor(System.Net.WebRequest)">
+        <member name="M:CsQuery.Web.AsyncWebRequest.#ctor(HttpWebAdapters.IHttpWebRequest)">
              <summary>
              Creates an AsyncWebRequest for a WebRequest
              </summary>
@@ -22318,7 +24831,7 @@
         </member>
         <member name="M:CsQuery.Web.AsyncWebRequest.GetAsync">
             <summary>
-            Being the async request
+            Begin the async request
             </summary>
             <returns></returns>
         </member>
@@ -22445,7 +24958,7 @@
              A new ServerConfig object
              </returns>
         </member>
-        <member name="M:CsQuery.Web.ServerConfig.Apply(CsQuery.Web.ServerConfig,CsQuery.Web.CsqWebRequest)">
+        <member name="M:CsQuery.Web.ServerConfig.Apply(CsQuery.Web.ServerConfig,CsQuery.Web.ICsqWebRequest)">
              <summary>
              Apply these options to a web request.
              </summary>
@@ -23558,6 +26071,11 @@
              The enumerator.
              </returns>
         </member>
+        <member name="P:CsQuery.Implementation.RangeSortedDictionary`1.KeysAudit">
+            <summary>
+            Returns the keys in human-readable format.
+            </summary>
+        </member>
         <member name="P:CsQuery.Implementation.RangeSortedDictionary`1.Values">
             <summary>
             Gets the values.
@@ -24346,6 +26864,27 @@
              The full rooted path the the file.
              </returns>
         </member>
+        <member name="M:CsQuery.Utility.Support.TryGetFilePath(System.String,System.String,System.String@)">
+             <summary>
+             Given a partial path to a folder or file, try to find the full rooted path. The topmost part
+             of the partial path must be part of the current application path; e.g. there must be an
+             overlapping part on which to match.
+             </summary>
+            
+             <param name="partialPath">
+             The partial path to find.
+             </param>
+             <param name="basePath">
+             The rooted path to match within.
+             </param>
+             <param name="outputPath">
+             [out] Full pathname of the output file.
+             </param>
+            
+             <returns>
+             true if it succeeds, false if it fails.
+             </returns>
+        </member>
         <member name="M:CsQuery.Utility.Support.GetFirstExternalAssembly">
              <summary>
              Gets the first assembly that is not the assembly that this method belongs to
@@ -24416,6 +26955,22 @@
             
              <returns>
              A cleaned/resolved path
+             </returns>
+        </member>
+        <member name="M:CsQuery.Utility.Support.CombinePaths(System.String,System.String)">
+             <summary>
+             Combine two file paths, normalizing slashes and eliminating any relative path markers.
+             </summary>
+            
+             <param name="path1">
+             The first path.
+             </param>
+             <param name="path2">
+             The second path.
+             </param>
+            
+             <returns>
+             A combined path.
              </returns>
         </member>
         <member name="M:CsQuery.Utility.Support.MethodPath(System.Reflection.MemberInfo)">
@@ -24616,6 +27171,22 @@
             
              <returns>
              The attribute value of a string
+             </returns>
+        </member>
+        <member name="M:CsQuery.Utility.Support.GetEncodedStream(System.String,System.Text.Encoding)">
+             <summary>
+             Return a stream, including BOM preamble, from a string
+             </summary>
+            
+             <param name="html">
+             The HTML.
+             </param>
+             <param name="encoding">
+             The encoding.
+             </param>
+            
+             <returns>
+             The encoded stream.
              </returns>
         </member>
         <member name="T:CsQuery.Objects">

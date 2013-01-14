@@ -35,7 +35,7 @@
       <HintPath>..\..\lib\RavenDB.Database.1.0.960\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="CsQuery">
-      <HintPath>..\..\lib\CsQuery.1.3.1\lib\net40\CsQuery.dll</HintPath>
+      <HintPath>..\..\lib\CsQuery.1.3.3\lib\net40\CsQuery.dll</HintPath>
     </Reference>
     <Reference Include="Esent.Interop">
       <HintPath>..\..\lib\RavenDB.Database.1.0.960\lib\net40\Esent.Interop.dll</HintPath>
