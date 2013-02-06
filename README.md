@@ -20,9 +20,6 @@ Table of Contents
     * [User-Supplied Web.config](#section-mvcapplication-config)
 * [Browser](#section-browser)
     * [Extensions](#section-browser-extensions)
-        * Submit/AjaxSubmit
-		* Load
-		* Render
 * [BrowserContext](#section-browsercontext)
     * [AjaxRequest](#section-browsercontext-ajaxrequest)
     * [Body](#section-browsercontext-body)
@@ -33,9 +30,6 @@ Table of Contents
     * [HttpsRequest](#section-browsercontext-httpsrequest)
     * [Query](#section-browsercontext-query)
     * [Extensions](#section-browsercontext-extensions)
-        * FormsAuth
-        * JsonBody
-        * XmlBody
 * [BrowserResponse](#section-browserresponse)
     * [Advanced](#section-browserresponse-advanced)
     * [ContentType](#section-browserresponse-contenttype)
@@ -46,12 +40,8 @@ Table of Contents
     * [AsJson](#section-browserresponse-asjson)
     * [AsXml](#section-browserresponse-asxml)
     * [Extensions](#section-browserresponse-extensions)
-        * ShouldBeHtml
-        * ShouldBeJson
-        * ShouldBeXml
-        * ShouldHavePermanentlyRedirectedTo
-        * ShouldHaveTemporarilyRedirectTo
 * [Samples](#section-samples)
+* [Troubleshooting](#section-troubleshooting)
 
 <a name="section-mvcapplication"></a>
 MvcApplication
@@ -411,3 +401,35 @@ Samples
 -------
 
 The project contains two sample projects: Raven.Web/Raven.Tests and Tool.Web/Tool.Tests. The Raven sample project shows how to implement a custom user-defined proxy and context.
+
+<a name="section-troubleshooting"></a>
+Troubleshooting
+---------------
+
+Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4 and experience odd behavior consider adding a binding redirect in the root Web.config.
+
+``` xml
+  <configuration>
+    <runtime>
+      <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+        <dependentAssembly>
+          <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+          <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+        </dependentAssembly>
+      </assemblyBinding>
+   </runtime>
+  <configuration>
+```
+
+Changelog
+---------
+
+v0.9.1
+
+* `CrowbarController`, `As` (new) and `DelegateExtensions` (new) are now part of the public API.
+* Upgraded CsQuery to 1.3.4.
+* Changes to the build script, enabled package restore.
+
+v0.9
+
+* Initial public release.

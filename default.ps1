@@ -3,7 +3,7 @@ include .\extensions.ps1
 
 properties {
     $name                   = "Crowbar"
-    $version                = "0.9"
+    $version                = "0.9.1"
     
     # files that should be part of the nuget.
     $nuget_package_files    = @( "$name.???")
