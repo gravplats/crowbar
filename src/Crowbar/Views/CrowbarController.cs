@@ -7,8 +7,18 @@ using System.Web.Routing;
 
 namespace Crowbar.Views
 {
-    internal class CrowbarController : Controller
+    /// <summary>
+    /// Dummy controller for rendering a partial view to a string.
+    /// </summary>
+    public class CrowbarController : Controller
     {
+        /// <summary>
+        /// Renders a partial view to a string in the specified context.
+        /// </summary>
+        /// <param name="partialViewContext">The partial view context.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="cookies">Any cookies that were captures as part of the response.</param>
+        /// <returns>The view rendered as a string.</returns>
         public static string ToString(PartialViewContext partialViewContext, object viewModel, out HttpCookieCollection cookies)
         {
             string viewName = partialViewContext.ViewName;
