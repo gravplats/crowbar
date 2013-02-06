@@ -22,6 +22,11 @@ namespace Crowbar
         /// <param name="innerException">The inner exception.</param>
         public AssertException(string message, Exception innerException) : base(message, innerException) { }
 
+        /// <summary>
+        /// Creates an instance of <see cref="AssertException"/>.
+        /// </summary>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The streaming context.</param>
         protected AssertException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

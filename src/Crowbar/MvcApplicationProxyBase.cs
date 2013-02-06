@@ -13,6 +13,11 @@ namespace Crowbar
         private HttpApplication application;
         private string testBaseDirectory;
 
+        /// <summary>
+        /// Initializes the proxy.
+        /// </summary>
+        /// <param name="initialize">The initialization code.</param>
+        /// <param name="directory">The directory in which the test is run.</param>
         public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
         {
             application = initialize.Delegate();
@@ -39,6 +44,12 @@ namespace Crowbar
             }
         }
 
+        /// <summary>
+        /// Creates the proxy context.
+        /// </summary>
+        /// <param name="application">The HTTP application.</param>
+        /// <param name="testBaseDirectory">The directory in which the test is run.</param>
+        /// <returns>The proxy context.</returns>
         protected abstract TContext CreateContext(HttpApplication application, string testBaseDirectory);
     }
 }

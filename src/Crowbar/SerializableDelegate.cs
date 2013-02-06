@@ -11,13 +11,25 @@ namespace Crowbar
     public class SerializableDelegate<TDelegate> : ISerializable
         where TDelegate : class
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="SerializableDelegate{TDelegate}"/>.
+        /// </summary>
+        /// <param name="delegate">The delegate that should be de/serialized.</param>
         public SerializableDelegate(TDelegate @delegate)
         {
             Delegate = @delegate;
         }
 
+        /// <summary>
+        /// The delegates the should be de/serialized.
+        /// </summary>
         public TDelegate Delegate { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="SerializableDelegate{TDelegate}"/>.
+        /// </summary>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The streaming context.</param>
         public SerializableDelegate(SerializationInfo info, StreamingContext context)
         {
             var delegateType = (Type)info.GetValue("delegateType", typeof(Type));

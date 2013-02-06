@@ -16,11 +16,16 @@ namespace Crowbar
         /// <param name="directory">The directory in which the test is run.</param>
         public abstract void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory);
 
+        /// <inheritdoc />
         public override object InitializeLifetimeService()
         {
             return null;
         }
 
+        /// <summary>
+        /// Handles exceptions thrown by the proxy.
+        /// </summary>
+        /// <param name="exception">The exception that should be handled.</param>
         protected void HandleException(Exception exception)
         {
             if (exception.IsSerializable())
@@ -31,6 +36,10 @@ namespace Crowbar
             throw new Exception(string.Format("An exception was thrown during the execution of the test: {0}", exception.Message));
         }
 
+        /// <summary>
+        /// Creates a new browser object.
+        /// </summary>
+        /// <returns>A browser.</returns>
         protected Browser CreateBrowser()
         {
             int version = GetMvcMajorVersion();

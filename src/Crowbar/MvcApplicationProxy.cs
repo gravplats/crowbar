@@ -8,6 +8,11 @@ namespace Crowbar
     /// </summary>
     public class MvcApplicationProxy : ProxyBase
     {
+        /// <summary>
+        /// Initializes the proxy.
+        /// </summary>
+        /// <param name="initialize">The initialization code.</param>
+        /// <param name="directory">The directory in which the test is run.</param>
         public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
         {
             initialize.Delegate();
