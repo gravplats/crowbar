@@ -3,6 +3,7 @@ bin
 obj
 build
 nuget
+packages
 release
 *.suo
 *.user
