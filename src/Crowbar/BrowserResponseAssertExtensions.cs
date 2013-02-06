@@ -31,10 +31,7 @@ namespace Crowbar
                 throw new AssertException("Failed to convert response body into a CQ object.", exception);
             }
 
-            if (assertions != null)
-            {
-                assertions(document);
-            }
+            assertions.TryInvoke(document);
 
             return document;
         }
@@ -93,10 +90,7 @@ namespace Crowbar
                 throw new AssertException("Failed to convert response body into XML.", exception);
             }
 
-            if (assertions != null)
-            {
-                assertions(xml);
-            }
+            assertions.TryInvoke(xml);
 
             return xml;
         }

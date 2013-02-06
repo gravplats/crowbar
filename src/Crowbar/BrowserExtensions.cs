@@ -23,7 +23,7 @@ namespace Crowbar
         public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
             where TViewModel : class
         {
-            return browser.Submit(html, viewModel, AsAjaxRequest(customize), overrides, cookies);
+            return browser.Submit(html, viewModel, As.AjaxRequest.Then(customize), overrides, cookies);
         }
 
         /// <summary>
@@ -91,11 +91,7 @@ namespace Crowbar
             if (viewModel != null)
             {
                 form.SetPasswordFields(viewModel);
-
-                if (overrides != null)
-                {
-                    overrides(form, viewModel);
-                }
+                overrides.TryInvoke(form, viewModel);
             }
 
             string method = form.Attr("method");
@@ -129,24 +125,8 @@ namespace Crowbar
                     }
                 }
 
-                if (customize != null)
-                {
-                    customize(ctx);
-                }
+                customize.TryInvoke(ctx);
             });
-        }
-
-        internal static Action<BrowserContext> AsAjaxRequest(Action<BrowserContext> customize)
-        {
-            return ctx =>
-            {
-                ctx.AjaxRequest();
-
-                if (customize != null)
-                {
-                    customize(ctx);
-                }
-            };
         }
     }
 }

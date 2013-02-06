@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedBrowserResponse.cs" />
+    <Compile Include="As.cs" />
     <Compile Include="AssertException.cs" />
     <Compile Include="BrowserContext.cs" />
     <Compile Include="BrowserContextExtensions.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="BrowserLoadContinuation.cs" />
     <Compile Include="BrowserRenderContinuation.cs" />
     <Compile Include="BrowserResponseAssertExtensions.cs" />
+    <Compile Include="DelegateExtensions.cs" />
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
     <Compile Include="HttpStatusCode.cs" />

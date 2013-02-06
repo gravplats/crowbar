@@ -85,10 +85,7 @@ namespace Crowbar
             }
 
             var context = new BrowserContext(mvcMajorVersion, method);
-            if (initialize != null)
-            {
-                initialize(context);
-            }
+            initialize.TryInvoke(context);
 
             path = path.RemoveLeadingSlash();
             path = context.ExtractQueryString(path);

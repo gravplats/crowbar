@@ -30,8 +30,7 @@ namespace Crowbar
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
         public BrowserResponse AjaxSubmit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null)
         {
-            var context = BrowserExtensions.AsAjaxRequest(customize);
-            return Submit(context, overrides);
+            return Submit(As.AjaxRequest.Then(customize), overrides);
         }
 
         /// <summary>
