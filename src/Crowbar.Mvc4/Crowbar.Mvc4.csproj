@@ -91,6 +91,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Crowbar.Mvc3\AjaxOnlyAttribute.cs">
       <Link>AjaxOnlyAttribute.cs</Link>
     </Compile>
@@ -139,7 +142,6 @@
     <Compile Include="..\Crowbar.Mvc3\XmlResult.cs">
       <Link>XmlResult.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

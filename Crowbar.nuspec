@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Crowbar</id>
-    <version></version>
+    <version>The version is updated by the build system</version>
     <description>Crowbar is an application testing library for ASP.NET MVC 3 and 4.</description>
     <authors>Mattias Rydengren</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

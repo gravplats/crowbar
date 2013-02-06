@@ -2,69 +2,64 @@
 include .\extensions.ps1
 
 properties {
-    $path            = resolve-path .
+    $name                   = "Crowbar"
+    $version                = "0.9"
     
-	$path_build      = "$path\build"
-	$path_binaries   = "$path_build\binaries\"
-    $path_nuget      = "$path_build\nuget\"
-    $path_release    = "$path_build\release\"
-	$nuspec          = "$path_nuget\Crowbar.nuspec"
+    # files that should be part of the nuget.
+    $nuget_package_files    = @( "$name.???")
+
+    $root                   = Resolve-Path .
     
-	$path_source     = "$path\src"
-    $solution        = "$path_source\Crowbar.sln"	
+    # nuget
+    $nuspec                 = "$name.nuspec"
+    $nuspec_file            = "$root\$nuspec"
     
-	$path_tools      = "$path\tools\"
-	
-    $version         = "0.9"
+    # build
+	$build_path             = "$root\build"
+	$build_binaries_path    = "$build_path\binaries\"
+    $build_nuget_path       = "$build_path\nuget"
+    $nuspec_build_file      = "$build_path\nuget\$nuspec"
+    
+    # source
+	$source_path            = "$root\src"
+    $solution_file          = "$source_path\$name.sln"    
 }
 
 $framework = '4.0'
 
-task default -depends release
+task default -depends build
 
 task clean {
-    Remove-Item -Force -Recurse -ErrorAction SilentlyContinue -LiteralPath $path_build
+    Remove-Item -Force -Recurse -ErrorAction SilentlyContinue -LiteralPath $build_path
 }
 
 task build -depends clean {
-    New-Item $path_binaries -ItemType Directory | Out-Null
-
+    # read metadata from nuspec and update AssemblyInfo.
+    $metadata = ([xml](Get-Content $nuspec_file)).package.metadata
     Generate-Assembly-Info `
-        -file "$path_source\Crowbar\Properties\AssemblyInfo.cs" `
-        -title "Crowbar $version" `
-        -description "Application testing for ASP.NET MVC 3 and 4" `
-        -product "Crowbar" `
+        -file "$source_path\AssemblyInfo.cs" `
+        -title $metadata.id + " $version" `
+        -description $metadata.description `
+        -product $metadata.id `
         -version $version `
-        -copyright "Copyright (C) Mattias Rydengren 2012-2013" `
+        -copyright "Copyright (c) Mattias Rydengren 2013"
 
-    msbuild $solution /p:OutDir=$path_binaries /p:Configuration=Release | Out-Null
+    New-Item $build_binaries_path -ItemType Directory | Out-Null
+    msbuild $solution_file /p:OutDir=$build_binaries_path /p:Configuration=Release /v:q
 }
 
-task release -depends build {
-    New-Item $path_release -ItemType Directory | Out-Null
+task nuget -depends build {
+    # copy files that should be part of the nuget.
+    New-Item $build_nuget_path\lib\net40 -ItemType Directory | Out-Null
+    $nuget_package_files |% { Copy-Item $build_binaries_path\$_ $build_nuget_path\lib\net40 }
 
-    & $path_tools\7-zip\7za.exe a $path_release\crowbar-$version-release-net-4.0.zip `
-        $path_binaries\Crowbar.dll `
-        $path_binaries\Crowbar.pdb `
-        $path_binaries\Crowbar.xml `
-        LICENSE | Out-Null
-}
-
-task nuget -depends release {
-    New-Item $path_nuget\lib\net40 -ItemType Directory | Out-Null
-		
-	Copy-Item Crowbar.nuspec $path_nuget
-	
-	# Update version in nuspec.
-    $content = [xml](Get-Content $nuspec)
-	$content.package.metadata.version = $version
-	$content.Save($nuspec)
-		
-	Copy-Item -Destination $path_nuget\lib\net40 -LiteralPath `
-        $path_binaries\Crowbar.dll, `
-        $path_binaries\Crowbar.pdb, `
-        $path_binaries\Crowbar.xml 
+    # make a copy of the nuspec making temporary edits possible.
+    Copy-Item $nuspec_file $nuspec_build_file
     
-    & $path_tools\nuget-cli\nuget.exe pack $nuspec -o $path_nuget | Out-Null
-    Remove-Item -LiteralPath $path_nuget\lib, $nuspec -Force -Recurse -ErrorAction SilentlyContinue
+	# update version in the nuspec copy.
+    $content = [xml](Get-Content $nuspec_build_file)
+	$content.package.metadata.version = $version
+	$content.Save($nuspec_build_file)
+    
+    & "$source_path\.nuget\NuGet.exe" pack $nuspec_build_file -o $build_nuget_path | Out-Null
 }

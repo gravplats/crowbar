@@ -1,9 +1,9 @@
-How to build the Agdur project
-------------------------------
+How to build the project
+------------------------
 
-Crowbar uses [psake](https://github.com/JamesKovacs/psake) by [James Kovacs](http://jameskovacs.com/) to manage the build process. psake is a Windows PowerShell based build tool and is included in the project (psake.ps1 and psake.psm1).
+The project uses [psake](https://github.com/JamesKovacs/psake) by [James Kovacs](http://jameskovacs.com/) to manage the build process. psake is a Windows PowerShell based build tool and is included in the project (psake.ps1 and psake.psm1).
 
-The project can be built executing psake.
+The project can be built by executing psake.
 
 	> .\psake.ps1
 
@@ -11,7 +11,7 @@ or
 
 	> .\psake.ps1 .\default.ps1
 
-This will build the default task which is the release task. To build any other task (clean, build, release, nuget) run the following command
+This will build the default task which is the build task. To build any other task (clean, build, nuget) run the following command
 
 	> .\psake.ps1 .\default.ps1 [task]
 

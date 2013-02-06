@@ -79,6 +79,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="Core\AjaxRequestController.cs" />
     <Compile Include="Core\FormsAuthController.cs" />
@@ -95,7 +98,6 @@
     <Compile Include="XmlResult.cs" />
     <Compile Include="Core\XmlBodyController.cs" />
     <Compile Include="CrowbarHttpApplication.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
