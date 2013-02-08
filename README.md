@@ -10,7 +10,7 @@ Crowbar was inspired by the Nancy.Testing project from [Nancy](https://github.co
 
 The source code of Crowbar is based on Steven Sanderson's [MvcIntegrationTestFramework](http://blog.stevensanderson.com/2009/06/11/integration-testing-your-aspnet-mvc-application/). The initial commit of Crowbar is Jon Canning's [fork](https://github.com/JonCanning/MvcIntegrationTestFramework) of the MvcIntegrationTestFramework.
 
-Crowbar employs James Treworgy's jQuery port [CsQuery](https://github.com/jamietre/CsQuery) for CSS selection and DOM manipulation. CsQuery is the only third-party dependency of Crowbar.
+Crowbar employs [James Treworgy's](http://blog.outsharked.com) jQuery port [CsQuery](https://github.com/jamietre/CsQuery) for CSS selection and DOM manipulation. CsQuery is the only third-party dependency of Crowbar.
 
 Table of Contents
 -----------------
@@ -129,7 +129,7 @@ public class UserDefinedProxy : MvcApplicationProxyBase<UserDefinedContext>
 <a name="section-mvcapplication-config"></a>
 ### User-Supplied Web.config
 
-By default Crowbar tries to use the Web.config defined in the ASP.NET MVC project, even though this is very experimental and seems instable (read: does not work). To counter any problems with the configuration of the MVC project it is possible and highly recommended that a custom configuration file be used. It is possible to specify the custom configuration file as a second argument to `MvcApplication.Create()`. The custom configration file should be defined in the test project. Please note that the configuration file must be copied to the output directory by setting _Copy to Output Directory_ to either _Copy always_ or _Copy if newer_.
+By default Crowbar tries to use the Web.config defined in the ASP.NET MVC project, even though this is somewhat instable at times. To counter any problems with the configuration of the MVC project it is possible and highly recommended to use a custom configuration file. The name of the custom configuration file can be supplied as the second argument to `MvcApplication.Create()`. The custom configration file should be defined in the test project. Please note that the configuration file must be copied to the output directory by setting _Copy to Output Directory_ to either _Copy always_ or _Copy if newer_.
 
 ``` csharp
 private static readonly MvcApplication Application =
@@ -154,7 +154,7 @@ var response = browser.PerformRequest("GET", "/route", ctx => {
 });
 ```
 
-For convenience, the most common HTTP methods have there own methods: `Delete`, `Get`, `Post`, `Put`, which delegate to `PerformRequest`. `PerformRequest` returns an instance of `BrowserResponse`.
+For convenience, the most common HTTP methods have their own methods: `Delete`, `Get`, `Post`, `Put`, which delegate to `PerformRequest`. `PerformRequest` returns an instance of `BrowserResponse`.
 
 <a name="section-browser-extensions"></a>
 ### Submit / AjaxSubmit
