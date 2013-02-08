@@ -66,6 +66,7 @@
     <Compile Include="DelegateExtensions.cs" />
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
+    <Compile Include="RawHttpRequest.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="IHideObjectMembers.cs" />

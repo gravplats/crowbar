@@ -17,6 +17,7 @@ namespace Crowbar
         private readonly NameValueCollection headers;
         private readonly string method;
         private readonly string protocol;
+        private readonly RawHttpRequest rawHttpRequest;
 
         public SimulatedWorkerRequest(string path, ISimulatedWorkerRequestContext context, TextWriter output)
             : base(path, context.QueryString, output)
@@ -27,6 +28,20 @@ namespace Crowbar
             headers = context.Headers;
             method = context.Method;
             protocol = context.Protocol;
+            rawHttpRequest = new RawHttpRequest(method, protocol);
+        }
+
+        public string GetRawHttpRequest()
+        {
+            return rawHttpRequest.ToString();
+        }
+
+        public override string GetRawUrl()
+        {
+            string value = base.GetRawUrl();
+            rawHttpRequest.SetPath(value);
+
+            return value;
         }
 
         public override string GetProtocol()
@@ -41,35 +56,60 @@ namespace Crowbar
 
         public override string GetKnownRequestHeader(int index)
         {
-            //Override "Content-Type" header for DELETE, POST and PUT requests, otherwise ASP.NET won't read the Form collection.
-            if (index == 12)
+            string name = GetKnownRequestHeaderName(index);
+            string value = HandleKnownRequestHeader(index);
+
+            if (value == null && headers != null)
             {
-                if (string.Equals(method, "DELETE", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(method, "POST", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(method, "PUT", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (formValues.Count > 0)
+                value = headers[name];
+            }
+
+            rawHttpRequest.AddHeader(name, value);
+
+            return value;
+        }
+
+        private string HandleKnownRequestHeader(int index)
+        {
+            switch (index)
+            {
+                case HeaderContentType:
+
+                    bool isDeletePostOrPut = string.Equals(method, "DELETE", StringComparison.OrdinalIgnoreCase) ||
+                                             string.Equals(method, "POST", StringComparison.OrdinalIgnoreCase) ||
+                                             string.Equals(method, "PUT", StringComparison.OrdinalIgnoreCase);
+
+                    //Override "Content-Type" header for DELETE, POST and PUT requests, otherwise ASP.NET won't read the Form collection.
+                    if (index == HeaderContentType && isDeletePostOrPut && formValues.Count > 0)
                     {
                         return "application/x-www-form-urlencoded";
                     }
 
-                    return headers["Content-Type"];
-                }
-            }
+                    return null;
 
-            switch (index)
-            {
-                case 0x19:
+                case HeaderCookie:
                     return MakeCookieHeader();
 
                 default:
-                    if (headers == null)
-                    {
-                        return null;
-                    }
+                    return null;
 
-                    return headers[GetKnownRequestHeaderName(index)];
             }
+        }
+
+        private string MakeCookieHeader()
+        {
+            if ((cookies == null) || (cookies.Count == 0))
+            {
+                return null;
+            }
+
+            var sb = new StringBuilder();
+            foreach (string cookieName in cookies)
+            {
+                sb.AppendFormat("{0}={1};", cookieName, cookies[cookieName].Value);
+            }
+
+            return sb.ToString();
         }
 
         public override string GetUnknownRequestHeader(string name)
@@ -79,7 +119,10 @@ namespace Crowbar
                 return null;
             }
 
-            return headers[name];
+            string value = headers[name];
+            rawHttpRequest.AddHeader(name, value);
+
+            return value;
         }
 
         public override string[][] GetUnknownRequestHeaders()
@@ -94,14 +137,36 @@ namespace Crowbar
                                  where knownRequestHeaderIndex < 0
                                  select new[] { key, headers[key] };
 
+            foreach (string[] unknownHeader in unknownHeaders)
+            {
+                if (unknownHeader.Length != 2)
+                {
+                    continue;
+                }
+
+                rawHttpRequest.AddHeader(unknownHeader[0], unknownHeader[1]);
+            }
+
             return unknownHeaders.ToArray();
         }
 
         public override byte[] GetPreloadedEntityBody()
         {
+            string body = HandlePreloadedEntityBody();
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return base.GetPreloadedEntityBody();
+            }
+
+            rawHttpRequest.SetBody(body);
+            return Encoding.UTF8.GetBytes(body);
+        }
+
+        private string HandlePreloadedEntityBody()
+        {
             if (!string.IsNullOrEmpty(bodyString))
             {
-                return Encoding.UTF8.GetBytes(bodyString);
+                return bodyString;
             }
 
             if (formValues.Count > 0)
@@ -121,31 +186,15 @@ namespace Crowbar
                     }
                 }
 
-                return Encoding.UTF8.GetBytes(string.Join("&", entries));
+                return string.Join("&", entries);
             }
 
-            return base.GetPreloadedEntityBody();
+            return null;
         }
 
         public override bool IsSecure()
         {
             return string.Equals(protocol, "https", StringComparison.OrdinalIgnoreCase);
-        }
-
-        private string MakeCookieHeader()
-        {
-            if ((cookies == null) || (cookies.Count == 0))
-            {
-                return null;
-            }
-
-            var sb = new StringBuilder();
-            foreach (string cookieName in cookies)
-            {
-                sb.AppendFormat("{0}={1};", cookieName, cookies[cookieName].Value);
-            }
-
-            return sb.ToString();
         }
     }
 }

@@ -97,20 +97,30 @@ namespace Crowbar
 
             HttpRuntime.ProcessRequest(workerRequest);
 
-            return CreateResponse(output);
+            string rawHttpRequest = workerRequest.GetRawHttpRequest();
+            return CreateResponse(output, rawHttpRequest);
         }
 
-        private static BrowserResponse CreateResponse(StringWriter output)
+        private static BrowserResponse CreateResponse(StringWriter output, string rawHttpRequest)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
-                var exception = CrowbarContext.ExceptionContext.Exception;
-                if (exception.IsSerializable())
+                using (var writer = new StringWriter())
                 {
-                    throw new CrowbarException("The MVC application threw an exception.", exception);
-                }
+                    writer.WriteLine("The MVC application threw an exception during the following HTTP request:");
+                    writer.WriteLine();
+                    writer.WriteLine(rawHttpRequest);
 
-                throw new Exception(string.Format("The MVC application threw an exception: {0}", exception.Message));
+                    var exception = CrowbarContext.ExceptionContext.Exception;
+                    if (exception.IsSerializable())
+                    {
+                        throw new CrowbarException(writer.ToString(), exception);
+                    }
+
+                    writer.WriteLine(exception.Message);
+
+                    throw new Exception(writer.ToString());
+                }
             }
 
             var response = CrowbarContext.HttpResponse;
@@ -137,8 +147,9 @@ namespace Crowbar
                     HttpSessionState = CrowbarContext.HttpSessionState
                 },
                 Headers = headers,
-                ResponseBody = output.ToString(),
                 HttpResponse = response,
+                ResponseBody = output.ToString(),
+                RawHttpRequest = rawHttpRequest
             };
         }
     }

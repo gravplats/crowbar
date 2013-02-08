@@ -49,6 +49,11 @@ namespace Crowbar
         public string ResponseBody { get; internal set; }
 
         /// <summary>
+        /// Gets the raw HTTP request that was sent to the server.
+        /// </summary>
+        public string RawHttpRequest { get; internal set; }
+
+        /// <summary>
         /// Gets the HTTP Status Code of the HTTP response.
         /// </summary>
         public HttpStatusCode StatusCode

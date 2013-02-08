@@ -42,6 +42,7 @@ Table of Contents
     * [Extensions](#section-browserresponse-extensions)
 * [Samples](#section-samples)
 * [Troubleshooting](#section-troubleshooting)
+* [Changelog](#section-changelog)
 
 <a name="section-mvcapplication"></a>
 MvcApplication
@@ -421,8 +422,13 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
   <configuration>
 ```
 
+<a name="section-changelog"></a>
 Changelog
 ---------
+
+v0.9.2
+
+* Added `BrowserResponse.Trace` which returns a raw string representation of the HTTP request (similar to Fiddler). If the server throws an exception the trace will be included in the exception message for easier troubleshooting.
 
 v0.9.1
 

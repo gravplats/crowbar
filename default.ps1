@@ -3,7 +3,7 @@ include .\extensions.ps1
 
 properties {
     $name                   = "Crowbar"
-    $version                = "0.9.1"
+    $version                = "0.9.2-beta1"
     
     # files that should be part of the nuget.
     $nuget_package_files    = @( "$name.???")
@@ -36,12 +36,17 @@ task clean {
 task build -depends clean {
     # read metadata from nuspec and update AssemblyInfo.
     $metadata = ([xml](Get-Content $nuspec_file)).package.metadata
+    
+    # the AssemblyVersionAttribute is no fan of beta versions and will fail the build, thus
+    # we will be using the syntax major[.minor[.patch]].alpha-version in AssemblyInfo.
+    $assembly_version = $version -replace '(\d+\\.)?(\d+\\.)?(\d+)-beta(\d+)', '$1$2$3.$4'
+    
     Generate-Assembly-Info `
         -file "$source_path\AssemblyInfo.cs" `
         -title $metadata.id + " $version" `
         -description $metadata.description `
         -product $metadata.id `
-        -version $version `
+        -version $assembly_version `
         -copyright "Copyright (c) Mattias Rydengren 2013"
 
     New-Item $build_binaries_path -ItemType Directory | Out-Null
