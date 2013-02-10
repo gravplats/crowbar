@@ -30,11 +30,7 @@ namespace Crowbar
         public BrowserResponse AjaxSubmit<TViewModel>(TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
             where TViewModel : class
         {
-            if (viewModel == null)
-            {
-                throw new ArgumentNullException("viewModel");
-            }
-
+            Ensure.NotNull(viewModel, "viewModel");
             return browser.AjaxSubmit(html, viewModel, customize, overrides, cookies);
         }
 
@@ -50,11 +46,7 @@ namespace Crowbar
         public BrowserResponse Submit<TViewModel>(TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
             where TViewModel : class
         {
-            if (viewModel == null)
-            {
-                throw new ArgumentNullException("viewModel");
-            }
-
+            Ensure.NotNull(viewModel, "viewModel");
             return browser.Submit(html, viewModel, customize, overrides, cookies);
         }
     }

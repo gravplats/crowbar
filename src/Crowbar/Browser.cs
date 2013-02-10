@@ -74,15 +74,8 @@ namespace Crowbar
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
         public BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> initialize = null)
         {
-            if (method == null)
-            {
-                throw new ArgumentNullException("method");
-            }
-
-            if (path == null)
-            {
-                throw new ArgumentNullException("path");
-            }
+            Ensure.NotNull(method, "method");
+            Ensure.NotNull(path, "path");
 
             var context = new BrowserContext(mvcMajorVersion, method);
             initialize.TryInvoke(context);

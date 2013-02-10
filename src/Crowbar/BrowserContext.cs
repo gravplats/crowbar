@@ -92,11 +92,7 @@ namespace Crowbar
         /// <param name="cookie">The cookie that should be added.</param>
         public void Cookie(HttpCookie cookie)
         {
-            if (cookie == null)
-            {
-                throw new ArgumentNullException("cookie");
-            }
-
+            Ensure.NotNull(cookie, "cookie");
             context.Cookies.Add(cookie);
         }
 
