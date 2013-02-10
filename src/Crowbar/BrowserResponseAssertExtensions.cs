@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Xml.Linq;
 using CsQuery;
 
@@ -96,6 +97,48 @@ namespace Crowbar
         }
 
         /// <summary>
+        /// Assert that the response has a cookie with the specified name.
+        /// </summary>
+        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="name">The name of the cookie.</param>
+        /// <returns>The cookie.</returns>
+        public static HttpCookie ShouldHaveCookie(this BrowserResponse response, string name)
+        {
+            Ensure.NotNullOrEmpty(name, "name");
+
+            if (response.HttpResponse == null)
+            {
+                throw new InvalidOperationException("The HttpResponse is null.");
+            }
+
+            var cookie = response.HttpResponse.Cookies[name];
+            if (cookie == null)
+            {
+                throw new AssertException("Missing cookie '{0}'.", name);
+            }
+
+            return cookie;
+        }
+
+        /// <summary>
+        /// Asserts that the response has a cookie with the specified name and value.
+        /// </summary>
+        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="name">The name of the cookie.</param>
+        /// <param name="value">The value of the cookie.</param>
+        /// <returns>The cookie.</returns>
+        public static HttpCookie ShouldHaveCookie(this BrowserResponse response, string name, string value)
+        {
+            var cookie = response.ShouldHaveCookie(name);
+            if (cookie.Value != value)
+            {
+                throw new AssertException("The value of cookie '{0}' should have been '{1}' but was '{2}'.", name, value, cookie.Value);
+            }
+
+            return cookie;
+        }
+
+        /// <summary>
         /// Asserts that a permanent redirect to a specified location took place.
         /// </summary>
         /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
@@ -121,8 +164,7 @@ namespace Crowbar
 
             if (response.Headers["Location"] != location)
             {
-                string message = string.Format("Location should have been '{0}' but was '{1}'.", location, response.Headers["Location"]);
-                throw new AssertException(message);
+                throw new AssertException("Location should have been '{0}' but was '{1}'.", location, response.Headers["Location"]);
             }
         }
 
@@ -130,8 +172,7 @@ namespace Crowbar
         {
             if (response.ContentType != expectedContentType)
             {
-                string message = string.Format("The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
-                throw new AssertException(message);
+                throw new AssertException("The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
             }
         }
 
@@ -139,8 +180,7 @@ namespace Crowbar
         {
             if (response.StatusCode != expectedStatusCode)
             {
-                string message = string.Format("HTTP status code should have been '{0}' but was '{1}'.", expectedStatusCode, response.StatusCode);
-                throw new AssertException(message);
+                throw new AssertException("HTTP status code should have been '{0}' but was '{1}'.", expectedStatusCode, response.StatusCode);
             }
         }
     }

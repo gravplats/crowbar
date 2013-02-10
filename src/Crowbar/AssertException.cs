@@ -19,6 +19,13 @@ namespace Crowbar
         /// Creates an instance of <see cref="AssertException"/>.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
+        /// <param name="args">An object array that contains zero or more object to format.</param>
+        public AssertException(string message, params object[] args) : base(string.Format(message, args)) { }
+
+        /// <summary>
+        /// Creates an instance of <see cref="AssertException"/>.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
         /// <param name="innerException">The inner exception.</param>
         public AssertException(string message, Exception innerException) : base(message, innerException) { }
 

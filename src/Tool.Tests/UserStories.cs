@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 using Crowbar;
 using NUnit.Framework;
@@ -43,7 +42,7 @@ namespace Tool.Tests
                 var response = browser.Render(view, form).Submit();
 
                 response.ShouldHaveTemporarilyRedirectTo("/app");
-                Assert.That(response.HttpResponse.Cookies.AllKeys.Any(name => name == FormsAuthentication.FormsCookieName), Is.True);
+                response.ShouldHaveCookie(FormsAuthentication.FormsCookieName);
             });
         }
     }
