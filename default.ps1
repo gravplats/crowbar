@@ -3,7 +3,7 @@ include .\extensions.ps1
 
 properties {
     $name                   = "Crowbar"
-    $version                = "0.9.2-beta1"
+    $version                = "0.9.2-beta2"
     
     # files that should be part of the nuget.
     $nuget_package_files    = @( "$name.???")
@@ -15,13 +15,13 @@ properties {
     $nuspec_file            = "$root\$nuspec"
     
     # build
-	$build_path             = "$root\build"
-	$build_binaries_path    = "$build_path\binaries\"
+    $build_path             = "$root\build"
+    $build_binaries_path    = "$build_path\binaries\"
     $build_nuget_path       = "$build_path\nuget"
     $nuspec_build_file      = "$build_path\nuget\$nuspec"
     
     # source
-	$source_path            = "$root\src"
+    $source_path            = "$root\src"
     $solution_file          = "$source_path\$name.sln"    
 }
 

@@ -47,7 +47,7 @@ namespace Crowbar
         public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null, string contentType = "application/json")
         {
             response.AssertStatusCode(HttpStatusCode.OK);
-            response.AssertContentType("application/json");
+            response.AssertContentType(contentType);
 
             dynamic json;
 
