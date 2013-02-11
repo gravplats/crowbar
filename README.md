@@ -428,7 +428,11 @@ Changelog
 
 v0.9.2
 
-* Added `BrowserResponse.Trace` which returns a raw string representation of the HTTP request (similar to Fiddler). If the server throws an exception the trace will be included in the exception message for easier troubleshooting.
+* Added `BrowserResponse.RawHttpRequest` which returns a raw string representation of the HTTP request (similar to Fiddler). If the server throws an exception the raw HTTP request will be included in the exception message for easier troubleshooting.
+* Assert helpers for HTTP cookies.
+* Added `Html` to `BrowserLoadContinuation` for easier troubleshooting.
+* Added `Cookies` and `Html` to `BrowserRenderContinuation<TContext>` for easier troubleshooting.
+* More descriptive error messages for `Browser.Submit()`.
 
 v0.9.1
 

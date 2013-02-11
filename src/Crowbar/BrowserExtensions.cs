@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Web;
+using Crowbar.Views;
 using CsQuery;
 
 namespace Crowbar
@@ -43,7 +45,6 @@ namespace Crowbar
             }
 
             string html = response.ResponseBody;
-
             return new BrowserLoadContinuation(browser, html);
         }
 
@@ -58,7 +59,10 @@ namespace Crowbar
         public static BrowserRenderContinuation<TViewModel> Render<TViewModel>(this Browser browser, PartialViewContext partialViewContext, TViewModel viewModel)
             where TViewModel : class
         {
-            return new BrowserRenderContinuation<TViewModel>(browser, partialViewContext, viewModel);
+            HttpCookieCollection cookies;
+
+            string html = CrowbarController.ToString(partialViewContext, viewModel, out cookies);
+            return new BrowserRenderContinuation<TViewModel>(browser, viewModel, html, cookies);
         }
 
         /// <summary>
@@ -72,7 +76,7 @@ namespace Crowbar
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
+        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
             where TViewModel : class
         {
             if (string.IsNullOrWhiteSpace(html))
@@ -85,7 +89,14 @@ namespace Crowbar
             var form = document.Is("form") ? document : document.Find("form").First();
             if (form.Length == 0)
             {
-                throw new InvalidOperationException("Missing form element in HTML.");
+                using (var writer = new StringWriter())
+                {
+                    writer.WriteLine("Missing form element in HTML.");
+                    writer.WriteLine();
+                    writer.WriteLine(html);
+
+                    throw new InvalidOperationException(writer.ToString());
+                }
             }
 
             if (viewModel != null)
@@ -97,13 +108,15 @@ namespace Crowbar
             string method = form.Attr("method");
             if (string.IsNullOrWhiteSpace(method))
             {
-                throw new InvalidOperationException("Missing method attribute for form tag in HTML.");
+                string message = string.Format("Missing method-attribute for form tag '{0}' in HTML.", form);
+                throw new InvalidOperationException(message);
             }
 
             string action = form.Attr("action");
             if (string.IsNullOrWhiteSpace(action))
             {
-                throw new ArgumentException("Missing action attribute for form tag in HTML.");
+                string message = string.Format("Missing action-attribute for form tag '{0}' in HTML.", form);
+                throw new InvalidOperationException(message);
             }
 
             return browser.PerformRequest(method, action, ctx =>

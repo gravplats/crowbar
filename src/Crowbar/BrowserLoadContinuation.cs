@@ -10,13 +10,17 @@ namespace Crowbar
     public class BrowserLoadContinuation : IHideObjectMembers
     {
         private readonly Browser browser;
-        private readonly string html;
 
         internal BrowserLoadContinuation(Browser browser, string html)
         {
             this.browser = browser;
-            this.html = html;
+            Html = html;
         }
+
+        /// <summary>
+        /// The HTML that will be submitted.
+        /// </summary>
+        public string Html { get; private set; }
 
         /// <summary>
         /// Submits the form via an AJAX request.
@@ -31,7 +35,7 @@ namespace Crowbar
             where TViewModel : class
         {
             Ensure.NotNull(viewModel, "viewModel");
-            return browser.AjaxSubmit(html, viewModel, customize, overrides, cookies);
+            return browser.AjaxSubmit(Html, viewModel, customize, overrides, cookies);
         }
 
         /// <summary>
@@ -47,7 +51,7 @@ namespace Crowbar
             where TViewModel : class
         {
             Ensure.NotNull(viewModel, "viewModel");
-            return browser.Submit(html, viewModel, customize, overrides, cookies);
+            return browser.Submit(Html, viewModel, customize, overrides, cookies);
         }
     }
 }

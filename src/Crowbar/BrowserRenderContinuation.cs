@@ -1,6 +1,5 @@
 using System;
 using System.Web;
-using Crowbar.Views;
 using CsQuery;
 
 namespace Crowbar
@@ -12,15 +11,25 @@ namespace Crowbar
         where TViewModel : class
     {
         private readonly Browser browser;
-        private readonly PartialViewContext partialViewContext;
         private readonly TViewModel viewModel;
 
-        internal BrowserRenderContinuation(Browser browser, PartialViewContext partialViewContext, TViewModel viewModel)
+        internal BrowserRenderContinuation(Browser browser, TViewModel viewModel, string html, HttpCookieCollection cookies)
         {
             this.browser = browser;
-            this.partialViewContext = partialViewContext;
             this.viewModel = viewModel;
+            Html = html;
+            Cookies = cookies;
         }
+
+        /// <summary>
+        /// The cookies that will be submitted.
+        /// </summary>
+        public HttpCookieCollection Cookies { get; private set; }
+
+        /// <summary>
+        /// The HTML that will be submitted.
+        /// </summary>
+        public string Html { get; private set; }
 
         /// <summary>
         /// Submits the form via an AJAX request.
@@ -41,10 +50,7 @@ namespace Crowbar
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
         public BrowserResponse Submit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null)
         {
-            HttpCookieCollection cookies;
-
-            string html = CrowbarController.ToString(partialViewContext, viewModel, out cookies);
-            return browser.Submit(html, viewModel, customize, overrides, cookies);
+            return browser.Submit(Html, viewModel, customize, overrides, Cookies);
         }
     }
 }
