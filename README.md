@@ -426,6 +426,10 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
 Changelog
 ---------
 
+v0.9.3
+
+* Added the option of specifying a default `BrowserContext` (when creating the `MvcApplication`) that will be applied to every request.
+
 v0.9.2
 
 * Added `BrowserResponse.RawHttpRequest` which returns a raw string representation of the HTTP request (similar to Fiddler). If the server throws an exception the raw HTTP request will be included in the exception message for easier troubleshooting.

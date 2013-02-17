@@ -1,4 +1,3 @@
-# This script is derived from the dotless build script.
 include .\extensions.ps1
 
 properties {
@@ -6,7 +5,7 @@ properties {
     $version                = "0.9.2"
     
     # files that should be part of the nuget.
-    $nuget_package_files    = @( "$name.???")
+    $nuget_package_files    = @( "$name.???" )
 
     $root                   = Resolve-Path .
     
@@ -38,7 +37,7 @@ task build -depends clean {
     $metadata = ([xml](Get-Content $nuspec_file)).package.metadata
     
     # the AssemblyVersionAttribute is no fan of beta versions and will fail the build, thus
-    # we will be using the syntax major[.minor[.patch]].alpha-version in AssemblyInfo.
+    # we will be using the syntax major[.minor[.patch]].beta-version in AssemblyInfo.
     $assembly_version = $version -replace '(\d+\\.)?(\d+\\.)?(\d+)-beta(\d+)', '$1$2$3.$4'
     
     Generate-Assembly-Info `

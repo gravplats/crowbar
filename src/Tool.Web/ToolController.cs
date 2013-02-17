@@ -4,7 +4,7 @@ using AttributeRouting.Web.Mvc;
 
 namespace Tool.Web
 {
-    [Authorize]
+    [Authorize, RequireHttps]
     public class ToolController : Controller
     {
         [GET("/app")]

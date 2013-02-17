@@ -29,10 +29,11 @@ namespace Crowbar
         /// </summary>
         /// <param name="name">The name of the ASP.NET project.</param>
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
+        /// <param name="defaults">The default browser context settings.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication Create(string name, string config = "Web.config")
+        public static MvcApplication Create(string name, string config = "Web.config", Action<BrowserContext> defaults = null)
         {
-            return MvcApplicationFactory.Create(name, config);
+            return MvcApplicationFactory.Create(name, config, defaults);
         }
 
         /// <summary>
@@ -42,12 +43,13 @@ namespace Crowbar
         /// <typeparam name="TContext">The proxy context type.</typeparam>
         /// <param name="name">The name of the ASP.NET project.</param>
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
+        /// <param name="defaults">The default browser context settings.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config = "Web.config")
+        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config = "Web.config", Action<BrowserContext> defaults = null)
             where TProxy : MvcApplicationProxyBase<TContext>
             where TContext : IDisposable
         {
-            return MvcApplicationFactory.Create<TProxy, TContext>(name, config);
+            return MvcApplicationFactory.Create<TProxy, TContext>(name, config, defaults);
         }
     }
 

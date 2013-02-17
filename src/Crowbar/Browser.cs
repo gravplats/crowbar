@@ -11,14 +11,17 @@ namespace Crowbar
     public class Browser
     {
         private readonly int mvcMajorVersion;
+        private readonly Action<BrowserContext> defaults;
 
         /// <summary>
         /// Creates an instance of <see cref="Browser"/>.
         /// </summary>
         /// <param name="mvcMajorVersion">The major version of the MVC framework.</param>
-        public Browser(int mvcMajorVersion)
+        /// <param name="defaults">The default browser context settings.</param>
+        public Browser(int mvcMajorVersion, Action<BrowserContext> defaults)
         {
             this.mvcMajorVersion = mvcMajorVersion;
+            this.defaults = defaults;
         }
 
         /// <summary>
@@ -70,18 +73,20 @@ namespace Crowbar
         /// </summary>
         /// <param name="method">The HTTP method that should be used.</param>
         /// <param name="path">The path that is being requested.</param>
-        /// <param name="initialize">A configuration object for providing the browser context for the request.</param>
+        /// <param name="overrides">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> initialize = null)
+        public BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> overrides = null)
         {
             Ensure.NotNull(method, "method");
             Ensure.NotNull(path, "path");
 
             var context = new BrowserContext(mvcMajorVersion, method);
-            initialize.TryInvoke(context);
 
             path = path.RemoveLeadingSlash();
             path = context.ExtractQueryString(path);
+
+            defaults.TryInvoke(context);
+            overrides.TryInvoke(context);
 
             CrowbarContext.Reset();
 

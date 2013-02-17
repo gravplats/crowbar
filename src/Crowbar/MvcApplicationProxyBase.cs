@@ -12,16 +12,19 @@ namespace Crowbar
     {
         private HttpApplication application;
         private string testBaseDirectory;
+        private Action<BrowserContext> defaults;
 
         /// <summary>
         /// Initializes the proxy.
         /// </summary>
         /// <param name="initialize">The initialization code.</param>
         /// <param name="directory">The directory in which the test is run.</param>
-        public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
+        /// <param name="defaults"></param>
+        public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<BrowserContext>> defaults = null)
         {
             application = initialize.Delegate();
             testBaseDirectory = directory;
+            this.defaults = (defaults != null) ? defaults.Delegate : null;
         }
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace Crowbar
             {
                 using (var context = CreateContext(application, testBaseDirectory))
                 {
-                    var browser = CreateBrowser();
+                    var browser = CreateBrowser(defaults);
                     script.Delegate(browser, context);
                 }
             }

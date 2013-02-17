@@ -19,7 +19,7 @@ namespace Raven.Tests
         }
 
         protected static readonly MvcApplication<RavenProxyContext> Application =
-            MvcApplication.Create<RavenProxy, RavenProxyContext>("Raven.Web", "Web.Custom.config");
+            MvcApplication.Create<RavenProxy, RavenProxyContext>("Raven.Web", "Web.Custom.config", ctx => ctx.HttpsRequest());
 
         [Test]
         public void Execute()

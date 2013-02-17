@@ -77,33 +77,37 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        public static MvcApplication Create(string name, string config)
+        public static MvcApplication Create(string name, string config, Action<BrowserContext> defaults)
         {
-            var proxy = Create<MvcApplicationProxy>(name, config);
+            var proxy = Create<MvcApplicationProxy>(name, config, defaults);
             return new MvcApplication(proxy);
         }
 
-        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config)
+        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config, Action<BrowserContext> defaults)
             where TProxy : MvcApplicationProxyBase<TContext>
             where TContext : IDisposable
         {
-            var proxy = Create<TProxy>(name, config);
+            var proxy = Create<TProxy>(name, config, defaults);
             return new MvcApplication<TContext>(proxy);
         }
 
-        private static TProxy Create<TProxy>(string name, string config)
+        private static TProxy Create<TProxy>(string name, string config, Action<BrowserContext> defaults)
             where TProxy : ProxyBase
         {
             config = config == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config);
 
             var proxy = MvcApplicationProxyFactory.Create<TProxy>(name);
-            proxy.Initialize(new SerializableDelegate<Func<HttpApplication>>(() =>
-            {
-                SetCustomConfigurationFile(config);
-                FilterProviders.Providers.Add(new InterceptionFilterProvider());
+            proxy.Initialize(
+                new SerializableDelegate<Func<HttpApplication>>(() =>
+                {
+                    SetCustomConfigurationFile(config);
+                    FilterProviders.Providers.Add(new InterceptionFilterProvider());
 
-                return InitializeApplication();
-            }), AppDomain.CurrentDomain.BaseDirectory);
+                    return InitializeApplication();
+                }), 
+                AppDomain.CurrentDomain.BaseDirectory, 
+                defaults != null ? new SerializableDelegate<Action<BrowserContext>>(defaults) : null
+            );
 
             return proxy;
         }

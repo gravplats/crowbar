@@ -8,14 +8,18 @@ namespace Crowbar
     /// </summary>
     public class MvcApplicationProxy : ProxyBase
     {
+        private Action<BrowserContext> defaults;
+
         /// <summary>
         /// Initializes the proxy.
         /// </summary>
         /// <param name="initialize">The initialization code.</param>
         /// <param name="directory">The directory in which the test is run.</param>
-        public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory)
+        /// <param name="defaults">The default browser context settings.</param>
+        public override void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<BrowserContext>> defaults = null)
         {
             initialize.Delegate();
+            this.defaults = (defaults != null) ? defaults.Delegate : null;
         }
 
         /// <summary>
@@ -26,7 +30,7 @@ namespace Crowbar
         {
             try
             {
-                var browser = CreateBrowser();
+                var browser = CreateBrowser(defaults);
                 script.Delegate(browser);
             }
             catch (Exception exception)

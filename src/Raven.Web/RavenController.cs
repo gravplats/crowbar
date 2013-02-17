@@ -7,7 +7,7 @@ using Raven.Client.Linq;
 
 namespace Raven.Web
 {
-    [Authorize]
+    [Authorize, RequireHttps]
     public class RavenController : Controller
     {
         public static IDocumentStore Store;

@@ -14,7 +14,8 @@ namespace Crowbar
         /// </summary>
         /// <param name="initialize">The initialization code.</param>
         /// <param name="directory">The directory in which the test is run.</param>
-        public abstract void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory);
+        /// <param name="defaults">The default browser context settings.</param>
+        public abstract void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<BrowserContext>> defaults = null);
 
         /// <inheritdoc />
         public override object InitializeLifetimeService()
@@ -39,11 +40,12 @@ namespace Crowbar
         /// <summary>
         /// Creates a new browser object.
         /// </summary>
+        /// <param name="defaults"></param>
         /// <returns>A browser.</returns>
-        protected Browser CreateBrowser()
+        protected Browser CreateBrowser(Action<BrowserContext> defaults = null)
         {
             int version = GetMvcMajorVersion();
-            return new Browser(version);
+            return new Browser(version, defaults);
         }
 
         private static int GetMvcMajorVersion()
