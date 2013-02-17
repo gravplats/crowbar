@@ -130,7 +130,7 @@ namespace Crowbar
         public static HttpCookie ShouldHaveCookie(this BrowserResponse response, string name, string value)
         {
             var cookie = response.ShouldHaveCookie(name);
-            if (cookie.Value != value)
+            if (!string.Equals(cookie.Value, value, StringComparison.Ordinal))
             {
                 throw new AssertException("The value of cookie '{0}' should have been '{1}' but was '{2}'.", name, value, cookie.Value);
             }
