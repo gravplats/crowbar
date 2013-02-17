@@ -18,6 +18,7 @@ Table of Contents
     * [User-Defined Context](#section-mvcapplication-context)
     * [User-Defined Proxy](#section-mvcapplication-proxy)
     * [User-Supplied Web.config](#section-mvcapplication-config)
+    * [Default BrowserContext](#section-default-browsercontext)
 * [Browser](#section-browser)
     * [Extensions](#section-browser-extensions)
 * [BrowserContext](#section-browsercontext)
@@ -135,6 +136,16 @@ By default Crowbar tries to use the Web.config defined in the ASP.NET MVC projec
 ``` csharp
 private static readonly MvcApplication Application =
     MvcApplication.Create("<name of your ASP.NET MVC project>", "Web.Custom.config");
+```
+
+<a name="section-default-browsercontext"></a>
+### Default Browser Context
+
+It is possible to define default `BrowserContext` settings for each request by supplying a third argument to `MvcApplication.Create()`. These settings will be applied to the `BrowserContext` before the request specific settings. See the section on [BrowserContext](#section-browsercontext) for available options.
+
+```
+private static readonly MvcApplication Application =
+    MvcApplication.Create("<name of your ASP.NET MVC project>", "Web.Custom.config", ctx => ctx.HttpsRequest());
 ```
 
 <a name="section-browser"></a>
@@ -380,6 +391,22 @@ Asserts that the HTTP status code is 'HTTP Status 200 OK' and that the content t
 response.ShouldBeXml(xml => { 
     Assert.That(xml.Value, Is.EqualTo("Crowbar"));
 });
+```
+
+#### ShouldHaveCookie / ShouldNotHaveCookie
+
+Asserts that the response has or has not a cookie with the specified name (and value).
+
+``` csharp
+response.ShouldHaveCookie("<name of cookie>");
+```
+
+``` csharp
+response.ShouldHaveCookie("<name of cookie>", "<value of cookie");
+```
+
+``` csharp
+response.ShouldNotHaveCookie("<name of cookie>");
 ```
 
 #### ShouldHavePermanentlyRedirectedTo
