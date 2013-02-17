@@ -429,11 +429,12 @@ Changelog
 v0.9.3
 
 * Added the option of specifying a default `BrowserContext` (when creating the `MvcApplication`) that will be applied to every request.
+* Additional assert helper, `ShouldNotHaveCookie`, for HTTP cookies.
 
 v0.9.2
 
 * Added `BrowserResponse.RawHttpRequest` which returns a raw string representation of the HTTP request (similar to Fiddler). If the server throws an exception the raw HTTP request will be included in the exception message for easier troubleshooting.
-* Assert helpers for HTTP cookies.
+* Assert helpers, `ShouldHaveCookie`, for HTTP cookies.
 * Added `Html` to `BrowserLoadContinuation` for easier troubleshooting.
 * Added `Cookies` and `Html` to `BrowserRenderContinuation<TContext>` for easier troubleshooting.
 * More descriptive error messages for `Browser.Submit()`.

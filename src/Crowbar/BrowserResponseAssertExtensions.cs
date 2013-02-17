@@ -97,7 +97,7 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Assert that the response has a cookie with the specified name.
+        /// Asserts that the response has a cookie with the specified name.
         /// </summary>
         /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
         /// <param name="name">The name of the cookie.</param>
@@ -136,6 +136,27 @@ namespace Crowbar
             }
 
             return cookie;
+        }
+
+        /// <summary>
+        /// Asserts that the response does not have a cookie with the specified name.
+        /// </summary>
+        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="name">The name of the cookie.</param>
+        public static void ShouldNotHaveCookie(this BrowserResponse response, string name)
+        {
+            Ensure.NotNullOrEmpty(name, "name");
+
+            if (response.HttpResponse == null)
+            {
+                throw new InvalidOperationException("The HttpResponse is null.");
+            }
+
+            var cookie = response.HttpResponse.Cookies[name];
+            if (cookie != null)
+            {
+                throw new AssertException("Unexpected cookie '{0}'.", name);
+            }
         }
 
         /// <summary>
