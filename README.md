@@ -453,6 +453,10 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
 Changelog
 ---------
 
+v0.9.4
+
+* `ShouldBeHtml`, `ShouldBeJson` and `ShouldBeXml` no longer assumes a HTTP Status 200 OK response.
+
 v0.9.3
 
 * Added the option of specifying a default `BrowserContext` (when creating the `MvcApplication`) that will be applied to every request.

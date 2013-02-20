@@ -18,7 +18,6 @@ namespace Crowbar
         /// <returns>The CQ object.</returns>
         public static CQ ShouldBeHtml(this BrowserResponse response, Action<CQ> assertions = null)
         {
-            response.AssertStatusCode(HttpStatusCode.OK);
             response.AssertContentType("text/html");
 
             CQ document;
@@ -46,7 +45,6 @@ namespace Crowbar
         /// <returns>The JSON object.</returns>
         public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null, string contentType = "application/json")
         {
-            response.AssertStatusCode(HttpStatusCode.OK);
             response.AssertContentType(contentType);
 
             dynamic json;
@@ -77,7 +75,6 @@ namespace Crowbar
         /// <returns>An XElement.</returns>
         public static XElement ShouldBeXml(this BrowserResponse response, Action<XElement> assertions = null, string contentType = "application/xml")
         {
-            response.AssertStatusCode(HttpStatusCode.OK);
             response.AssertContentType(contentType);
 
             XElement xml;
