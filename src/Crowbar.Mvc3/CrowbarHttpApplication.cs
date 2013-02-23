@@ -23,7 +23,7 @@ namespace Crowbar.Web
                 };
 
                 PartialViewLocationFormats = new[] {
-                    "~/Views/{0}.cshtml"
+                    "~/Views/Partials/{0}.cshtml"
                 };
 
                 FileExtensions = new[] {

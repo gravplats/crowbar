@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Crowbar.Mvc.Common;
-using CsQuery;
 using NUnit.Framework;
 
 namespace Crowbar.Tests.Web.Core
@@ -14,7 +13,7 @@ namespace Crowbar.Tests.Web.Core
             {
                 const string username = "crowbar";
 
-                var context = new PartialViewContext("~/Views/_FormAntiForgeryRequestToken.cshtml").SetFormsAuthPrincipal(username);
+                var context = new PartialViewContext("~/Views/Partials/_FormAntiForgeryRequestToken.cshtml").SetFormsAuthPrincipal(username);
                 var payload = new TextBoxPayload { Text = "text" };
 
                 var response = browser.Render(context, payload).Submit(ctx => ctx.FormsAuth(username));
@@ -30,7 +29,7 @@ namespace Crowbar.Tests.Web.Core
             Application.Execute(browser =>
             {
                 var payload = new CheckBoxPayload { Condition = condition, SanityCheck = condition.ToString() };
-                var response = browser.Render("~/Views/_FormCheckBox.cshtml", payload).Submit();
+                var response = browser.Render("~/Views/Partials/_FormCheckBox.cshtml", payload).Submit();
 
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
@@ -59,7 +58,7 @@ namespace Crowbar.Tests.Web.Core
             Application.Execute(browser =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
-                var response = browser.Render("~/Views/_FormTextBox.cshtml", payload).Submit();
+                var response = browser.Render("~/Views/Partials/_FormTextBox.cshtml", payload).Submit();
 
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
@@ -86,7 +85,7 @@ namespace Crowbar.Tests.Web.Core
             Application.Execute(browser =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
-                var response = browser.Render("~/Views/_FormTextArea.cshtml", payload).Submit();
+                var response = browser.Render("~/Views/Partials/_FormTextArea.cshtml", payload).Submit();
 
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
@@ -130,7 +129,7 @@ namespace Crowbar.Tests.Web.Core
                     }
                 };
 
-                var response = browser.Render("~/Views/_FormDropDown.cshtml", payload).Submit();
+                var response = browser.Render("~/Views/Partials/_FormDropDown.cshtml", payload).Submit();
 
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
@@ -166,7 +165,7 @@ namespace Crowbar.Tests.Web.Core
                     Form2 = "form2"
                 };
 
-                var response = browser.Render("~/Views/_MultipleForms.cshtml", payload).Submit(selector: "form.js-form2");
+                var response = browser.Render("~/Views/Partials/_MultipleForms.cshtml", payload).Submit(selector: "form.js-form2");
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
         }

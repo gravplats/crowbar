@@ -161,8 +161,8 @@
     <Content Include="Views\ShouldBeHtml.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\_FormTextBox.cshtml" />
-    <Content Include="Views\_FormAntiForgeryRequestToken.cshtml" />
+    <Content Include="Views\Partials\_FormTextBox.cshtml" />
+    <Content Include="Views\Partials\_FormAntiForgeryRequestToken.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Crowbar.Mvc.Common\Crowbar.Mvc.Common.csproj">
@@ -171,16 +171,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\_FormCheckBox.cshtml" />
+    <Content Include="Views\Partials\_FormCheckBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\_FormDropDown.cshtml" />
+    <Content Include="Views\Partials\_FormDropDown.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\_FormTextArea.cshtml" />
+    <Content Include="Views\Partials\_FormTextArea.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\_MultipleForms.cshtml" />
+    <Content Include="Views\Partials\_MultipleForms.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
