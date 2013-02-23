@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Crowbar.Views
+namespace Crowbar
 {
     /// <summary>
     /// Dummy controller for rendering a partial view to a string.

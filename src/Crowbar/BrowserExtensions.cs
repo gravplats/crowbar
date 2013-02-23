@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Web;
-using Crowbar.Views;
 using CsQuery;
 
 namespace Crowbar

@@ -1,7 +1,7 @@
 using System.IO;
 using System.Web.Mvc;
 
-namespace Crowbar.Views
+namespace Crowbar
 {
     internal class ViewContextStub : ViewContext
     {
