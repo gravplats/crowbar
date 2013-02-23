@@ -24,7 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Crowbar.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -63,6 +63,7 @@
     <Compile Include="BrowserLoadContinuation.cs" />
     <Compile Include="BrowserRenderContinuation.cs" />
     <Compile Include="BrowserResponseAssertExtensions.cs" />
+    <Compile Include="CrowbarViewContext.cs" />
     <Compile Include="DelegateExtensions.cs" />
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
@@ -79,7 +80,6 @@
     <Compile Include="MvcApplicationProxyFactory.cs" />
     <Compile Include="ProxyBase.cs" />
     <Compile Include="CrowbarController.cs" />
-    <Compile Include="PartialViewContext.cs" />
     <Compile Include="ViewContextStub.cs" />
     <Compile Include="SimulatedWorkerRequest.cs" />
     <Compile Include="StringExtensions.cs" />

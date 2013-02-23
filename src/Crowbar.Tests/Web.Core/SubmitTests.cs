@@ -13,7 +13,7 @@ namespace Crowbar.Tests.Web.Core
             {
                 const string username = "crowbar";
 
-                var context = new PartialViewContext("~/Views/Partials/_FormAntiForgeryRequestToken.cshtml").SetFormsAuthPrincipal(username);
+                var context = new CrowbarViewContext("~/Views/Partials/_FormAntiForgeryRequestToken.cshtml").SetFormsAuthPrincipal(username);
                 var payload = new TextBoxPayload { Text = "text" };
 
                 var response = browser.Render(context, payload).Submit(ctx => ctx.FormsAuth(username));

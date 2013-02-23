@@ -43,7 +43,7 @@ namespace Raven.Tests
                     Password = Password
                 };
 
-                var view = new PartialViewContext("_LoginForm").SetAnonymousPrincipal();
+                var view = new CrowbarViewContext("_LoginForm").SetAnonymousPrincipal();
                 var response = browser.Render(view, form).Submit();
 
                 response.ShouldHaveTemporarilyRedirectTo("/app");
@@ -71,7 +71,7 @@ namespace Raven.Tests
                     Password = Password
                 };
 
-                var view = new PartialViewContext("_LoginForm");
+                var view = new CrowbarViewContext("_LoginForm");
                 view.SetFormsAuthPrincipal("invalid"); // simulate invalid anti-forgery request token.
 
                 // Obviously the MVC application should handle this more gracefully, this is just an example.

@@ -15,13 +15,13 @@ namespace Crowbar
         /// <summary>
         /// Renders a partial view to a string in the specified context.
         /// </summary>
-        /// <param name="partialViewContext">The partial view context.</param>
+        /// <param name="crowbarViewContext">The view context.</param>
         /// <param name="viewModel">The view model.</param>
         /// <param name="cookies">Any cookies that were captures as part of the response.</param>
         /// <returns>The view rendered as a string.</returns>
-        public static string ToString(PartialViewContext partialViewContext, object viewModel, out HttpCookieCollection cookies)
+        public static string ToString(CrowbarViewContext crowbarViewContext, object viewModel, out HttpCookieCollection cookies)
         {
-            string viewName = partialViewContext.ViewName;
+            string viewName = crowbarViewContext.ViewName;
 
             using (var writer = new StringWriter())
             {
@@ -29,7 +29,7 @@ namespace Crowbar
                 var httpResponse = new HttpResponse(writer);
 
                 // There are still dependencies on HttpContext.Currrent in the ASP.NET (MVC) framework, eg., AntiForgeryRequestToken (as of ASP.NET MVC 4).
-                var httpContext = new HttpContext(httpRequest, httpResponse) { User = partialViewContext.User };
+                var httpContext = new HttpContext(httpRequest, httpResponse) { User = crowbarViewContext.User };
                 System.Web.HttpContext.Current = httpContext;
 
                 var controllerContext = CreateControllerContext(httpContext);
@@ -55,8 +55,8 @@ namespace Crowbar
 
                     var viewContext = new ViewContextStub(controllerContext, view, viewData, tempData, writer)
                     {
-                        ClientValidationEnabled = partialViewContext.ClientValidationEnabled,
-                        UnobtrusiveJavaScriptEnabled = partialViewContext.UnobtrusiveJavaScriptEnabled
+                        ClientValidationEnabled = crowbarViewContext.ClientValidationEnabled,
+                        UnobtrusiveJavaScriptEnabled = crowbarViewContext.UnobtrusiveJavaScriptEnabled
                     };
 
                     view.Render(viewContext, httpResponse.Output);

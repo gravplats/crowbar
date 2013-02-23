@@ -38,7 +38,7 @@ namespace Crowbar
         /// <param name="partialViewContext">The name of the partial view which contains the form element that should be submitted.</param>
         /// <param name="viewModel">The form payload.</param>
         /// <returns>A continuation.</returns>
-        public static BrowserRenderContinuation<TViewModel> Render<TViewModel>(this Browser browser, PartialViewContext partialViewContext, TViewModel viewModel)
+        public static BrowserRenderContinuation<TViewModel> Render<TViewModel>(this Browser browser, CrowbarViewContext partialViewContext, TViewModel viewModel)
             where TViewModel : class
         {
             HttpCookieCollection cookies;
