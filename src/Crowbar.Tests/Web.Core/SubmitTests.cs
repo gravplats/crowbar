@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Crowbar.Mvc.Common;
+using CsQuery;
 using NUnit.Framework;
 
 namespace Crowbar.Tests.Web.Core
@@ -150,6 +151,42 @@ namespace Crowbar.Tests.Web.Core
                     form.Find("select").Val(model.Value);
                 });
 
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            });
+        }
+
+        [Test]
+        public void Should_be_able_to_select_form_with_selector_using_render()
+        {
+            Application.Execute(browser =>
+            {
+                var payload = new MultipleFormsPayload
+                {
+                    Form1 = "form1",
+                    Form2 = "form2"
+                };
+
+                var response = browser.Render("~/Views/_MultipleForms.cshtml", payload).Submit(selector: "form.js-form2");
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            });
+        }
+
+        [Test]
+        public void Should_be_able_to_select_form_with_selector_using_load()
+        {
+            Application.Execute(browser =>
+            {
+                var payload = new MultipleFormsPayload
+                {
+                    Form1 = "form1",
+                    Form2 = "form2"
+                };
+
+                var response = browser.Load(CrowbarRoute.MultipleForms.AsOutbound()).Submit(payload, overrides: (form, model) =>
+                {
+                    form.Find("input[type='hidden']").Val(payload.Form2);
+                }, selector: "form.js-form2");
+                
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
         }

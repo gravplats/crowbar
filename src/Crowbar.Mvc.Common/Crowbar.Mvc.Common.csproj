@@ -42,6 +42,7 @@
     </Compile>
     <Compile Include="CheckBoxPayload.cs" />
     <Compile Include="DropDownPayload.cs" />
+    <Compile Include="MultipleFormsPayload.cs" />
     <Compile Include="OutboundUrl.cs" />
     <Compile Include="CrowbarRoute.cs" />
     <Compile Include="Payload.cs" />

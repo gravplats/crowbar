@@ -36,10 +36,11 @@ namespace Crowbar
         /// </summary>
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <param name="overrides">Modify the form prior to performing the request.</param>
+        /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>/// 
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse AjaxSubmit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null)
+        public BrowserResponse AjaxSubmit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, string selector = "form")
         {
-            return Submit(As.AjaxRequest.Then(customize), overrides);
+            return Submit(As.AjaxRequest.Then(customize), overrides, selector);
         }
 
         /// <summary>
@@ -47,10 +48,11 @@ namespace Crowbar
         /// </summary>
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <param name="overrides">Modify the form prior to performing the request.</param>
+        /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Submit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null)
+        public BrowserResponse Submit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, string selector = "form")
         {
-            return browser.Submit(Html, viewModel, customize, overrides, Cookies);
+            return browser.Submit(Html, viewModel, customize, overrides, Cookies, selector);
         }
     }
 }

@@ -12,23 +12,6 @@ namespace Crowbar
     public static class BrowserExtensions
     {
         /// <summary>
-        /// Submits a form via an AJAX request in the specified partial view.
-        /// </summary>
-        /// <typeparam name="TViewModel">The type of form payload.</typeparam>
-        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
-        /// <param name="html">The HTML that contains the form element that should be submitted.</param>
-        /// <param name="viewModel">The form payload (used for overrides).</param>
-        /// <param name="customize">Customize the request prior to submission.</param>
-        /// <param name="overrides">Modify the form prior to performing the request.</param>
-        /// <param name="cookies">Any cookies that should be supplied with the request.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
-            where TViewModel : class
-        {
-            return browser.Submit(html, viewModel, As.AjaxRequest.Then(customize), overrides, cookies);
-        }
-
-        /// <summary>
         /// Loads a rendered form from the server.
         /// </summary>
         /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
@@ -66,6 +49,24 @@ namespace Crowbar
         }
 
         /// <summary>
+        /// Submits a form via an AJAX request in the specified partial view.
+        /// </summary>
+        /// <typeparam name="TViewModel">The type of form payload.</typeparam>
+        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="html">The HTML that contains the form element that should be submitted.</param>
+        /// <param name="viewModel">The form payload (used for overrides).</param>
+        /// <param name="customize">Customize the request prior to submission.</param>
+        /// <param name="overrides">Modify the form prior to performing the request.</param>
+        /// <param name="cookies">Any cookies that should be supplied with the request.</param>
+        /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
+        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
+        public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
+            where TViewModel : class
+        {
+            return browser.Submit(html, viewModel, As.AjaxRequest.Then(customize), overrides, cookies, selector);
+        }
+
+        /// <summary>
         /// Submits a form in a specified partial view.
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
@@ -75,19 +76,18 @@ namespace Crowbar
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
+        /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
+        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
-            if (string.IsNullOrWhiteSpace(html))
-            {
-                throw new ArgumentException("Cannot be null or empty.", "html");
-            }
+            Ensure.NotNullOrEmpty(html, "html");
+            Ensure.NotNullOrEmpty(selector, "selector");
 
             var document = CQ.Create(html);
 
-            var form = document.Is("form") ? document : document.Find("form").First();
-            if (form.Length == 0)
+            var form = (document.Is(selector) ? document : document.Find(selector)).First();
+            if (!form.Is("form") || form.Length == 0)
             {
                 using (var writer = new StringWriter())
                 {

@@ -30,12 +30,13 @@ namespace Crowbar
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
+        /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse AjaxSubmit<TViewModel>(TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
+        public BrowserResponse AjaxSubmit<TViewModel>(TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
             Ensure.NotNull(viewModel, "viewModel");
-            return browser.AjaxSubmit(Html, viewModel, customize, overrides, cookies);
+            return browser.AjaxSubmit(Html, viewModel, customize, overrides, cookies, selector);
         }
 
         /// <summary>
@@ -46,12 +47,13 @@ namespace Crowbar
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
+        /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Submit<TViewModel>(TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null)
+        public BrowserResponse Submit<TViewModel>(TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
             Ensure.NotNull(viewModel, "viewModel");
-            return browser.Submit(Html, viewModel, customize, overrides, cookies);
+            return browser.Submit(Html, viewModel, customize, overrides, cookies, selector);
         }
     }
 }

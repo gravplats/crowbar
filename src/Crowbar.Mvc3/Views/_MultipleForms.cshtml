@@ -1,0 +1,11 @@
+﻿@model MultipleFormsPayload
+<div>
+    <form action="@CrowbarRoute.MultipleForms.AsOutbound()" method="post" class="js-form1">
+        @Html.HiddenFor(x => x.Form1)
+        <button>OK</button>
+    </form>
+    <form action="@CrowbarRoute.MultipleForms.AsOutbound()" method="post" class="js-form2">
+        @Html.HiddenFor(x => x.Form2)
+        <button>OK</button>
+    </form>
+</div>

@@ -15,6 +15,8 @@ namespace Crowbar.Mvc.Common
 
         public const string JsonBody                        = "/json-body";
 
+        public const string MultipleForms                   = "/form-selector";
+        
         public const string QueryString                     = "/query-string";
 
         public const string RedirectPermanent               = "/redirect-permanently";
@@ -32,7 +34,7 @@ namespace Crowbar.Mvc.Common
         public const string SubmitTextBox                   = "/submit-textbox";
 
         public const string XmlBody                         = "/xml-body";
-        
+
         public static string AsOutbound(this string route, object values = null)
         {
             return new OutboundUrl(route, values);

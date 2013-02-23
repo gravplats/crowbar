@@ -17,8 +17,8 @@ namespace Crowbar.Web.Core
         public ActionResult SubmitCheckBox_Post(CheckBoxPayload payload)
         {
             return Assert(() => payload.Condition.ToString() == payload.SanityCheck);
-        }        
-        
+        }
+
         [GET(CrowbarRoute.SubmitCheckBox)]
         public ActionResult SubmitCheckBox_Get()
         {
@@ -76,6 +76,18 @@ namespace Crowbar.Web.Core
         public ActionResult SubmitTextBox_Get(TextBoxPayload payload)
         {
             return PartialView("_FormTextBox");
+        }
+
+        [POST(CrowbarRoute.MultipleForms)]
+        public ActionResult FormSelector_Post(MultipleFormsPayload payload)
+        {
+            return Assert(() => payload.Form1 == null && payload.Form2 == "form2");
+        }
+
+        [GET(CrowbarRoute.MultipleForms)]
+        public ActionResult FormSelector_Get()
+        {
+            return PartialView("_MultipleForms");
         }
     }
 }
