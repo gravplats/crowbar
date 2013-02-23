@@ -15,6 +15,7 @@ namespace Crowbar.Web
                 : base(viewPageActivator)
             {
                 ViewLocationFormats = new[] {
+                    "~/Views/{1}/{0}.cshtml",
                     "~/Views/{0}.cshtml"
                 };
 

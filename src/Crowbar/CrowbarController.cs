@@ -28,11 +28,7 @@ namespace Crowbar
                 var httpRequest = new HttpRequest("", "http://www.example.com", "");
                 var httpResponse = new HttpResponse(writer);
 
-                // There are still dependencies on HttpContext.Currrent in the ASP.NET (MVC) framework, eg., AntiForgeryRequestToken (as of ASP.NET MVC 4).
-                var httpContext = new HttpContext(httpRequest, httpResponse) { User = crowbarViewContext.User };
-                System.Web.HttpContext.Current = httpContext;
-
-                var controllerContext = CreateControllerContext(httpContext);
+                var controllerContext = CreateControllerContext(httpRequest, httpResponse, crowbarViewContext);
                 var viewEngineResult = crowbarViewContext.FindViewEngineResult(controllerContext);
 
                 var view = viewEngineResult.View;
@@ -73,14 +69,13 @@ namespace Crowbar
             }
         }
 
-        private static ControllerContext CreateControllerContext(HttpContext httpContext)
+        private static ControllerContext CreateControllerContext(HttpRequest httpRequest, HttpResponse httpResponse, CrowbarViewContext crowbarViewContext)
         {
-            // The 'controller' route data value is required by VirtualPathProviderViewEngine.
-            var routeData = new RouteData();
-            routeData.Values["controller"] = typeof(CrowbarController).Name;
+            // There are still dependencies on HttpContext.Currrent in the ASP.NET (MVC) framework, eg., AntiForgeryRequestToken (as of ASP.NET MVC 4).
+            var httpContext = new HttpContext(httpRequest, httpResponse) { User = crowbarViewContext.User };
+            System.Web.HttpContext.Current = httpContext;
 
-            var requestContext = new RequestContext(new HttpContextWrapper(httpContext), routeData);
-
+            var requestContext = new RequestContext(new HttpContextWrapper(httpContext), crowbarViewContext.GetRouteData());
             return new ControllerContext(requestContext, new CrowbarController());
         }
     }

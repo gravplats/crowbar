@@ -24,7 +24,19 @@ namespace Crowbar.Tests
             {
                 HttpCookieCollection cookies;
                 Assert.DoesNotThrow(() => CrowbarController.ToString(viewName, null, out cookies));
-            });            
+            });
+        }
+
+        [Test]
+        public void Can_specifiy_custom_route_data_values()
+        {
+            Application.Execute(browser =>
+            {
+                HttpCookieCollection cookies;
+
+                var context = new CrowbarViewContext("Index") { ControllerName = "Custom" };
+                Assert.DoesNotThrow(() => CrowbarController.ToString(context, null, out cookies));
+            });
         }
     }
 }

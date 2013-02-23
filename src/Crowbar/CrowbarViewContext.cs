@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Security.Principal;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Security;
 
 namespace Crowbar
@@ -24,9 +25,19 @@ namespace Crowbar
         }
 
         /// <summary>
+        /// The name of the area.
+        /// </summary>
+        public string AreaName { get; set; }
+
+        /// <summary>
         /// Gets or sets whether client-side validation should be enabled when rendering the view.
         /// </summary>
         public bool ClientValidationEnabled { get; set; }
+
+        /// <summary>
+        /// The name of the controller.
+        /// </summary>
+        public string ControllerName { get; set; }
 
         /// <summary>
         /// Gets or sets whether unobtrusive JavaScript should be enabled when rendering the view.
@@ -44,26 +55,17 @@ namespace Crowbar
         public string ViewName { get; private set; }
 
         /// <summary>
-        /// Sets the security principal, using forms identity, in which the view should be rendered.
+        /// Gets the route data that will be used by the request context.
         /// </summary>
-        /// <param name="username">The username.</param>
-        /// <param name="timeout">The time, in minutes, for which the forms authentication cookie is valid.</param>
-        public CrowbarViewContext SetFormsAuthPrincipal(string username, int timeout = 30)
+        /// <returns>The route data that will be used by the request context.</returns>
+        public virtual RouteData GetRouteData()
         {
-            var ticket = new FormsAuthenticationTicket(username, false, timeout);
-            User = new GenericPrincipal(new FormsIdentity(ticket), new string[0]);
+            var routeData = new RouteData();
+            routeData.Values["area"] = AreaName;
+            // The 'controller' route data value is required by VirtualPathProviderViewEngine.
+            routeData.Values["controller"] = (ControllerName ?? typeof(CrowbarController).Name).Replace("Controller", string.Empty);
 
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the security principal to an anonymous user (no username), using a generic identity.
-        /// </summary>
-        public CrowbarViewContext SetAnonymousPrincipal()
-        {
-            User = new GenericPrincipal(new GenericIdentity(""), new string[0]);
-
-            return this;
+            return routeData;
         }
 
         /// <summary>
@@ -92,6 +94,29 @@ namespace Crowbar
             }
 
             return viewEngineResult;            
+        }
+
+        /// <summary>
+        /// Sets the security principal to an anonymous user (no username), using a generic identity.
+        /// </summary>
+        public CrowbarViewContext SetAnonymousPrincipal()
+        {
+            User = new GenericPrincipal(new GenericIdentity(""), new string[0]);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the security principal, using forms identity, in which the view should be rendered.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="timeout">The time, in minutes, for which the forms authentication cookie is valid.</param>
+        public CrowbarViewContext SetFormsAuthPrincipal(string username, int timeout = 30)
+        {
+            var ticket = new FormsAuthenticationTicket(username, false, timeout);
+            User = new GenericPrincipal(new FormsIdentity(ticket), new string[0]);
+
+            return this;
         }
 
         /// <summary>
