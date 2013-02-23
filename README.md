@@ -453,6 +453,15 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
 Changelog
 ---------
 
+v0.9.5
+
+* It is possible to specify a form selector for `Browser.Submit()`. Previously the first form in the HTML chunk was chosen.
+* Breaking change: `CrowbarController` has been moved to the root namespace. This fixes a previous oversight when the class was made part of the public API.
+* Breaking change: `PartialViewContext` has been renamed `CrowbarViewContext`.
+* `CrowbarViewContext` can now find both partial and non-partial views. Any view name starting with an underscore (_) is considered to be a partial view. It is possible to override this behavior in `CrowbarViewContext.FindViewEngineResult()` should the default approach of finding the view not be to your satisfaction.
+* The settings `ClientValidationEnabled` and `UnobtrusiveJavaScriptEnabled` in `CrowbarViewContext` are now read from Web.config. Previously they were set to `true` by default.
+* Added `AreaName` and `ControllerName` to `CrowbarViewContext` for better control over route data.
+
 v0.9.4
 
 * `ShouldBeHtml`, `ShouldBeJson` and `ShouldBeXml` no longer assumes a HTTP Status 200 OK response.
