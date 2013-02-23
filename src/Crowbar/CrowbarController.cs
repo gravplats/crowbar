@@ -33,13 +33,7 @@ namespace Crowbar
                 System.Web.HttpContext.Current = httpContext;
 
                 var controllerContext = CreateControllerContext(httpContext);
-
-                var viewEngineResult = ViewEngines.Engines.FindPartialView(controllerContext, viewName);
-                if (viewEngineResult == null)
-                {
-                    string message = "The partial view was not found.";
-                    throw new ArgumentException(message, viewName);
-                }
+                var viewEngineResult = GetViewEngineResult(viewName, controllerContext);
 
                 var view = viewEngineResult.View;
                 if (view == null)
@@ -51,7 +45,7 @@ namespace Crowbar
                         locations.Append(searchedLocation);
                     }
 
-                    throw new ArgumentException("The partial view was not found. The following locations were searched: " + locations, viewName);
+                    throw new ArgumentException("The view was not found. The following locations were searched: " + locations, viewName);
                 }
 
                 try
@@ -88,6 +82,27 @@ namespace Crowbar
             var requestContext = new RequestContext(new HttpContextWrapper(httpContext), routeData);
 
             return new ControllerContext(requestContext, new CrowbarController());
+        }
+
+        private static ViewEngineResult GetViewEngineResult(string viewName, ControllerContext controllerContext)
+        {
+            string name = viewName.StartsWith("~")
+                ? viewName.Substring(viewName.LastIndexOf("/") + 1)
+                : viewName;
+
+            bool isPartialView = name.StartsWith("_");
+
+            var viewEngineResult = isPartialView
+                ? ViewEngines.Engines.FindPartialView(controllerContext, viewName)
+                : ViewEngines.Engines.FindView(controllerContext, viewName, string.Empty);
+
+            if (viewEngineResult == null)
+            {
+                string message = "The view was not found.";
+                throw new ArgumentException(message, viewName);
+            }
+
+            return viewEngineResult;
         }
     }
 }

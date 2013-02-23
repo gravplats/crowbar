@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -52,6 +53,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CrowbarControllerTests.cs" />
     <Compile Include="Web.Core\AjaxRequestsTests.cs" />
     <Compile Include="Web.Core\FormsAuthTests.cs" />
     <Compile Include="Web.Core\ShouldBeTests.cs" />
