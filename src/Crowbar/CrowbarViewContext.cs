@@ -1,4 +1,6 @@
+using System;
 using System.Security.Principal;
+using System.Web.Mvc;
 using System.Web.Security;
 
 namespace Crowbar
@@ -14,7 +16,7 @@ namespace Crowbar
         /// <param name="viewName">The name of the view that should be rendered.</param>
         public CrowbarViewContext(string viewName)
         {
-            ViewName = viewName;
+            ViewName = Ensure.NotNullOrEmpty(viewName, "viewName");
             ClientValidationEnabled = true;         // Read from Web.config?
             UnobtrusiveJavaScriptEnabled = true;    // Read from Web.config?
         }
@@ -60,6 +62,34 @@ namespace Crowbar
             User = new GenericPrincipal(new GenericIdentity(""), new string[0]);
 
             return this;
+        }
+        
+        /// <summary>
+        /// Finds a view based on the specified view name.
+        /// </summary>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <returns>The view engine result.</returns>
+        public virtual ViewEngineResult FindViewEngineResult(ControllerContext controllerContext)
+        {
+            Ensure.NotNull(controllerContext, "controllerContext");
+
+            string name = ViewName.StartsWith("~")
+                ? ViewName.Substring(ViewName.LastIndexOf("/") + 1)
+                : ViewName;
+
+            bool isPartialView = name.StartsWith("_");
+
+            var viewEngineResult = isPartialView
+                ? ViewEngines.Engines.FindPartialView(controllerContext, ViewName)
+                : ViewEngines.Engines.FindView(controllerContext, ViewName, string.Empty);
+
+            if (viewEngineResult == null)
+            {
+                string message = "The view was not found.";
+                throw new ArgumentException(message, ViewName);
+            }
+
+            return viewEngineResult;            
         }
 
         /// <summary>
