@@ -35,20 +35,20 @@ namespace Crowbar
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
         /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
-        /// <param name="partialViewContext">The name of the partial view which contains the form element that should be submitted.</param>
+        /// <param name="crowbarViewContext">The name of the view which contains the form element that should be submitted.</param>
         /// <param name="viewModel">The form payload.</param>
         /// <returns>A continuation.</returns>
-        public static BrowserRenderContinuation<TViewModel> Render<TViewModel>(this Browser browser, CrowbarViewContext partialViewContext, TViewModel viewModel)
+        public static BrowserRenderContinuation<TViewModel> Render<TViewModel>(this Browser browser, CrowbarViewContext crowbarViewContext, TViewModel viewModel)
             where TViewModel : class
         {
             HttpCookieCollection cookies;
 
-            string html = CrowbarController.ToString(partialViewContext, viewModel, out cookies);
+            string html = CrowbarController.ToString(crowbarViewContext, viewModel, out cookies);
             return new BrowserRenderContinuation<TViewModel>(browser, viewModel, html, cookies);
         }
 
         /// <summary>
-        /// Submits a form via an AJAX request in the specified partial view.
+        /// Submits a form via an AJAX request in the specified view.
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
         /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
@@ -66,7 +66,7 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Submits a form in a specified partial view.
+        /// Submits a form in a specified view.
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
         /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
