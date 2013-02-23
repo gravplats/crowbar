@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -17,8 +18,9 @@ namespace Crowbar
         public CrowbarViewContext(string viewName)
         {
             ViewName = Ensure.NotNullOrEmpty(viewName, "viewName");
-            ClientValidationEnabled = true;         // Read from Web.config?
-            UnobtrusiveJavaScriptEnabled = true;    // Read from Web.config?
+
+            ClientValidationEnabled = GetBoolFromAppSettings("ClientValidationEnabled", true);
+            UnobtrusiveJavaScriptEnabled = GetBoolFromAppSettings("UnobtrusiveJavaScriptEnabled", true);
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace Crowbar
 
             return this;
         }
-        
+
         /// <summary>
         /// Finds a view based on the specified view name.
         /// </summary>
@@ -100,6 +102,19 @@ namespace Crowbar
         public static implicit operator CrowbarViewContext(string viewName)
         {
             return new CrowbarViewContext(viewName);
+        }
+
+        private static bool GetBoolFromAppSettings(string name, bool defaultValue)
+        {
+            string value = ConfigurationManager.AppSettings[name];
+
+            bool result;
+            if (string.IsNullOrWhiteSpace(value) || !bool.TryParse(value, out result))
+            {
+                return defaultValue;
+            }
+
+            return result;
         }
     }
 }
