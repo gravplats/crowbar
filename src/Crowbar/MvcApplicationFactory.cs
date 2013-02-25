@@ -91,6 +91,15 @@ namespace Crowbar
             return new MvcApplication<TContext>(proxy);
         }
 
+        public static MvcApplication Create(string mvcProjectPath, string mvcSolutionName, string configPath, string config)
+        {
+            var proxy = Create<MvcApplicationProxy>(mvcProjectPath, mvcSolutionName, configPath, config);
+            return new MvcApplication(proxy);
+        }
+
+
+
+
         private static TProxy Create<TProxy>(string name, string config, Action<BrowserContext> defaults)
             where TProxy : ProxyBase
         {
@@ -108,6 +117,23 @@ namespace Crowbar
                 AppDomain.CurrentDomain.BaseDirectory, 
                 defaults != null ? new SerializableDelegate<Action<BrowserContext>>(defaults) : null
             );
+
+            return proxy;
+        }
+
+        private static TProxy Create<TProxy>(string mvcProjectPath, string mvcSolutionName, string configPath, string config)
+           where TProxy : ProxyBase
+        {
+            config = config == null ? null : Path.Combine(configPath, config);
+
+            var proxy = MvcApplicationProxyFactory.Create<TProxy>(mvcProjectPath, mvcSolutionName);
+            proxy.Initialize(new SerializableDelegate<Func<HttpApplication>>(() =>
+            {
+                SetCustomConfigurationFile(config);
+                FilterProviders.Providers.Add(new InterceptionFilterProvider());
+
+                return InitializeApplication();
+            }), AppDomain.CurrentDomain.BaseDirectory);
 
             return proxy;
         }

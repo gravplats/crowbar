@@ -51,6 +51,12 @@ namespace Crowbar
         {
             return MvcApplicationFactory.Create<TProxy, TContext>(name, config, defaults);
         }
+        
+        public static MvcApplication Create(string mvcProjectPath, string mvcSolutionName, string configPath, string config)
+        {
+            if (config == null) throw new ArgumentNullException("config");
+            return MvcApplicationFactory.Create(mvcProjectPath, mvcSolutionName, configPath, config);
+        }
     }
 
 
