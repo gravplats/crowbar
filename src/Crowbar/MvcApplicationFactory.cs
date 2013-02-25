@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
@@ -8,7 +8,10 @@ using System.Web.Mvc;
 
 namespace Crowbar
 {
-    internal class MvcApplicationFactory
+    /// <summary>
+    /// Provides functionality for creating an MVC application.
+    /// </summary>
+    public class MvcApplicationFactory
     {
         private static readonly MethodInfo getApplicationInstanceMethod;
         private static readonly MethodInfo recycleApplicationInstanceMethod;
@@ -19,18 +22,6 @@ namespace Crowbar
             var httpApplicationFactory = typeof(HttpContext).Assembly.GetType("System.Web.HttpApplicationFactory", true);
             getApplicationInstanceMethod = httpApplicationFactory.GetMethod("GetApplicationInstance", BindingFlags.Static | BindingFlags.NonPublic);
             recycleApplicationInstanceMethod = httpApplicationFactory.GetMethod("RecycleApplicationInstance", BindingFlags.Static | BindingFlags.NonPublic);
-        }
-
-        private static void SetCustomConfigurationFile(string configFile)
-        {
-            if (configFile == null)
-            {
-                // Use the default Web.config.
-                return;
-            }
-
-            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", configFile);
-            typeof(ConfigurationManager).GetField("s_initState", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 0 /* InitState.NotStarted */);
         }
 
         private static HttpApplication InitializeApplication()
@@ -77,39 +68,71 @@ namespace Crowbar
             recycleApplicationInstanceMethod.Invoke(null, new object[] { appInstance });
         }
 
-        public static MvcApplication Create(string name, string config, Action<BrowserContext> defaults)
+        /// <summary>
+        /// Creates an MVC application.
+        /// </summary>
+        /// <param name="project">The project path provider.</param>
+        /// <param name="config">The configuration file provider.</param>
+        /// <param name="defaults">The default browser context settings, if any.</param>
+        /// <returns>An MVC application.</returns>
+        public static MvcApplication Create(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
         {
-            var proxy = Create<MvcApplicationProxy>(name, config, defaults);
+            var proxy = Create<MvcApplicationProxy>(project, config, defaults);
             return new MvcApplication(proxy);
         }
 
-        public static MvcApplication<TContext> Create<TProxy, TContext>(string name, string config, Action<BrowserContext> defaults)
+        /// <summary>
+        /// Creates an MVC application.
+        /// </summary>
+        /// <typeparam name="TProxy">The proxy type of the MVC application.</typeparam>
+        /// <typeparam name="TContext">The proxy context type.</typeparam>
+        /// <param name="project">The project path provider.</param>
+        /// <param name="config">The configuration file provider.</param>
+        /// <param name="defaults">The default browser context settings, if any.</param>
+        /// <returns>The MVC application.</returns>
+        public static MvcApplication<TContext> Create<TProxy, TContext>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
             where TProxy : MvcApplicationProxyBase<TContext>
             where TContext : IDisposable
         {
-            var proxy = Create<TProxy>(name, config, defaults);
+            var proxy = Create<TProxy>(project, config, defaults);
             return new MvcApplication<TContext>(proxy);
         }
 
-        private static TProxy Create<TProxy>(string name, string config, Action<BrowserContext> defaults)
+        private static TProxy Create<TProxy>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults)
             where TProxy : ProxyBase
         {
-            config = config == null ? null : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config);
+            Ensure.NotNull(project, "project");
+            Ensure.NotNull(config, "config");
 
-            var proxy = MvcApplicationProxyFactory.Create<TProxy>(name);
+            string configPath = config.GetPhysicalPath();
+
+            var proxy = MvcApplicationProxyFactory.Create<TProxy>(project);
+            
             proxy.Initialize(
                 new SerializableDelegate<Func<HttpApplication>>(() =>
                 {
-                    SetCustomConfigurationFile(config);
+                    SetCustomConfigurationFile(configPath);
                     FilterProviders.Providers.Add(new InterceptionFilterProvider());
 
                     return InitializeApplication();
-                }), 
-                AppDomain.CurrentDomain.BaseDirectory, 
+                }),
+                AppDomain.CurrentDomain.BaseDirectory,
                 defaults != null ? new SerializableDelegate<Action<BrowserContext>>(defaults) : null
             );
 
             return proxy;
+        }
+
+        private static void SetCustomConfigurationFile(string configPath)
+        {
+            if (string.IsNullOrWhiteSpace(configPath))
+            {
+                // Use default Web.config.
+                return;
+            }
+
+            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", configPath);
+            typeof(ConfigurationManager).GetField("s_initState", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, 0 /* InitState.NotStarted */);
         }
     }
 }

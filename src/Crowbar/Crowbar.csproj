@@ -68,6 +68,9 @@
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
     <Compile Include="Ensure.cs" />
+    <Compile Include="IPathProvider.cs" />
+    <Compile Include="WebConfigPathProvider.cs" />
+    <Compile Include="WebProjectPathProvider.cs" />
     <Compile Include="RawHttpRequest.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Browser.cs" />
