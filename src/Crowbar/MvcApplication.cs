@@ -52,11 +52,22 @@ namespace Crowbar
             return MvcApplicationFactory.Create<TProxy, TContext>(name, config, defaults);
         }
         
+        /// <summary>
+        /// Creates an MVC application with possiblity to specify different paths
+        /// </summary>
+        /// <param name="mvcProjectPath">path to the sln-file</param>
+        /// <param name="mvcSolutionName">solution name</param>
+        /// <param name="configPath">path to config file</param>
+        /// <param name="config">config file name</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static MvcApplication Create(string mvcProjectPath, string mvcSolutionName, string configPath, string config)
         {
             if (config == null) throw new ArgumentNullException("config");
             return MvcApplicationFactory.Create(mvcProjectPath, mvcSolutionName, configPath, config);
         }
+
+
     }
 
 
