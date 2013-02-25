@@ -16,6 +16,14 @@ namespace Crowbar
             return (TProxy)ApplicationHost.CreateApplicationHost(typeof(TProxy), "/", physicalPath);
         }
 
+        public static TProxy Create<TProxy>(string mvcProjectPath, string mvcSolutionName)
+        {
+            CopyDllFiles(mvcProjectPath);
+            // skapar en application host för asp.net
+            return (TProxy)ApplicationHost.CreateApplicationHost(typeof(TProxy), "/", mvcProjectPath);
+            
+        }
+
         private static string GetPhysicalPath(string mvcProjectName)
         {
             var searchedLocations = new List<string>();
