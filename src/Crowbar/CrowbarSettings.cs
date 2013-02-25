@@ -3,7 +3,8 @@
 namespace Crowbar
 {
     /// <summary>
-    /// CrowbarSettings is used when sln, web.config is not located in standard mvc settings
+    /// CrowbarSettings is used when sln, web.config is not located in standard mvc settings.
+    /// Reads from the app.config
     /// </summary>
     public class CrowbarSetting : ConfigurationSection
     {
