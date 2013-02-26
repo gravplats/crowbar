@@ -42,7 +42,7 @@ namespace Crowbar
         /// </summary>
         /// <param name="defaults"></param>
         /// <returns>A browser.</returns>
-        protected Browser CreateBrowser(Action<BrowserContext> defaults = null)
+        protected virtual Browser CreateBrowser(Action<BrowserContext> defaults = null)
         {
             int version = GetMvcMajorVersion();
             return new Browser(version, defaults);

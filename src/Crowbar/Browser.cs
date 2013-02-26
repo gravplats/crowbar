@@ -30,7 +30,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Delete(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Delete(string path, Action<BrowserContext> context = null)
         {
             return PerformRequest("DELETE", path, context);
         }
@@ -41,7 +41,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Get(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Get(string path, Action<BrowserContext> context = null)
         {
             return PerformRequest("GET", path, context);
         }
@@ -52,7 +52,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Post(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Post(string path, Action<BrowserContext> context = null)
         {
             return PerformRequest("POST", path, context);
         }
@@ -63,7 +63,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Put(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Put(string path, Action<BrowserContext> context = null)
         {
             return PerformRequest("PUT", path, context);
         }
@@ -75,7 +75,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="overrides">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> overrides = null)
+        public virtual BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> overrides = null)
         {
             Ensure.NotNull(method, "method");
             Ensure.NotNull(path, "path");
@@ -99,26 +99,11 @@ namespace Crowbar
             return CreateResponse(output, rawHttpRequest);
         }
 
-        private static BrowserResponse CreateResponse(StringWriter output, string rawHttpRequest)
+        protected virtual BrowserResponse CreateResponse(StringWriter output, string rawHttpRequest)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
-                using (var writer = new StringWriter())
-                {
-                    writer.WriteLine("The MVC application threw an exception during the following HTTP request:");
-                    writer.WriteLine();
-                    writer.WriteLine(rawHttpRequest);
-
-                    var exception = CrowbarContext.ExceptionContext.Exception;
-                    if (exception.IsSerializable())
-                    {
-                        throw new CrowbarException(writer.ToString(), exception);
-                    }
-
-                    writer.WriteLine(exception.Message);
-
-                    throw new Exception(writer.ToString());
-                }
+                Throw(rawHttpRequest);
             }
 
             var response = CrowbarContext.HttpResponse;
@@ -149,6 +134,26 @@ namespace Crowbar
                 ResponseBody = output.ToString(),
                 RawHttpRequest = rawHttpRequest
             };
+        }
+
+        protected virtual void Throw(string rawHttpRequest)
+        {
+            using (var writer = new StringWriter())
+            {
+                writer.WriteLine("The MVC application threw an exception during the following HTTP request:");
+                writer.WriteLine();
+                writer.WriteLine(rawHttpRequest);
+
+                var exception = CrowbarContext.ExceptionContext.Exception;
+                if (exception.IsSerializable())
+                {
+                    throw new CrowbarException(writer.ToString(), exception);
+                }
+
+                writer.WriteLine(exception.Message);
+
+                throw new Exception(writer.ToString());
+            }
         }
     }
 }
