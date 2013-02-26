@@ -11,10 +11,15 @@ namespace Crowbar
     {
         private readonly Browser browser;
 
-        internal BrowserLoadContinuation(Browser browser, string html)
+        /// <summary>
+        /// Creates a new instance of <see cref="BrowserLoadContinuation"/>.
+        /// </summary>
+        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="html">The HTML that should be submitted.</param>
+        public BrowserLoadContinuation(Browser browser, string html)
         {
-            this.browser = browser;
-            Html = html;
+            this.browser = Ensure.NotNull(browser, "browser");
+            Html = Ensure.NotNullOrEmpty(html, "html");
         }
 
         /// <summary>

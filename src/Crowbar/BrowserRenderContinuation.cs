@@ -13,11 +13,18 @@ namespace Crowbar
         private readonly Browser browser;
         private readonly TViewModel viewModel;
 
-        internal BrowserRenderContinuation(Browser browser, TViewModel viewModel, string html, HttpCookieCollection cookies)
+        /// <summary>
+        /// Creates a new instance of <see cref="BrowserRenderContinuation{TViewModel}"/>.
+        /// </summary>
+        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="viewModel">The form payload.</param>
+        /// <param name="html">The HTML that should be submitted.</param>
+        /// <param name="cookies">The cookie that will be submitted.</param>
+        public BrowserRenderContinuation(Browser browser, TViewModel viewModel, string html, HttpCookieCollection cookies)
         {
-            this.browser = browser;
+            this.browser = Ensure.NotNull(browser, "browser");
             this.viewModel = viewModel;
-            Html = html;
+            Html = Ensure.NotNullOrEmpty(html, "html");
             Cookies = cookies;
         }
 

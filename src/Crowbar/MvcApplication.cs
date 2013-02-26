@@ -9,9 +9,13 @@ namespace Crowbar
     {
         private readonly MvcApplicationProxy proxy;
 
-        internal MvcApplication(MvcApplicationProxy proxy)
+        /// <summary>
+        /// Creates a new instance of <see cref="MvcApplication"/>.
+        /// </summary>
+        /// <param name="proxy">The application proxy.</param>
+        public MvcApplication(MvcApplicationProxy proxy)
         {
-            this.proxy = proxy;
+            this.proxy = Ensure.NotNull(proxy, "proxy");
         }
 
         /// <summary>
@@ -63,9 +67,13 @@ namespace Crowbar
     {
         private readonly MvcApplicationProxyBase<TContext> proxy;
 
-        internal MvcApplication(MvcApplicationProxyBase<TContext> proxy)
+        /// <summary>
+        /// Creates a new instance of <see cref="MvcApplication{TContext}"/>.
+        /// </summary>
+        /// <param name="proxy">The application proxy.</param>
+        public MvcApplication(MvcApplicationProxyBase<TContext> proxy)
         {
-            this.proxy = proxy;
+            this.proxy = Ensure.NotNull(proxy, "proxy");
         }
 
         /// <summary>
