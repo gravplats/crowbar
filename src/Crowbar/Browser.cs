@@ -99,6 +99,12 @@ namespace Crowbar
             return CreateResponse(output, rawHttpRequest);
         }
 
+        /// <summary>
+        /// Creates the browser response.
+        /// </summary>
+        /// <param name="output">The writer to which the output should be written.</param>
+        /// <param name="rawHttpRequest">The raw HTTP request.</param>
+        /// <returns>The browser response.</returns>
         protected virtual BrowserResponse CreateResponse(StringWriter output, string rawHttpRequest)
         {
             if (CrowbarContext.ExceptionContext != null)
@@ -136,6 +142,10 @@ namespace Crowbar
             };
         }
 
+        /// <summary>
+        /// Throws an exception due to an error during the request.
+        /// </summary>
+        /// <param name="rawHttpRequest">The raw HTTP request.</param>
         protected virtual void Throw(string rawHttpRequest)
         {
             using (var writer = new StringWriter())

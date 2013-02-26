@@ -51,7 +51,7 @@ MvcApplication
 
 The `MvcApplication` class (both generic and non-generic) is the heart of Crowbar and represents a proxy to the ASP.NET MVC project. Please note that creating the `MvcApplication` instance is a time-consuming process and should preferably only be done once, e.g., in a test base class.
 
-An instance of `MvcApplication` can be created in two ways.
+An instance of `MvcApplication` can be created using the `MvcApplication.Create()` facade methods.
 
 ``` csharp
 public class MvcApplicationTests
@@ -90,6 +90,36 @@ public class MvcApplicationTests
     }
 }
 ```
+
+By default, Crowbar, `WebProjectPathProvider`, will attempt to locate the web project in the base directory of the current `AppDomain`, if the web project is not found in the base directory Crowbar will move up one directory at a time until it reaches the root. If the web project is not found Crowbar will throw an exception. Crowbar, `WebConfigPathProvider`, will look for Web.config in the base directory of the current `AppDomain`. Should your web project and/or Web.config be located in a different location you will have to provide your own implementation of `IPathProvider` and pass it/them to `MvcApplicationFactory.Create()`.
+
+``` csharp
+public static class MvcApplicationFacade
+{
+    public class CustomWebProjectPathProvider : IPathProvider
+    {
+        public string GetPhysicalPath()
+        {
+            // return the path to your web project.
+        }
+    }
+
+    public class CustomWebConfigPathProvider : IPathProvider
+    {
+        public string GetPhysicalPath()
+        {
+            // return the path to your Web.config.
+        }
+    }
+
+    public static MvcApplication Create()
+    {
+        return MvcApplicationFactory.Create(new CustomWebProjectPathProvider(), new CustomWebConfigPathProvider());
+    }
+}
+
+```
+
 
 <a name="section-mvcapplication-context"></a>
 ### User-Defined Context
@@ -452,6 +482,11 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
 <a name="section-changelog"></a>
 Changelog
 ---------
+
+v0.9.6
+
+* Added `IPathProvider`, `WebProjectPathProvider` and `WebConfigPathProvider`.
+* The `MvcApplicationFactory` has been made public. In combination with the introduction of `IPathProvider` more advanced scenarios for locating the web project and Web.config are now supported.
 
 v0.9.5
 
