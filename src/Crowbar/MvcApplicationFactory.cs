@@ -99,7 +99,7 @@ namespace Crowbar
         }
 
         private static TProxy Create<TProxy>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults)
-            where TProxy : ProxyBase
+            where TProxy : IProxy
         {
             Ensure.NotNull(project, "project");
             Ensure.NotNull(config, "config");
