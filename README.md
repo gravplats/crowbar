@@ -18,29 +18,29 @@ Table of Contents
     * [User-Defined Context](#section-mvcapplication-context)
     * [User-Defined Proxy](#section-mvcapplication-proxy)
     * [User-Supplied Web.config](#section-mvcapplication-config)
-    * [Default BrowserContext](#section-default-browsercontext)
-* [Browser](#section-browser)
-    * [Extensions](#section-browser-extensions)
-* [BrowserContext](#section-browsercontext)
-    * [AjaxRequest](#section-browsercontext-ajaxrequest)
-    * [Body](#section-browsercontext-body)
-    * [Cookie](#section-browsercontext-cookie)
-    * [FormValue](#section-browsercontext-formvalue)
-    * [Header](#section-browsercontext-header)
-    * [HttpRequest](#section-browsercontext-httprequest)
-    * [HttpsRequest](#section-browsercontext-httpsrequest)
-    * [Query](#section-browsercontext-query)
-    * [Extensions](#section-browsercontext-extensions)
-* [BrowserResponse](#section-browserresponse)
-    * [Advanced](#section-browserresponse-advanced)
-    * [ContentType](#section-browserresponse-contenttype)
-    * [Headers](#section-browserresponse-headers)
-    * [ResponseBody](#section-browserresponse-responsebody)
-    * [StatusCode](#section-browserresponse-statuscode)
-    * [AsCsQuery](#section-browserresponse-ascsquery)
-    * [AsJson](#section-browserresponse-asjson)
-    * [AsXml](#section-browserresponse-asxml)
-    * [Extensions](#section-browserresponse-extensions)
+    * [Default HttpPayload](#section-default-httppayload)
+* [Client](#section-client)
+    * [Extensions](#section-client-extensions)
+* [HttpPayload](#section-httppayload)
+    * [AjaxRequest](#section-httppayload-ajaxrequest)
+    * [Body](#section-httppayload-body)
+    * [Cookie](#section-httppayload-cookie)
+    * [FormValue](#section-httppayload-formvalue)
+    * [Header](#section-httppayload-header)
+    * [HttpRequest](#section-httppayload-httprequest)
+    * [HttpsRequest](#section-httppayload-httpsrequest)
+    * [Query](#section-httppayload-query)
+    * [Extensions](#section-httppayload-extensions)
+* [ClientResponse](#section-clientresponse)
+    * [Advanced](#section-clientresponse-advanced)
+    * [ContentType](#section-clientresponse-contenttype)
+    * [Headers](#section-clientresponse-headers)
+    * [ResponseBody](#section-clientresponse-responsebody)
+    * [StatusCode](#section-clientresponse-statuscode)
+    * [AsCsQuery](#section-clientresponse-ascsquery)
+    * [AsJson](#section-clientresponse-asjson)
+    * [AsXml](#section-clientresponse-asxml)
+    * [Extensions](#section-clientresponse-extensions)
 * [Samples](#section-samples)
 * [Troubleshooting](#section-troubleshooting)
 * [Changelog](#section-changelog)
@@ -57,14 +57,14 @@ An instance of `MvcApplication` can be created using the `MvcApplication.Create(
 public class MvcApplicationTests
 {
     private static readonly MvcApplication Application =
-        MvcApplication.Create("<name of your ASP.NET MVC project>");
+        MvcApplication.Create("<ASP.NET MVC project>");
 
     [Test]
     public void Should_return_html()
     {
-        Application.Execute(browser =>
+        Application.Execute(client =>
         {
-            var response = browser.Get("/route");
+            var response = client.Get("/route");
             response.ShouldBeHtml();
         });        
     }
@@ -74,17 +74,17 @@ public class MvcApplicationTests
 ``` csharp
 public class MvcApplicationTests
 {
-    protected static readonly MvcApplication<UserDefinedContext> Application = 
-        MvcApplication.Create<UserDefinedProxy, UserDefinedContext>("<name of your ASP.NET MVC project>");
+    protected static readonly MvcApplication<MvcHttpApplication, AppProxyContext> Application = 
+        MvcApplication.Create<MvcHttpApplication, AppProxy, AppProxyContext>("<ASP.NET MVC project>");
 
     [Test]
     public void Should_return_html()
     {
-        Application.Execute((browser, context) =>
+        Application.Execute((client, context) =>
         {
             // Use any state in the context to bootstrap your test.
 
-            var response = browser.Get("/route");
+            var response = client.Get("/route");
             response.ShouldBeHtml();
         });
     }
@@ -120,16 +120,15 @@ public static class MvcApplicationFacade
 
 ```
 
-
 <a name="section-mvcapplication-context"></a>
 ### User-Defined Context
 
 In order to be able to pass state from the server (the MVC application) to the test case it is possible to define a user-defined context. The context must implement `IDisposable`. The context will be created for each test and will be disposed after the test has been run.
 
 ``` csharp
-public class UserDefinedContext : IDisposable
+public class AppProxyContext : IDisposable
 {
-    // Define any state from the server.
+    // Add state from the server.
 
     public void Dispose()
     {
@@ -141,14 +140,19 @@ public class UserDefinedContext : IDisposable
 <a name="section-mvcapplication-proxy"></a>
 ### User-Defined Proxy
 
-In order to initialize the user-defined context we need to defined our own proxy. This is done by deriving from `MvcApplicationProxyBase<TContext>`.
+In order to initialize the user-defined context we need to defined our own proxy. This is done by deriving from `MvcApplicationProxyBase<THttpApplication, TContext>`.
 
 ``` csharp
-public class UserDefinedProxy : MvcApplicationProxyBase<UserDefinedContext>
+public class AppProxy : MvcApplicationProxyBase<MvcHttpApplication, UserDefinedContext>
 {
-    protected override UserDefinedContext CreateContext(HttpApplication application, string testBaseDirectory)
+    protected override void OnApplicationStart(MvcHttpApplication application)
     {
-        // You probably want to cast the 'application' to your derived HttpApplication class.
+         // This method will run once; after the application has been initialized by prior to any test.
+    }	
+
+    protected override UserDefinedContext CreateContext(MvcHttpApplication application, string testBaseDirectory)
+    {
+		// This method will run before each test.
 
         return new UserDefinedContext
         {
@@ -161,65 +165,67 @@ public class UserDefinedProxy : MvcApplicationProxyBase<UserDefinedContext>
 <a name="section-mvcapplication-config"></a>
 ### User-Supplied Web.config
 
-By default Crowbar tries to use the Web.config defined in the ASP.NET MVC project, even though this is somewhat instable at times. To counter any problems with the configuration of the MVC project it is possible and highly recommended to use a custom configuration file. The name of the custom configuration file can be supplied as the second argument to `MvcApplication.Create()`. The custom configration file should be defined in the test project. Please note that the configuration file must be copied to the output directory by setting _Copy to Output Directory_ to either _Copy always_ or _Copy if newer_.
+By default Crowbar tries to use the Web.config defined in the ASP.NET MVC project, even though this is somewhat instable at times (the configuration file has not been replaced in the pre-initialization phase, i.e., WebActivator.PreApplicationStartMethod). To counter any problems with the configuration of the MVC project it is possible and highly recommended to use a custom configuration file. The name of the custom configuration file can be supplied as the second argument to `MvcApplication.Create()`. The custom configration file should be defined in the test project. Please note that the configuration file must be copied to the output directory by setting _Copy to Output Directory_ to either _Copy always_ or _Copy if newer_.
 
 ``` csharp
 private static readonly MvcApplication Application =
-    MvcApplication.Create("<name of your ASP.NET MVC project>", "Web.Custom.config");
+    MvcApplication.Create("<ASP.NET MVC project>", "Web.Custom.config");
 ```
 
-<a name="section-default-browsercontext"></a>
-### Default BrowserContext
+<a name="section-default-httppayload"></a>
+### Default HttpPayload
 
-It is possible to define default `BrowserContext` settings for each request by supplying a third argument to `MvcApplication.Create()`. These settings will be applied to the `BrowserContext` before the request-specific settings. See the section on [BrowserContext](#section-browsercontext) for available options.
+It is possible to define default `HttpPayload` settings for each request by supplying a third argument to `MvcApplication.Create()`. These settings will be applied to the `HttpPayload` before the request-specific settings. See the section on [HttpPayload](#section-httppayload) for available options.
 
 ``` csharp
 private static readonly MvcApplication Application =
-    MvcApplication.Create("<name of your ASP.NET MVC project>", "Web.Custom.config", ctx => ctx.HttpsRequest());
+    MvcApplication.Create("<ASP.NET MVC project>", "Web.Custom.config", payload => payload.HttpsRequest());
 ```
 
-<a name="section-browser"></a>
-Browser
+<a name="section-client"></a>
+Client
 -------
 
-An instance of the `Browser` class enables us to interact with ASP.NET MVC application by performing requests.
+An instance of the `Client` class enables us to interact with an ASP.NET MVC application by performing requests.
 
 ``` csharp
-var response = browser.PerformRequest("GET", "/route");
+var response = client.PerformRequest("GET", "/route");
 ```
 
 The `PerformRequest` method has an optional third argument which let us customize the request.
 
 ``` csharp
-var response = browser.PerformRequest("GET", "/route", ctx => {
-    // Customize the request (BrowserContext object).
+var response = client.PerformRequest("GET", "/route", payload => {
+    // Customize the request (HttpPayload object).
 });
 ```
 
-For convenience, the most common HTTP methods have their own methods: `Delete`, `Get`, `Post`, `Put`, which delegate to `PerformRequest`. `PerformRequest` returns an instance of `BrowserResponse`.
+For convenience, the most common HTTP methods have their own methods: `Delete`, `Get`, `Post`, `Put`, which delegate to `PerformRequest`. `PerformRequest` returns an instance of `ClientResponse`.
 
-<a name="section-browser-extensions"></a>
-### Submit / AjaxSubmit
+<a name="section-client-extensions"></a>
+### Extensions
+
+#### Submit / AjaxSubmit
 
 The `Submit` and `AjaxSubmit` extensions try to mimic the browser form submission behavior. This is done by extracting the form action, the form method, any form values for the supplied HTML and performing the request based on these values.
 
 ``` csharp
-var response = browser.Submit("<form action='/route' method='post'>...</form>", model);
+var response = client.Submit("<form action='/route' method='post'>...</form>", model);
 ```
 
-### Load
+#### Load
 Loads HTML from the server using GET and forwards it to either `Submit` or `AjaxSubmit`.
 
 ```csharp
-var continuation = browser.Load("/path/to/form", ctx => { // Modify the GET request. });
+var continuation = client.Load("/path/to/form", payload => { // Modify the GET request. });
 var response = continuation.Submit(model);
 ```
 
-### Render
-Renders HTML by reading it from disk and forwards it to either `Submit` or `AjaxSubmit`. The first argument can be either a string (the name of the view) or a `PartialViewContext` object. Using the partial view context it is possible to state whether client validation and/or unobtrusive JavaScript is enabled and to set the principal that should be used when rendering the view which is important when the form is rendered with an anti-forgery request token.
+#### Render
+Renders HTML by reading it from disk and forwards it to either `Submit` or `AjaxSubmit`. The first argument can be either a string (the name of the view) or a `PartialViewContext` object. By using the partial view context it is possible to state whether client validation and/or unobtrusive JavaScript is enabled and set the principal that should be used when rendering the view which is important when the form is rendered with an anti-forgery request token.
 
 ``` csharp
-var continuation = browser.Render("~/path/to/form.cshtml", model);
+var continuation = client.Render("~/path/to/form.cshtml", model);
 var response = continuation.Submit();
 ```
 
@@ -232,102 +238,102 @@ var context = new PartialViewContext("~/path/to/form.cshtml")
 
 context.SetFormsAuthPrincipal("username");
 
-var response = browser.Render(context, model).Submit();
+var response = client.Render(context, model).Submit();
 ```
 
-<a name="section-browsercontext"></a>
-Browser Context
----------------
+<a name="section-httppayload"></a>
+HttpPayload
+-----------
 
-The `BrowserContext` class defines the context of the HTTP request. As previously stated `Browser.PerformRequest()` provides us with the opportunity to customize the HTTP request.
+The `HttpPayload` class defines the HTTP payload of the HTTP request. As previously stated `Client.PerformRequest()` provides us with the opportunity to customize the HTTP request.
 
-<a name="section-browsercontext-ajaxrequest"></a>
+<a name="section-httppayload-ajaxrequest"></a>
 ### AjaxRequest
 
 To mark the request as an AJAX request call `AjaxRequest()`.
 
 ``` csharp
-var response = browser.PerformRequest("<method>", "<route>", ctx => {
-    ctx.AjaxRequest();
+var response = client.PerformRequest("<method>", "<route>", payload => {
+    payload.AjaxRequest();
 });
 ```
 
-<a name="section-browsercontext-body"></a>
+<a name="section-httppayload-body"></a>
 ### Body
 
 To set the body of the request use `Body(string body, string contentType`). The second parameter is optional (the default content type is _application/octet-stream_).
 
-<a name="section-browsercontext-cookie"></a>
+<a name="section-httppayload-cookie"></a>
 ### Cookie
 
 To supply a cookie with the request use `Cookie(HttpRequest cookie)`.
 
 ``` csharp
-var response = browser.PerformRequest("<method>", "<route>", ctx => {
+var response = client.PerformRequest("<method>", "<route>", payload => {
     HttpCookie = ...
-    ctx.Cookie(cookie);
+    payload.Cookie(cookie);
 });
 ```
 
-<a name="section-browsercontext-formvalue"></a>
+<a name="section-httppayload-formvalue"></a>
 ### FormValue
 
 To provide a form value with the request use `FormValue(string key, string value)`.
 
 ``` csharp
-var response = browser.PerformRequest("<method>", "<route>", ctx => {
-    ctx.FromValue("key", "value");
+var response = client.PerformRequest("<method>", "<route>", payload => {
+    payload.FromValue("key", "value");
 });
 ```
 
-<a name="section-browsercontext-header"></a>
+<a name="section-httppayload-header"></a>
 ### Header
 
 To provide an HTTP header with the request use `Header(string name, string value)`.
 
 ``` csharp
-var response = browser.PerformRequest("<method>", "<route>", ctx => {
-    ctx.Header("name", "value");
+var response = client.PerformRequest("<method>", "<route>", payload => {
+    payload.Header("name", "value");
 });
 ```
 
-<a name="section-browsercontext-httprequest"></a>
+<a name="section-httppayload-httprequest"></a>
 ### HttpRequest
 
 To mark the request as using the HTTP protocol (the default value) use `HttpRequest()`.
 
 ``` csharp
-var response = browser.PerformRequest("<method>", "<route>", ctx => {
-    ctx.HttpRequest();
+var response = client.PerformRequest("<method>", "<route>", payload => {
+    payload.HttpRequest();
 });
 ```
 
-<a name="section-browsercontext-httpsrequest"></a>
+<a name="section-httppayload-httpsrequest"></a>
 ### HttpsRequest
 
 To mark the request as using the HTTPS protocol use `HttpsRequest()`.
 
 ``` csharp
-var response = browser.PerformRequest("<method>", "<route>", ctx => {
-    ctx.HttpsRequest();
+var response = client.PerformRequest("<method>", "<route>", payload => {
+    payload.HttpsRequest();
 });
 ```
 
-<a name="section-browsercontext-query"></a>
+<a name="section-httppayload-query"></a>
 ### Query
 
 To provide a query string entry with the request use `Query(string key, string value)`.
 
 ``` csharp
-var response = browser.PerformRequest("<method>", "<route>", ctx => {
-    ctx.Query("key", "value");
+var response = client.PerformRequest("<method>", "<route>", payload => {
+    payload.Query("key", "value");
 });
 ```
 
-<a name="section-browsercontext-extensions"></a>
+<a name="section-httppayload-extensions"></a>
 ### Extensions
 
-Crowbar provides several extension method to `BrowserContext`.
+Crowbar provides several extension method to `HttpPayload`.
 
 #### FormsAuth
 
@@ -341,53 +347,53 @@ Sets the content type to _application/json_ (overridable) and provides a JSON ob
 
 Sets the content type to _application/xml_ (overridable) and provides an XML object as the body of the request.
 
-<a name="section-browserresponse"></a>
-BrowserResponse
+<a name="section-clientresponse"></a>
+ClientResponse
 ---------------
 
-The `BrowserResponse` class defines the properties of the HTTP response.
+The `ClientResponse` class defines the properties of the HTTP response.
 
-<a name="section-browserresponse-advanced"></a>
+<a name="section-clientresponse-advanced"></a>
 ### Advanced
 
-The `Advanced` property provides access to various ASP.NET MVC contexts which are collected during the request.
+The `Advanced` property provides access to various ASP.NET MVC context objects which are collected during the request.
 
-<a name="section-browserresponse-contenttype"></a>
+<a name="section-clientresponse-contenttype"></a>
 ### ContentType
 
 Returns the content type of the request.
 
-<a name="section-browserresponse-headers"></a>
+<a name="section-clientresponse-headers"></a>
 ### Headers (faked)
 
 Provides access to the _Location_ header if the response is a redirect.
 
-<a name="section-browserresponse-responsebody"></a>
+<a name="section-clientresponse-responsebody"></a>
 ### ResponseBody
 
 Returns the string representation of the body of the response.
 
-<a name="section-browserresponse-statuscode"></a>
+<a name="section-clientresponse-statuscode"></a>
 ### StatusCode
 
 Returns the HTTP status code of the response.
 
-<a name="section-browserresponse-ascsquery"></a>
+<a name="section-clientresponse-ascsquery"></a>
 ### AsCsQuery
 
 Returns a [CsQuery](https://github.com/jamietre/CsQuery) object (similar to a jQuery object) which provides CSS selection and DOM manipulation functionality.
 
-<a name="section-browserresponse-asjson"></a>
+<a name="section-clientresponse-asjson"></a>
 ### AsJson
 
 Returns a JSON object as a `dynamic` object.
 
-<a name="section-browserresponse-asxml"></a>
+<a name="section-clientresponse-asxml"></a>
 ### AsXml
 
 Returns an XML object as an `XElement` object.
 
-<a name="section-browserresponse-extensions"></a>
+<a name="section-clientresponse-extensions"></a>
 ### Extensions
 
 Crowbar provides several extension methods for easing the assertion of the correct behavior of the request.
@@ -482,6 +488,14 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
 <a name="section-changelog"></a>
 Changelog
 ---------
+
+v0.10 
+
+* Breaking change: The `ProxyBase` hierarchy has been re-written. The most notably change is that classes deriving from `ProxyBase` takes a generic argument `THttpApplication`.
+* The `Client` object is now shared between tests. Previously a new instance was created for each test. This change should not have any noticable impact.
+* The `OnApplicationStart` method was added to `ProxyBase`. This method is called after the application has been started but prior to any test case.
+* Breaking change: the `BrowserContext` class has been renamed `HttpPayload`.
+* Breaking change: the `Browser*` classes (`Browser`, `BrowserResponse` etc) has been renamed `Client*` (`Client`, `ClientResponse` etc).
 
 v0.9.6
 
