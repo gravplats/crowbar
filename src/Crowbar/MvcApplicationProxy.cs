@@ -5,11 +5,13 @@ namespace Crowbar
 {
     /// <summary>
     /// A common implementation for a non-generic MVC application proxy.
+    /// <typeparam name="THttpApplication">The HTTP application type.</typeparam>
     /// </summary>
-    public class MvcApplicationProxy : ProxyBase<Action<Browser>>
+    public class MvcApplicationProxy<THttpApplication> : ProxyBase<THttpApplication, Action<Browser>>
+        where THttpApplication : HttpApplication
     {
         /// <inheritdoc />
-        protected override void ProcessCore(SerializableDelegate<Action<Browser>> script, HttpApplication application, Browser browser, string testBaseDirectory)
+        protected override void ProcessCore(SerializableDelegate<Action<Browser>> script, THttpApplication application, Browser browser, string testBaseDirectory)
         {
             try
             {

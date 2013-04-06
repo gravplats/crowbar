@@ -1,6 +1,7 @@
 ﻿using System;
 using Crowbar;
 using NUnit.Framework;
+using Raven.Web;
 
 namespace Raven.Tests
 {
@@ -18,8 +19,8 @@ namespace Raven.Tests
             public string Description { get; private set; }
         }
 
-        protected static readonly MvcApplication<RavenProxyContext> Application =
-            MvcApplication.Create<RavenProxy, RavenProxyContext>("Raven.Web", "Web.Custom.config", ctx => ctx.HttpsRequest());
+        protected static readonly MvcApplication<RavenMvcApplication, RavenProxyContext> Application =
+            MvcApplication.Create<RavenMvcApplication, RavenProxy, RavenProxyContext>("Raven.Web", "Web.Custom.config", ctx => ctx.HttpsRequest());
 
         [Test]
         public void Execute()

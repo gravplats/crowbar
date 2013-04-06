@@ -71,34 +71,38 @@ namespace Crowbar
         /// <summary>
         /// Creates an MVC application.
         /// </summary>
+        /// <typeparam name="THttpApplication">The HTTP application type.</typeparam>
         /// <param name="project">The project path provider.</param>
         /// <param name="config">The configuration file provider.</param>
         /// <param name="defaults">The default browser context settings, if any.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication Create(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
+        public static MvcApplication<THttpApplication> Create<THttpApplication>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
+            where THttpApplication : HttpApplication
         {
-            var proxy = Create<MvcApplicationProxy>(project, config, defaults);
-            return new MvcApplication(proxy);
+            var proxy = CreateProxy<MvcApplicationProxy<THttpApplication>>(project, config, defaults);
+            return new MvcApplication<THttpApplication>(proxy);
         }
 
         /// <summary>
         /// Creates an MVC application.
         /// </summary>
+        /// <typeparam name="THttpApplication">The HTTP application type.</typeparam>
         /// <typeparam name="TProxy">The proxy type of the MVC application.</typeparam>
         /// <typeparam name="TContext">The proxy context type.</typeparam>
         /// <param name="project">The project path provider.</param>
         /// <param name="config">The configuration file provider.</param>
         /// <param name="defaults">The default browser context settings, if any.</param>
         /// <returns>The MVC application.</returns>
-        public static MvcApplication<TContext> Create<TProxy, TContext>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
-            where TProxy : MvcApplicationProxyBase<TContext>
+        public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
+            where THttpApplication : HttpApplication
+            where TProxy : MvcApplicationProxyBase<THttpApplication, TContext>
             where TContext : IDisposable
         {
-            var proxy = Create<TProxy>(project, config, defaults);
-            return new MvcApplication<TContext>(proxy);
+            var proxy = CreateProxy<TProxy>(project, config, defaults);
+            return new MvcApplication<THttpApplication, TContext>(proxy);
         }
 
-        private static TProxy Create<TProxy>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults)
+        private static TProxy CreateProxy<TProxy>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults)
             where TProxy : IProxy
         {
             Ensure.NotNull(project, "project");

@@ -1,6 +1,7 @@
 ﻿using System;
 using Crowbar;
 using NUnit.Framework;
+using Tool.Web;
 
 namespace Tool.Tests
 {
@@ -18,7 +19,8 @@ namespace Tool.Tests
             public string Description { get; private set; }
         }
 
-        protected static readonly MvcApplication Application = MvcApplication.Create("Tool.Web", "Web.Custom.config", ctx => ctx.HttpsRequest());
+        protected static readonly MvcApplication<ToolMvcApplication> Application =
+            MvcApplication.Create<ToolMvcApplication>("Tool.Web", "Web.Custom.config", ctx => ctx.HttpsRequest());
 
         [Test]
         public void Execute()

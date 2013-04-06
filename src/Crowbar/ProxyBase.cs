@@ -6,11 +6,14 @@ namespace Crowbar
 {
     /// <summary>
     /// A common base class for any MVC application proxy.
+    /// <typeparam name="THttpApplication">The HTTP application type.</typeparam>
+    /// <typeparam name="TDelegate">The script delegate type.</typeparam>
     /// </summary>
-    public abstract class ProxyBase<TDelegate> : MarshalByRefObject, IProxy
+    public abstract class ProxyBase<THttpApplication, TDelegate> : MarshalByRefObject, IProxy
+        where THttpApplication : HttpApplication
         where TDelegate : class
     {
-        private HttpApplication httpApplication;
+        private THttpApplication httpApplication;
         private Browser browser;
         private string testBaseDirectory;
 
@@ -27,7 +30,13 @@ namespace Crowbar
 
             testBaseDirectory = directory;
 
-            httpApplication = initialize.Delegate();
+            httpApplication = initialize.Delegate() as THttpApplication;
+            if (httpApplication == null)
+            {
+                string message = string.Format("The HTTP application is not of type '{0}'.", typeof(THttpApplication));
+                throw new InvalidOperationException(message);
+            }
+
             OnApplicationStart(httpApplication);
         }
 
@@ -66,7 +75,7 @@ namespace Crowbar
         /// Provides the opportunity of customizing the application post application start.
         /// </summary>
         /// <param name="application">The HTTP application.</param>
-        protected virtual void OnApplicationStart(HttpApplication application) { }
+        protected virtual void OnApplicationStart(THttpApplication application) { }
 
         /// <summary>
         /// Runs the test script against the MVC application proxy.
@@ -84,7 +93,7 @@ namespace Crowbar
         /// <param name="application">The HTTP application.</param>
         /// <param name="browser">The browser object.</param>
         /// <param name="testBaseDirectory">The directory in which the test is run.</param>
-        protected abstract void ProcessCore(SerializableDelegate<TDelegate> script, HttpApplication application, Browser browser, string testBaseDirectory);
+        protected abstract void ProcessCore(SerializableDelegate<TDelegate> script, THttpApplication application, Browser browser, string testBaseDirectory);
 
         private static int GetMvcMajorVersion()
         {

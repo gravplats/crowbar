@@ -1,4 +1,3 @@
-using System.Web;
 using Crowbar;
 using Raven.Client;
 using Raven.Client.Embedded;
@@ -7,7 +6,7 @@ using Raven.Web;
 
 namespace Raven.Tests
 {
-    public class RavenProxy : MvcApplicationProxyBase<RavenProxyContext>
+    public class RavenProxy : MvcApplicationProxyBase<RavenMvcApplication, RavenProxyContext>
     {
         public class WaitForNonStaleResultsListener : IDocumentQueryListener
         {
@@ -31,12 +30,10 @@ namespace Raven.Tests
             return store.RegisterListener(new WaitForNonStaleResultsListener()).Initialize();
         }
 
-        protected override RavenProxyContext CreateContext(HttpApplication application, string testBaseDirectory)
+        protected override RavenProxyContext CreateContext(RavenMvcApplication application, string testBaseDirectory)
         {
             var store = CreateDocumentStore();
-
-            var raven = (RavenMvcApplication)application;
-            raven.SetDocumentStore(store);
+            application.SetDocumentStore(store);
 
             return new RavenProxyContext(store);
         }
