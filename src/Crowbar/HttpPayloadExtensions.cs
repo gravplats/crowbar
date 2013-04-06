@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 namespace Crowbar
 {
     /// <summary>
-    /// Defines extensions for the <see cref="HttpPayload"/> type.
+    /// Defines extensions for the <see cref="HttpPayload"/> class.
     /// </summary>
     public static class HttpPayloadExtensions
     {

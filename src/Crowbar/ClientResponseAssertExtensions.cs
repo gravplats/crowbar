@@ -6,17 +6,17 @@ using CsQuery;
 namespace Crowbar
 {
     /// <summary>
-    /// Defines extensions for the <see cref="BrowserResponse"/> type.
+    /// Defines extensions for the <see cref="ClientResponse"/> type.
     /// </summary>
-    public static class BrowserResponseAssertExtensions
+    public static class ClientResponseAssertExtensions
     {
         /// <summary>
         /// Asserts that the response content type is of the MIME-type 'text/html'.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="assertions">Additional assertions on the CQ object.</param>
         /// <returns>The CQ object.</returns>
-        public static CQ ShouldBeHtml(this BrowserResponse response, Action<CQ> assertions = null)
+        public static CQ ShouldBeHtml(this ClientResponse response, Action<CQ> assertions = null)
         {
             response.AssertContentType("text/html");
 
@@ -39,11 +39,11 @@ namespace Crowbar
         /// <summary>
         /// Asserts that the response content type is of the MIME-type 'application/json' or the specified override.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="assertions">Additional assertions on the JSON object.</param>
         /// <param name="contentType">The expected content type.</param>
         /// <returns>The JSON object.</returns>
-        public static dynamic ShouldBeJson(this BrowserResponse response, Action<dynamic> assertions = null, string contentType = "application/json")
+        public static dynamic ShouldBeJson(this ClientResponse response, Action<dynamic> assertions = null, string contentType = "application/json")
         {
             response.AssertContentType(contentType);
 
@@ -69,11 +69,11 @@ namespace Crowbar
         /// <summary>
         /// Asserts that the response content type is of the MIME-type 'application/xml' or the specified override.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="assertions">Additional assertions on the XML object.</param>
         /// <param name="contentType">The expected content type.</param>
         /// <returns>An XElement.</returns>
-        public static XElement ShouldBeXml(this BrowserResponse response, Action<XElement> assertions = null, string contentType = "application/xml")
+        public static XElement ShouldBeXml(this ClientResponse response, Action<XElement> assertions = null, string contentType = "application/xml")
         {
             response.AssertContentType(contentType);
 
@@ -96,10 +96,10 @@ namespace Crowbar
         /// <summary>
         /// Asserts that the response has a cookie with the specified name.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="name">The name of the cookie.</param>
         /// <returns>The cookie.</returns>
-        public static HttpCookie ShouldHaveCookie(this BrowserResponse response, string name)
+        public static HttpCookie ShouldHaveCookie(this ClientResponse response, string name)
         {
             Ensure.NotNullOrEmpty(name, "name");
 
@@ -120,11 +120,11 @@ namespace Crowbar
         /// <summary>
         /// Asserts that the response has a cookie with the specified name and value.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="name">The name of the cookie.</param>
         /// <param name="value">The value of the cookie.</param>
         /// <returns>The cookie.</returns>
-        public static HttpCookie ShouldHaveCookie(this BrowserResponse response, string name, string value)
+        public static HttpCookie ShouldHaveCookie(this ClientResponse response, string name, string value)
         {
             var cookie = response.ShouldHaveCookie(name);
             if (!string.Equals(cookie.Value, value, StringComparison.Ordinal))
@@ -138,9 +138,9 @@ namespace Crowbar
         /// <summary>
         /// Asserts that the response does not have a cookie with the specified name.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="name">The name of the cookie.</param>
-        public static void ShouldNotHaveCookie(this BrowserResponse response, string name)
+        public static void ShouldNotHaveCookie(this ClientResponse response, string name)
         {
             Ensure.NotNullOrEmpty(name, "name");
 
@@ -159,9 +159,9 @@ namespace Crowbar
         /// <summary>
         /// Asserts that a permanent redirect to a specified location took place.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="location">The location that should have been redirected to.</param>
-        public static void ShouldHavePermanentlyRedirectTo(this BrowserResponse response, string location)
+        public static void ShouldHavePermanentlyRedirectTo(this ClientResponse response, string location)
         {
             response.ShouldHaveRedirectedTo(location, HttpStatusCode.MovedPermanently);
         }
@@ -169,14 +169,14 @@ namespace Crowbar
         /// <summary>
         /// Asserts that a temporarily redirect to a specified location took place.
         /// </summary>
-        /// <param name="response">The <see cref="BrowserResponse"/> that the assert should be made on.</param>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="location">The location that should have been redirected to.</param>
-        public static void ShouldHaveTemporarilyRedirectTo(this BrowserResponse response, string location)
+        public static void ShouldHaveTemporarilyRedirectTo(this ClientResponse response, string location)
         {
             response.ShouldHaveRedirectedTo(location, HttpStatusCode.Found);
         }
 
-        private static void ShouldHaveRedirectedTo(this BrowserResponse response, string location, HttpStatusCode expectedStatusCode)
+        private static void ShouldHaveRedirectedTo(this ClientResponse response, string location, HttpStatusCode expectedStatusCode)
         {
             response.AssertStatusCode(expectedStatusCode);
 
@@ -186,7 +186,7 @@ namespace Crowbar
             }
         }
 
-        private static void AssertContentType(this BrowserResponse response, string expectedContentType)
+        private static void AssertContentType(this ClientResponse response, string expectedContentType)
         {
             if (response.ContentType != expectedContentType)
             {
@@ -194,7 +194,7 @@ namespace Crowbar
             }
         }
 
-        private static void AssertStatusCode(this BrowserResponse response, HttpStatusCode expectedStatusCode)
+        private static void AssertStatusCode(this ClientResponse response, HttpStatusCode expectedStatusCode)
         {
             if (response.StatusCode != expectedStatusCode)
             {

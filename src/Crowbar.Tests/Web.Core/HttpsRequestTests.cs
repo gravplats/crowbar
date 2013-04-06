@@ -11,9 +11,9 @@ namespace Crowbar.Tests.Web.Core
         [TestCase("PUT")]
         public void Should_be_able_to_perform_an_https_request(string method)
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.PerformRequest(method, CrowbarRoute.HttpsRequest, ctx => ctx.HttpsRequest());
+                var response = client.PerformRequest(method, CrowbarRoute.HttpsRequest, x => x.HttpsRequest());
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
         }

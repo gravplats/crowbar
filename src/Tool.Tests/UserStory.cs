@@ -20,7 +20,7 @@ namespace Tool.Tests
         }
 
         protected static readonly MvcApplication<ToolMvcApplication> Application =
-            MvcApplication.Create<ToolMvcApplication>("Tool.Web", "Web.Custom.config", ctx => ctx.HttpsRequest());
+            MvcApplication.Create<ToolMvcApplication>("Tool.Web", "Web.Custom.config", x => x.HttpsRequest());
 
         [Test]
         public void Execute()

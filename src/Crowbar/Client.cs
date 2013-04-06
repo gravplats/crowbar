@@ -6,19 +6,19 @@ using System.Web;
 namespace Crowbar
 {
     /// <summary>
-    /// Provides the capabilities of simulating an HTTP(S) request to an ASP.NET web application.
+    /// Provides capabilities of simulating an HTTP(S) request to an ASP.NET MVC application.
     /// </summary>
-    public class Browser
+    public class Client
     {
         private readonly int mvcMajorVersion;
         private readonly Action<HttpPayload> defaults;
 
         /// <summary>
-        /// Creates an instance of <see cref="Browser"/>.
+        /// Creates an instance of <see cref="Client"/>.
         /// </summary>
         /// <param name="mvcMajorVersion">The major version of the MVC framework.</param>
-        /// <param name="defaults">The default browser context settings.</param>
-        public Browser(int mvcMajorVersion, Action<HttpPayload> defaults)
+        /// <param name="defaults">Default HTTP payload settings.</param>
+        public Client(int mvcMajorVersion, Action<HttpPayload> defaults)
         {
             this.mvcMajorVersion = mvcMajorVersion;
             this.defaults = defaults;
@@ -28,9 +28,9 @@ namespace Crowbar
         /// Performs a DELETE request against the host application.
         /// </summary>
         /// <param name="path">The path that is being requested.</param>
-        /// <param name="context">A configuration object for providing the browser context for the request.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Delete(string path, Action<HttpPayload> context = null)
+        /// <param name="context">A configuration object for providing the HTTP payload for the request.</param>
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public virtual ClientResponse Delete(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("DELETE", path, context);
         }
@@ -39,9 +39,9 @@ namespace Crowbar
         /// Performs a GET request against the host application.
         /// </summary>
         /// <param name="path">The path that is being requested.</param>
-        /// <param name="context">A configuration object for providing the browser context for the request.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Get(string path, Action<HttpPayload> context = null)
+        /// <param name="context">A configuration object for providing the HTTP payload for the request.</param>
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public virtual ClientResponse Get(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("GET", path, context);
         }
@@ -50,9 +50,9 @@ namespace Crowbar
         /// Performs a POST request against the host application.
         /// </summary>
         /// <param name="path">The path that is being requested.</param>
-        /// <param name="context">A configuration object for providing the browser context for the request.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Post(string path, Action<HttpPayload> context = null)
+        /// <param name="context">A configuration object for providing the HTTP payload for the request.</param>
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public virtual ClientResponse Post(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("POST", path, context);
         }
@@ -61,9 +61,9 @@ namespace Crowbar
         /// Performs a PUT request against the host application.
         /// </summary>
         /// <param name="path">The path that is being requested.</param>
-        /// <param name="context">A configuration object for providing the browser context for the request.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Put(string path, Action<HttpPayload> context = null)
+        /// <param name="context">A configuration object for providing the HTTP payload for the request.</param>
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public virtual ClientResponse Put(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("PUT", path, context);
         }
@@ -73,9 +73,9 @@ namespace Crowbar
         /// </summary>
         /// <param name="method">The HTTP method that should be used.</param>
         /// <param name="path">The path that is being requested.</param>
-        /// <param name="overrides">A configuration object for providing the browser context for the request.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse PerformRequest(string method, string path, Action<HttpPayload> overrides = null)
+        /// <param name="overrides">A configuration object for providing the HTTP payload for the request.</param>
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public virtual ClientResponse PerformRequest(string method, string path, Action<HttpPayload> overrides = null)
         {
             Ensure.NotNull(method, "method");
             Ensure.NotNull(path, "path");
@@ -100,12 +100,12 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Creates the browser response.
+        /// Creates the client response.
         /// </summary>
         /// <param name="output">The writer to which the output should be written.</param>
         /// <param name="rawHttpRequest">The raw HTTP request.</param>
-        /// <returns>The browser response.</returns>
-        protected virtual BrowserResponse CreateResponse(StringWriter output, string rawHttpRequest)
+        /// <returns>The client response.</returns>
+        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
@@ -115,7 +115,7 @@ namespace Crowbar
             var response = CrowbarContext.HttpResponse;
             if (response == null)
             {
-                return new BrowserResponse();
+                return new ClientResponse();
             }
 
             // Cannot read headers from response as it is not supported, however it is possible to fake the 'Location' header.
@@ -125,9 +125,9 @@ namespace Crowbar
                 headers.Add("Location", response.RedirectLocation);
             }
 
-            return new BrowserResponse
+            return new ClientResponse
             {
-                Advanced = new AdvancedBrowserResponse
+                Advanced = new AdvancedClientResponse
                 {
                     ActionExecutedContext = CrowbarContext.ActionExecutedContext,
                     ActionExecutingContext = CrowbarContext.ActionExecutingContext,

@@ -3,13 +3,13 @@
 namespace Crowbar
 {
     /// <summary>
-    /// Defines common browser contexts.
+    /// Defines common HTTP payloads.
     /// </summary>
     public static class As
     {
         /// <summary>
         /// An AJAX request context.
         /// </summary>
-        public static Action<HttpPayload> AjaxRequest = ctx => ctx.AjaxRequest();
+        public static Action<HttpPayload> AjaxRequest = payload => payload.AjaxRequest();
     }
 }

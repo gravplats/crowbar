@@ -10,9 +10,9 @@ namespace Crowbar.Tests.Web.Core
         [TestCase("PUT")]
         public void Should_be_able_to_send_json(string method)
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.PerformRequest(method, CrowbarRoute.JsonBody, ctx => ctx.JsonBody(new { payload = "text" }));
+                var response = client.PerformRequest(method, CrowbarRoute.JsonBody, x => x.JsonBody(new { payload = "text" }));
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
         }

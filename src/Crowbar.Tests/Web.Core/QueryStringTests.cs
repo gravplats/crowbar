@@ -8,10 +8,10 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Can_handle_both_query_string_with_method_and_with_path()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
                 string path = CrowbarRoute.QueryString.AsOutbound(new { withPath = "CrowbarWithPath" });
-                var response = browser.Get(path, ctx => ctx.QueryString("withMethod", "CrowbarWithMethod"));
+                var response = client.Get(path, x => x.QueryString("withMethod", "CrowbarWithMethod"));
 
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             });

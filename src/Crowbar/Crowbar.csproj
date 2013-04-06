@@ -54,15 +54,15 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AdvancedBrowserResponse.cs" />
+    <Compile Include="AdvancedClientResponse.cs" />
     <Compile Include="As.cs" />
     <Compile Include="AssertException.cs" />
     <Compile Include="HttpPayload.cs" />
     <Compile Include="HttpPayloadExtensions.cs" />
-    <Compile Include="BrowserExtensions.cs" />
-    <Compile Include="BrowserLoadContinuation.cs" />
-    <Compile Include="BrowserRenderContinuation.cs" />
-    <Compile Include="BrowserResponseAssertExtensions.cs" />
+    <Compile Include="ClientExtensions.cs" />
+    <Compile Include="ClientLoadContinuation.cs" />
+    <Compile Include="ClientRenderContinuation.cs" />
+    <Compile Include="ClientResponseAssertExtensions.cs" />
     <Compile Include="CrowbarViewContext.cs" />
     <Compile Include="DelegateExtensions.cs" />
     <Compile Include="CQExtensions.cs" />
@@ -74,10 +74,10 @@
     <Compile Include="WebProjectPathProvider.cs" />
     <Compile Include="RawHttpRequest.cs" />
     <Compile Include="HttpStatusCode.cs" />
-    <Compile Include="Browser.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="IHideObjectMembers.cs" />
     <Compile Include="ISimulatedWorkerRequestContext.cs" />
-    <Compile Include="BrowserResponse.cs" />
+    <Compile Include="ClientResponse.cs" />
     <Compile Include="MvcApplication.cs" />
     <Compile Include="MvcApplicationProxy.cs" />
     <Compile Include="MvcApplicationProxyBase.cs" />

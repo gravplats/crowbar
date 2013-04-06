@@ -7,18 +7,18 @@ namespace Crowbar
     /// <summary>
     /// Represents a continuation in a fluent interface.
     /// </summary>
-    public class BrowserLoadContinuation : IHideObjectMembers
+    public class ClientLoadContinuation : IHideObjectMembers
     {
-        private readonly Browser browser;
+        private readonly Client client;
 
         /// <summary>
-        /// Creates a new instance of <see cref="BrowserLoadContinuation"/>.
+        /// Creates a new instance of <see cref="ClientLoadContinuation"/>.
         /// </summary>
-        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="client">The <see cref="Client"/> object used to submit the form.</param>
         /// <param name="html">The HTML that should be submitted.</param>
-        public BrowserLoadContinuation(Browser browser, string html)
+        public ClientLoadContinuation(Client client, string html)
         {
-            this.browser = Ensure.NotNull(browser, "browser");
+            this.client = Ensure.NotNull(client, "client");
             Html = Ensure.NotNullOrEmpty(html, "html");
         }
 
@@ -36,12 +36,12 @@ namespace Crowbar
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse AjaxSubmit<TViewModel>(TViewModel viewModel, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public ClientResponse AjaxSubmit<TViewModel>(TViewModel viewModel, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
             Ensure.NotNull(viewModel, "viewModel");
-            return browser.AjaxSubmit(Html, viewModel, customize, overrides, cookies, selector);
+            return client.AjaxSubmit(Html, viewModel, customize, overrides, cookies, selector);
         }
 
         /// <summary>
@@ -53,12 +53,12 @@ namespace Crowbar
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Submit<TViewModel>(TViewModel viewModel, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public ClientResponse Submit<TViewModel>(TViewModel viewModel, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
             Ensure.NotNull(viewModel, "viewModel");
-            return browser.Submit(Html, viewModel, customize, overrides, cookies, selector);
+            return client.Submit(Html, viewModel, customize, overrides, cookies, selector);
         }
     }
 }

@@ -16,14 +16,14 @@ namespace Crowbar
         /// <param name="application">The application.</param>
         public MvcApplication(MvcApplication<HttpApplication> application)
         {
-            this.application = Ensure.NotNull(application, "proxy");
+            this.application = Ensure.NotNull(application, "application");
         }
 
         /// <summary>
         /// Executes the specified test.
         /// </summary>
         /// <param name="test">The test to be executed.</param>
-        public void Execute(Action<Browser> test)
+        public void Execute(Action<Client> test)
         {
             application.Execute(test);
         }
@@ -33,7 +33,7 @@ namespace Crowbar
         /// </summary>
         /// <param name="name">The name of the ASP.NET project.</param>
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
-        /// <param name="defaults">The default browser context settings, if any.</param>
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
         /// <returns>An MVC application.</returns>
         public static MvcApplication Create(string name, string config = "Web.config", Action<HttpPayload> defaults = null)
         {
@@ -47,7 +47,7 @@ namespace Crowbar
         /// <typeparam name="THttpApplication">The HTTP application type.</typeparam>
         /// <param name="name">The name of the ASP.NET project.</param>
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
-        /// <param name="defaults">The default browser context settings, if any.</param>
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
         /// <returns>An MVC application.</returns>
         public static MvcApplication<THttpApplication> Create<THttpApplication>(string name, string config = "Web.config", Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication
@@ -63,7 +63,7 @@ namespace Crowbar
         /// <typeparam name="TContext">The proxy context type.</typeparam>
         /// <param name="name">The name of the ASP.NET project.</param>
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
-        /// <param name="defaults">The default browser context settings, if any.</param>
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
         /// <returns>An MVC application.</returns>
         public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(string name, string config = "Web.config", Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication
@@ -96,9 +96,9 @@ namespace Crowbar
         /// Executes the specified test.
         /// </summary>
         /// <param name="test">The test to be executed.</param>
-        public void Execute(Action<Browser> test)
+        public void Execute(Action<Client> test)
         {
-            proxy.Process(new SerializableDelegate<Action<Browser>>(test));
+            proxy.Process(new SerializableDelegate<Action<Client>>(test));
         }
     }
 
@@ -127,9 +127,9 @@ namespace Crowbar
         /// Executes the specified test.
         /// </summary>
         /// <param name="test">The test to be executed.</param>
-        public void Execute(Action<Browser, TContext> test)
+        public void Execute(Action<Client, TContext> test)
         {
-            proxy.Process(new SerializableDelegate<Action<Browser, TContext>>(test));
+            proxy.Process(new SerializableDelegate<Action<Client, TContext>>(test));
         }
     }
 }

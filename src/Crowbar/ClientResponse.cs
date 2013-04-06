@@ -8,14 +8,14 @@ using CsQuery;
 namespace Crowbar
 {
     /// <summary>
-    /// Defines the response that a <see cref="Browser"/> request.
+    /// Defines the client response.
     /// </summary>
-    public class BrowserResponse
+    public class ClientResponse
     {
         /// <summary>
         /// Gets various context objects collected during the request.
         /// </summary>
-        public AdvancedBrowserResponse Advanced { get; internal set; }
+        public AdvancedClientResponse Advanced { get; internal set; }
 
         /// <summary>
         /// Gets the Content Type of the HTTP response.

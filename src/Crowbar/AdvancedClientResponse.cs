@@ -4,9 +4,9 @@ using System.Web.SessionState;
 namespace Crowbar
 {
     /// <summary>
-    /// Provides access to various states during an HTTP request cycle.
+    /// Provides access to various state objects during an HTTP request cycle.
     /// </summary>
-    public class AdvancedBrowserResponse
+    public class AdvancedClientResponse
     {
         /// <summary>
         /// Gets the context for the OnActionExecuted method.

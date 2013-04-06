@@ -14,7 +14,7 @@ namespace Crowbar
         where TDelegate : class
     {
         private THttpApplication httpApplication;
-        private Browser browser;
+        private Client client;
         private string testBaseDirectory;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Crowbar
         public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<HttpPayload>> defaults = null)
         {
             var action = (defaults != null) ? defaults.Delegate : null;
-            browser = Ensure.NotNull(CreateBrowser(GetMvcMajorVersion(), action), "browser");
+            client = Ensure.NotNull(CreateClient(GetMvcMajorVersion(), action), "client");
 
             testBaseDirectory = directory;
 
@@ -47,14 +47,14 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Creates a new browser object.
+        /// Creates a new client object.
         /// </summary>
         /// <param name="mvcMajorVersion">The major version of the MVC framework</param>
-        /// <param name="defaults">The default browser context settings.</param>
-        /// <returns>A browser.</returns>
-        protected virtual Browser CreateBrowser(int mvcMajorVersion, Action<HttpPayload> defaults)
+        /// <param name="defaults">The default client context settings.</param>
+        /// <returns>A Client.</returns>
+        protected virtual Client CreateClient(int mvcMajorVersion, Action<HttpPayload> defaults)
         {
-            return new Browser(mvcMajorVersion, defaults);
+            return new Client(mvcMajorVersion, defaults);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Crowbar
         /// <param name="script">The test script to be run.</param>
         public void Process(SerializableDelegate<TDelegate> script)
         {
-            ProcessCore(script, httpApplication, browser, testBaseDirectory);
+            ProcessCore(script, httpApplication, client, testBaseDirectory);
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace Crowbar
         /// </summary>
         /// <param name="script">The test script to be run.</param>
         /// <param name="application">The HTTP application.</param>
-        /// <param name="browser">The browser object.</param>
+        /// <param name="client">The client object.</param>
         /// <param name="testBaseDirectory">The directory in which the test is run.</param>
-        protected abstract void ProcessCore(SerializableDelegate<TDelegate> script, THttpApplication application, Browser browser, string testBaseDirectory);
+        protected abstract void ProcessCore(SerializableDelegate<TDelegate> script, THttpApplication application, Client client, string testBaseDirectory);
 
         private static int GetMvcMajorVersion()
         {

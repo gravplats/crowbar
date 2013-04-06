@@ -74,7 +74,7 @@ namespace Crowbar
         /// <typeparam name="THttpApplication">The HTTP application type.</typeparam>
         /// <param name="project">The project path provider.</param>
         /// <param name="config">The configuration file provider.</param>
-        /// <param name="defaults">The default browser context settings, if any.</param>
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
         /// <returns>An MVC application.</returns>
         public static MvcApplication<THttpApplication> Create<THttpApplication>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication
@@ -91,7 +91,7 @@ namespace Crowbar
         /// <typeparam name="TContext">The proxy context type.</typeparam>
         /// <param name="project">The project path provider.</param>
         /// <param name="config">The configuration file provider.</param>
-        /// <param name="defaults">The default browser context settings, if any.</param>
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
         /// <returns>The MVC application.</returns>
         public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication

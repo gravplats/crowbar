@@ -6,20 +6,20 @@ using CsQuery;
 namespace Crowbar
 {
     /// <summary>
-    /// Provides extra functionality of the <see cref="Browser"/> class.
+    /// Provides extra functionality of the <see cref="Client"/> class.
     /// </summary>
-    public static class BrowserExtensions
+    public static class ClientExtensions
     {
         /// <summary>
         /// Loads a rendered form from the server.
         /// </summary>
-        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="client">The <see cref="Client"/> object used to submit the form.</param>
         /// <param name="path">The path that is being requested.</param>
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <returns>A continuation.</returns>
-        public static BrowserLoadContinuation Load(this Browser browser, string path, Action<HttpPayload> customize = null)
+        public static ClientLoadContinuation Load(this Client client, string path, Action<HttpPayload> customize = null)
         {
-            var response = browser.Get(path, customize);
+            var response = client.Get(path, customize);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 string message = string.Format("Could not load resource '{0}' from server: {1}.", path, response.StatusCode);
@@ -27,57 +27,57 @@ namespace Crowbar
             }
 
             string html = response.ResponseBody;
-            return new BrowserLoadContinuation(browser, html);
+            return new ClientLoadContinuation(client, html);
         }
 
         /// <summary>
         /// Renders a form from the server out-of-band.
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
-        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="client">The <see cref="Client"/> object used to submit the form.</param>
         /// <param name="crowbarViewContext">The name of the view which contains the form element that should be submitted.</param>
         /// <param name="viewModel">The form payload.</param>
         /// <returns>A continuation.</returns>
-        public static BrowserRenderContinuation<TViewModel> Render<TViewModel>(this Browser browser, CrowbarViewContext crowbarViewContext, TViewModel viewModel)
+        public static ClientRenderContinuation<TViewModel> Render<TViewModel>(this Client client, CrowbarViewContext crowbarViewContext, TViewModel viewModel)
             where TViewModel : class
         {
             HttpCookieCollection cookies;
 
             string html = CrowbarController.ToString(crowbarViewContext, viewModel, out cookies);
-            return new BrowserRenderContinuation<TViewModel>(browser, viewModel, html, cookies);
+            return new ClientRenderContinuation<TViewModel>(client, viewModel, html, cookies);
         }
 
         /// <summary>
         /// Submits a form via an AJAX request in the specified view.
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
-        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="client">The <see cref="Client"/> object used to submit the form.</param>
         /// <param name="html">The HTML that contains the form element that should be submitted.</param>
         /// <param name="viewModel">The form payload (used for overrides).</param>
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public static ClientResponse AjaxSubmit<TViewModel>(this Client client, string html, TViewModel viewModel = null, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
-            return browser.Submit(html, viewModel, As.AjaxRequest.Then(customize), overrides, cookies, selector);
+            return client.Submit(html, viewModel, As.AjaxRequest.Then(customize), overrides, cookies, selector);
         }
 
         /// <summary>
         /// Submits a form in a specified view.
         /// </summary>
         /// <typeparam name="TViewModel">The type of form payload.</typeparam>
-        /// <param name="browser">The <see cref="Browser"/> object used to submit the form.</param>
+        /// <param name="client">The <see cref="Client"/> object used to submit the form.</param>
         /// <param name="html">The HTML that contains the form element that should be submitted.</param>
         /// <param name="viewModel">The form payload (used for overrides).</param>
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
-        /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
+        /// <returns>A <see cref="ClientResponse"/> instance of the executed request.</returns>
+        public static ClientResponse Submit<TViewModel>(this Client client, string html, TViewModel viewModel, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
             Ensure.NotNullOrEmpty(html, "html");
@@ -118,14 +118,14 @@ namespace Crowbar
                 throw new InvalidOperationException(message);
             }
 
-            return browser.PerformRequest(method, action, ctx =>
+            return client.PerformRequest(method, action, payload =>
             {
                 if (cookies != null)
                 {
                     for (int index = 0; index < cookies.Count; index++)
                     {
                         var cookie = cookies.Get(index);
-                        ctx.Cookie(cookie);
+                        payload.Cookie(cookie);
                     }
                 }
 
@@ -133,11 +133,11 @@ namespace Crowbar
                 {
                     foreach (string value in formValue)
                     {
-                        ctx.FormValue(formValue.Key, value);
+                        payload.FormValue(formValue.Key, value);
                     }
                 }
 
-                customize.TryInvoke(ctx);
+                customize.TryInvoke(payload);
             });
         }
     }

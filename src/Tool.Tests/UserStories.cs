@@ -11,9 +11,9 @@ namespace Tool.Tests
         [Then("should receive the login page")]
         protected override void Test()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.Get("/");
+                var response = client.Get("/");
                 response.ShouldBeHtml(document =>
                 {
                     var login = document["#login"];
@@ -29,7 +29,7 @@ namespace Tool.Tests
         [Then("should have an authentication cookie")]
         protected override void Test()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
                 const string Username = "admin";
                 var form = new LoginForm
@@ -39,7 +39,7 @@ namespace Tool.Tests
                 };
 
                 var view = new CrowbarViewContext("_LoginForm").SetAnonymousPrincipal();
-                var response = browser.Render(view, form).Submit();
+                var response = client.Render(view, form).Submit();
 
                 response.ShouldHaveTemporarilyRedirectTo("/app");
                 response.ShouldHaveCookie(FormsAuthentication.FormsCookieName);
@@ -52,7 +52,7 @@ namespace Tool.Tests
         [Then("should not be granted access to the application")]
         protected override void Test()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
                 const string Username = "admin";
                 var form = new LoginForm
@@ -65,7 +65,7 @@ namespace Tool.Tests
                 view.SetFormsAuthPrincipal("invalid"); // simulate invalid anti-forgery request token.
 
                 // Obviously the MVC application should handle this more gracefully, this is just an example.
-                var exception = Assert.Throws<CrowbarException>(() => browser.Render(view, form).Submit());
+                var exception = Assert.Throws<CrowbarException>(() => client.Render(view, form).Submit());
                 Assert.That(exception.InnerException, Is.TypeOf<HttpAntiForgeryException>());
             });
         }
@@ -76,7 +76,7 @@ namespace Tool.Tests
         [Then("should be redirected to the login page")]
         protected override void Test()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
                 var form = new LoginForm
                 {
@@ -84,7 +84,7 @@ namespace Tool.Tests
                     Password = "incorrect"
                 };
 
-                var response = browser.Render("_LoginForm", form).Submit();
+                var response = client.Render("_LoginForm", form).Submit();
                 response.ShouldHaveTemporarilyRedirectTo("/");
             });
         }
@@ -95,9 +95,9 @@ namespace Tool.Tests
         [Then("should receive the application page")]
         protected override void Test()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.Get("/app", ctx => ctx.FormsAuth("admin"));
+                var response = client.Get("/app", x => x.FormsAuth("admin"));
                 response.ShouldBeHtml(document =>
                 {
                     var login = document["#app"];
@@ -112,9 +112,9 @@ namespace Tool.Tests
         [Then("should be redirected to the login page")]
         protected override void Test()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.Get("/app");
+                var response = client.Get("/app");
                 response.ShouldHaveTemporarilyRedirectTo("/?ReturnUrl=%2fapp");
             });
         }

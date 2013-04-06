@@ -8,9 +8,9 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_receive_html()
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.Get(CrowbarRoute.ShouldBeHtml);
+                var response = client.Get(CrowbarRoute.ShouldBeHtml);
                 response.ShouldBeHtml(document =>
                 {
                     var div = document["#csquery"];
@@ -25,9 +25,9 @@ namespace Crowbar.Tests.Web.Core
         [TestCase("PUT")]
         public void Should_be_able_to_receive_json(string method)
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.PerformRequest(method, CrowbarRoute.ShouldBeJson);
+                var response = client.PerformRequest(method, CrowbarRoute.ShouldBeJson);
                 response.ShouldBeJson(json => Assert.That(json.payload, Is.EqualTo("text")));
             });
         }
@@ -38,9 +38,9 @@ namespace Crowbar.Tests.Web.Core
         [TestCase("PUT")]
         public void Should_be_able_to_receive_xml(string method)
         {
-            Application.Execute(browser =>
+            Application.Execute(client =>
             {
-                var response = browser.PerformRequest(method, CrowbarRoute.ShouldBeXml);
+                var response = client.PerformRequest(method, CrowbarRoute.ShouldBeXml);
                 response.ShouldBeXml(xml => Assert.That(xml.Value, Is.EqualTo("text")));
             });
         }

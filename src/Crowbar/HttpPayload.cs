@@ -5,7 +5,7 @@ using System.Web;
 namespace Crowbar
 {
     /// <summary>
-    /// Defines the context that a <see cref="Browser"/> instance should run under.
+    /// Defines an HTTP payload.
     /// </summary>
     public class HttpPayload : ISimulatedWorkerRequestContext
     {
