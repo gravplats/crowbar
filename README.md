@@ -464,7 +464,10 @@ response.ShouldHaveTemporarilyRedirectTo("/location");
 Samples
 -------
 
-The project contains two sample projects: Raven.Web/Raven.Tests and Tool.Web/Tool.Tests. The Raven sample project shows how to implement a custom user-defined proxy and context.
+The project contains two sample applications.
+
+* Crowbar.Demo.Mvc is an MVC application with no database server.
+* Crowbar.Demo.Mvc.Raven is an MVC application which uses a RavenDB database server.
 
 <a name="section-troubleshooting"></a>
 Troubleshooting

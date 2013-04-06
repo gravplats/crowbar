@@ -1,0 +1,9 @@
+﻿@model Crowbar.Demo.Mvc.Raven.Application.Models.LoginForm
+<form action="~/login" method="POST">
+    @Html.AntiForgeryToken()
+    @Html.LabelFor(x => x.Username)
+    @Html.TextBoxFor(x => x.Username)
+    @Html.LabelFor(x => x.Password)
+    @Html.PasswordFor(x => x.Password)
+    <button>OK</button>
+</form>
