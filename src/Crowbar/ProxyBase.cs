@@ -23,7 +23,7 @@ namespace Crowbar
         /// <param name="initialize">The initialization code.</param>
         /// <param name="directory">The directory in which the test is run.</param>
         /// <param name="defaults"></param>
-        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<BrowserContext>> defaults = null)
+        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<HttpPayload>> defaults = null)
         {
             var action = (defaults != null) ? defaults.Delegate : null;
             browser = Ensure.NotNull(CreateBrowser(GetMvcMajorVersion(), action), "browser");
@@ -52,7 +52,7 @@ namespace Crowbar
         /// <param name="mvcMajorVersion">The major version of the MVC framework</param>
         /// <param name="defaults">The default browser context settings.</param>
         /// <returns>A browser.</returns>
-        protected virtual Browser CreateBrowser(int mvcMajorVersion, Action<BrowserContext> defaults)
+        protected virtual Browser CreateBrowser(int mvcMajorVersion, Action<HttpPayload> defaults)
         {
             return new Browser(mvcMajorVersion, defaults);
         }

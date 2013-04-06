@@ -45,7 +45,7 @@ namespace Crowbar
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>/// 
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse AjaxSubmit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, string selector = "form")
+        public BrowserResponse AjaxSubmit(Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, string selector = "form")
         {
             return Submit(As.AjaxRequest.Then(customize), overrides, selector);
         }
@@ -57,7 +57,7 @@ namespace Crowbar
         /// <param name="overrides">Modify the form prior to performing the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public BrowserResponse Submit(Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, string selector = "form")
+        public BrowserResponse Submit(Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, string selector = "form")
         {
             return browser.Submit(Html, viewModel, customize, overrides, Cookies, selector);
         }

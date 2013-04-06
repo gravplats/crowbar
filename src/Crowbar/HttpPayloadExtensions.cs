@@ -12,17 +12,17 @@ using System.Xml.Serialization;
 namespace Crowbar
 {
     /// <summary>
-    /// Defines extensions for the <see cref="BrowserContext"/> type.
+    /// Defines extensions for the <see cref="HttpPayload"/> type.
     /// </summary>
-    public static class BrowserContextExtensions
+    public static class HttpPayloadExtensions
     {
         /// <summary>
         /// Adds a forms authentication cookie to the request.
         /// </summary>
-        /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
+        /// <param name="context">The <see cref="HttpPayload"/> that this data should be added to.</param>
         /// <param name="username">The username.</param>
         /// <param name="timeout">The time, in minutes, for which the forms authentication cookie is valid.</param>
-        public static void FormsAuth(this BrowserContext context, string username = "", int timeout = 30)
+        public static void FormsAuth(this HttpPayload context, string username = "", int timeout = 30)
         {
             var section = ConfigurationManager.GetSection("system.web/authentication") as AuthenticationSection;
             if (section == null || section.Mode != AuthenticationMode.Forms)
@@ -40,10 +40,10 @@ namespace Crowbar
         /// <summary>
         /// Adds an application/json request body.
         /// </summary>
-        /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
+        /// <param name="context">The <see cref="HttpPayload"/> that this data should be added to.</param>
         /// <param name="model">The model that should be converted to JSON.</param>
         /// <param name="contentType">The content type of the request.</param>/// 
-        public static void JsonBody(this BrowserContext context, object model, string contentType = "application/json")
+        public static void JsonBody(this HttpPayload context, object model, string contentType = "application/json")
         {
             string json = Json.Encode(model);
             context.Body(json, contentType);
@@ -52,10 +52,10 @@ namespace Crowbar
         /// <summary>
         /// Adds an application/xml request body.
         /// </summary>
-        /// <param name="context">The <see cref="BrowserContext"/> that this data should be added to.</param>
+        /// <param name="context">The <see cref="HttpPayload"/> that this data should be added to.</param>
         /// <param name="model">The model that should be converted to XML.</param>
         /// <param name="contentType">The content type of the request.</param>
-        public static void XmlBody<TModel>(this BrowserContext context, TModel model, string contentType = "application/xml")
+        public static void XmlBody<TModel>(this HttpPayload context, TModel model, string contentType = "application/xml")
         {
             using (var buffer = new MemoryStream())
             using (var writer = new XmlTextWriter(buffer, Encoding.UTF8))

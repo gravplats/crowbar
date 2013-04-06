@@ -35,7 +35,7 @@ namespace Crowbar
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
         /// <param name="defaults">The default browser context settings, if any.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication Create(string name, string config = "Web.config", Action<BrowserContext> defaults = null)
+        public static MvcApplication Create(string name, string config = "Web.config", Action<HttpPayload> defaults = null)
         {
             var application = Create<HttpApplication>(name, config, defaults);
             return new MvcApplication(application);
@@ -49,7 +49,7 @@ namespace Crowbar
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
         /// <param name="defaults">The default browser context settings, if any.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication<THttpApplication> Create<THttpApplication>(string name, string config = "Web.config", Action<BrowserContext> defaults = null)
+        public static MvcApplication<THttpApplication> Create<THttpApplication>(string name, string config = "Web.config", Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication
         {
             return MvcApplicationFactory.Create<THttpApplication>(new WebProjectPathProvider(name), new WebConfigPathProvider(config), defaults);
@@ -65,7 +65,7 @@ namespace Crowbar
         /// <param name="config"> The name of a custom configuration file (must be set as 'Copy to Output Directory'), if null then the default 'Web.config' for the MVC project will be used. </param>
         /// <param name="defaults">The default browser context settings, if any.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(string name, string config = "Web.config", Action<BrowserContext> defaults = null)
+        public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(string name, string config = "Web.config", Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication
             where TProxy : MvcApplicationProxyBase<THttpApplication, TContext>
             where TContext : IDisposable

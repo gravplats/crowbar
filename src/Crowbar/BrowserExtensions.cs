@@ -17,7 +17,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="customize">Customize the request prior to submission.</param>
         /// <returns>A continuation.</returns>
-        public static BrowserLoadContinuation Load(this Browser browser, string path, Action<BrowserContext> customize = null)
+        public static BrowserLoadContinuation Load(this Browser browser, string path, Action<HttpPayload> customize = null)
         {
             var response = browser.Get(path, customize);
             if (response.StatusCode != HttpStatusCode.OK)
@@ -59,7 +59,7 @@ namespace Crowbar
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
+        public static BrowserResponse AjaxSubmit<TViewModel>(this Browser browser, string html, TViewModel viewModel = null, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
             return browser.Submit(html, viewModel, As.AjaxRequest.Then(customize), overrides, cookies, selector);
@@ -77,7 +77,7 @@ namespace Crowbar
         /// <param name="cookies">Any cookies that should be supplied with the request.</param>
         /// <param name="selector">The first form matching the specified selector will be used for form submission.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel, Action<BrowserContext> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
+        public static BrowserResponse Submit<TViewModel>(this Browser browser, string html, TViewModel viewModel, Action<HttpPayload> customize = null, Action<CQ, TViewModel> overrides = null, HttpCookieCollection cookies = null, string selector = "form")
             where TViewModel : class
         {
             Ensure.NotNullOrEmpty(html, "html");

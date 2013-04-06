@@ -11,14 +11,14 @@ namespace Crowbar
     public class Browser
     {
         private readonly int mvcMajorVersion;
-        private readonly Action<BrowserContext> defaults;
+        private readonly Action<HttpPayload> defaults;
 
         /// <summary>
         /// Creates an instance of <see cref="Browser"/>.
         /// </summary>
         /// <param name="mvcMajorVersion">The major version of the MVC framework.</param>
         /// <param name="defaults">The default browser context settings.</param>
-        public Browser(int mvcMajorVersion, Action<BrowserContext> defaults)
+        public Browser(int mvcMajorVersion, Action<HttpPayload> defaults)
         {
             this.mvcMajorVersion = mvcMajorVersion;
             this.defaults = defaults;
@@ -30,7 +30,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Delete(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Delete(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("DELETE", path, context);
         }
@@ -41,7 +41,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Get(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Get(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("GET", path, context);
         }
@@ -52,7 +52,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Post(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Post(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("POST", path, context);
         }
@@ -63,7 +63,7 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="context">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse Put(string path, Action<BrowserContext> context = null)
+        public virtual BrowserResponse Put(string path, Action<HttpPayload> context = null)
         {
             return PerformRequest("PUT", path, context);
         }
@@ -75,12 +75,12 @@ namespace Crowbar
         /// <param name="path">The path that is being requested.</param>
         /// <param name="overrides">A configuration object for providing the browser context for the request.</param>
         /// <returns>A <see cref="BrowserResponse"/> instance of the executed request.</returns>
-        public virtual BrowserResponse PerformRequest(string method, string path, Action<BrowserContext> overrides = null)
+        public virtual BrowserResponse PerformRequest(string method, string path, Action<HttpPayload> overrides = null)
         {
             Ensure.NotNull(method, "method");
             Ensure.NotNull(path, "path");
 
-            var context = new BrowserContext(mvcMajorVersion, method);
+            var context = new HttpPayload(mvcMajorVersion, method);
 
             path = path.RemoveLeadingSlash();
             path = context.ExtractQueryString(path);

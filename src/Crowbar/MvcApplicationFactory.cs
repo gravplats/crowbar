@@ -76,7 +76,7 @@ namespace Crowbar
         /// <param name="config">The configuration file provider.</param>
         /// <param name="defaults">The default browser context settings, if any.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication<THttpApplication> Create<THttpApplication>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
+        public static MvcApplication<THttpApplication> Create<THttpApplication>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication
         {
             var proxy = CreateProxy<MvcApplicationProxy<THttpApplication>>(project, config, defaults);
@@ -93,7 +93,7 @@ namespace Crowbar
         /// <param name="config">The configuration file provider.</param>
         /// <param name="defaults">The default browser context settings, if any.</param>
         /// <returns>The MVC application.</returns>
-        public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults = null)
+        public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults = null)
             where THttpApplication : HttpApplication
             where TProxy : MvcApplicationProxyBase<THttpApplication, TContext>
             where TContext : IDisposable
@@ -102,7 +102,7 @@ namespace Crowbar
             return new MvcApplication<THttpApplication, TContext>(proxy);
         }
 
-        private static TProxy CreateProxy<TProxy>(IPathProvider project, IPathProvider config, Action<BrowserContext> defaults)
+        private static TProxy CreateProxy<TProxy>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults)
             where TProxy : IProxy
         {
             Ensure.NotNull(project, "project");
@@ -121,7 +121,7 @@ namespace Crowbar
                     return InitializeApplication();
                 }),
                 AppDomain.CurrentDomain.BaseDirectory,
-                defaults != null ? new SerializableDelegate<Action<BrowserContext>>(defaults) : null
+                defaults != null ? new SerializableDelegate<Action<HttpPayload>>(defaults) : null
             );
 
             return proxy;

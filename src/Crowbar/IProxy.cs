@@ -14,6 +14,6 @@ namespace Crowbar
         /// <param name="initialize">The initialization code.</param>
         /// <param name="directory">The directory in which the test is run.</param>
         /// <param name="defaults"></param>
-        void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<BrowserContext>> defaults = null);
+        void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<HttpPayload>> defaults = null);
     }
 }

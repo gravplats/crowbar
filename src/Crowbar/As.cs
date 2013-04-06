@@ -10,6 +10,6 @@ namespace Crowbar
         /// <summary>
         /// An AJAX request context.
         /// </summary>
-        public static Action<BrowserContext> AjaxRequest = ctx => ctx.AjaxRequest();
+        public static Action<HttpPayload> AjaxRequest = ctx => ctx.AjaxRequest();
     }
 }

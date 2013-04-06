@@ -7,16 +7,16 @@ namespace Crowbar
     /// <summary>
     /// Defines the context that a <see cref="Browser"/> instance should run under.
     /// </summary>
-    public class BrowserContext : ISimulatedWorkerRequestContext
+    public class HttpPayload : ISimulatedWorkerRequestContext
     {
         private readonly ISimulatedWorkerRequestContext context;
 
         /// <summary>
-        /// Creates an instance of <see cref="BrowserContext"/>.
+        /// Creates an instance of <see cref="HttpPayload"/>.
         /// </summary>
         /// <param name="mvcMajorVersion">The major version of the MVC framework</param>
         /// <param name="method">The HTTP method.</param>
-        public BrowserContext(int mvcMajorVersion, string method)
+        public HttpPayload(int mvcMajorVersion, string method)
         {
             MvcMajorVersion = mvcMajorVersion;
             context = this;
