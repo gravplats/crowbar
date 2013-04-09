@@ -15,7 +15,7 @@ namespace Crowbar
     {
         private THttpApplication httpApplication;
         private Client client;
-        private string testBaseDirectory;
+        private string testDirectory;
 
         /// <summary>
         /// Initializes the proxy.
@@ -28,7 +28,7 @@ namespace Crowbar
             var action = (defaults != null) ? defaults.Delegate : null;
             client = Ensure.NotNull(CreateClient(GetMvcMajorVersion(), action), "client");
 
-            testBaseDirectory = directory;
+            testDirectory = directory;
 
             httpApplication = initialize.Delegate() as THttpApplication;
             if (httpApplication == null)
@@ -37,7 +37,7 @@ namespace Crowbar
                 throw new InvalidOperationException(message);
             }
 
-            OnApplicationStart(httpApplication);
+            OnApplicationStart(httpApplication, testDirectory);
         }
 
         /// <inheritdoc />
@@ -75,7 +75,8 @@ namespace Crowbar
         /// Provides the opportunity of customizing the application post application start.
         /// </summary>
         /// <param name="application">The HTTP application.</param>
-        protected virtual void OnApplicationStart(THttpApplication application) { }
+        /// <param name="testBaseDirectory">The directory in which the test is run.</param>
+        protected virtual void OnApplicationStart(THttpApplication application, string testBaseDirectory) { }
 
         /// <summary>
         /// Runs the test script against the MVC application proxy.
@@ -83,7 +84,7 @@ namespace Crowbar
         /// <param name="script">The test script to be run.</param>
         public void Process(SerializableDelegate<TDelegate> script)
         {
-            ProcessCore(script, httpApplication, client, testBaseDirectory);
+            ProcessCore(script, httpApplication, client, testDirectory);
         }
 
         /// <summary>
