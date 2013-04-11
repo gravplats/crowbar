@@ -1,5 +1,0 @@
-﻿@model TextBoxPayload
-<form action="@CrowbarRoute.SubmitAntiForgeryRequestToken.AsOutbound()" method="post">
-    @Html.AntiForgeryToken()
-    @Html.TextBoxFor(x => x.Text)
-</form>
