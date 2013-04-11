@@ -9,7 +9,7 @@ namespace Crowbar.Tests
         [TestCase("~/Views/Partials/_ToString.cshtml")]
         public void Can_render_partial_view_to_string(string viewName)
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 HttpCookieCollection cookies;
                 Assert.DoesNotThrow(() => CrowbarController.ToString(viewName, null, out cookies));
@@ -20,7 +20,7 @@ namespace Crowbar.Tests
         [TestCase("~/Views/ToString.cshtml")]
         public void Can_render_view_to_string(string viewName)
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 HttpCookieCollection cookies;
                 Assert.DoesNotThrow(() => CrowbarController.ToString(viewName, null, out cookies));
@@ -30,7 +30,7 @@ namespace Crowbar.Tests
         [Test]
         public void Can_specify_custom_route_data_values()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 HttpCookieCollection cookies;
 

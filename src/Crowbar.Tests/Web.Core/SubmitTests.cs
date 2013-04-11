@@ -9,7 +9,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_anti_forgery_request_token_using_render()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 const string username = "crowbar";
 
@@ -26,7 +26,7 @@ namespace Crowbar.Tests.Web.Core
         [TestCase(false)]
         public void Should_be_able_to_post_form_with_checkbox_using_render(bool condition)
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new CheckBoxPayload { Condition = condition, SanityCheck = condition.ToString() };
                 var response = client.Render("~/Views/Partials/_FormCheckBox.cshtml", payload).Submit();
@@ -39,7 +39,7 @@ namespace Crowbar.Tests.Web.Core
         [TestCase(false)]
         public void Should_be_able_to_post_form_with_checkbox_using_load(bool condition)
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new CheckBoxPayload { Condition = condition, SanityCheck = condition.ToString() };
                 var response = client.Load(CrowbarRoute.SubmitCheckBox.AsOutbound()).Submit(payload, overrides: (form, model) =>
@@ -55,7 +55,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_textbox_using_render()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
                 var response = client.Render("~/Views/Partials/_FormTextBox.cshtml", payload).Submit();
@@ -67,7 +67,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_textbox_using_load()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
                 var response = client.Load(CrowbarRoute.SubmitTextBox.AsOutbound()).Submit(payload, overrides: (form, model) =>
@@ -82,7 +82,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_textarea_using_render()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
                 var response = client.Render("~/Views/Partials/_FormTextArea.cshtml", payload).Submit();
@@ -94,7 +94,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_textarea_using_load()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
                 var response = client.Load(CrowbarRoute.SubmitTextArea.AsOutbound()).Submit(payload, overrides: (form, model) =>
@@ -109,7 +109,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_drop_down_using_render()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new DropDownPayload
                 {
@@ -138,7 +138,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_post_form_with_drop_down_using_load()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new DropDownPayload
                 {
@@ -157,7 +157,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_select_form_with_selector_using_render()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new MultipleFormsPayload
                 {
@@ -173,7 +173,7 @@ namespace Crowbar.Tests.Web.Core
         [Test]
         public void Should_be_able_to_select_form_with_selector_using_load()
         {
-            Application.Execute(client =>
+            Execute(client =>
             {
                 var payload = new MultipleFormsPayload
                 {
