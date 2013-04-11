@@ -28,7 +28,7 @@ namespace Crowbar.Tests
         }
 
         [Test]
-        public void Can_specifiy_custom_route_data_values()
+        public void Can_specify_custom_route_data_values()
         {
             Application.Execute(client =>
             {
