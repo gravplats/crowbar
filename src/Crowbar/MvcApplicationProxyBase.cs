@@ -13,16 +13,13 @@ namespace Crowbar
         where TContext : IDisposable
     {
         /// <inheritdoc />
-        protected override void ProcessCore(SerializableDelegate<Action<Client, TContext>> script, THttpApplication application, Client client, string testBaseDirectory)
+        protected override void ProcessCore(SerializableDelegate<Action<Client, TContext>> script, THttpApplication application, string testBaseDirectory, IHttpPayloadDefaults defaults)
         {
-            Ensure.NotNull(script, "script");
-            Ensure.NotNull(application, "application");
-            Ensure.NotNull(client, "client");
-
             try
             {
                 using (var context = CreateContext(application, testBaseDirectory))
                 {
+                    var client = CreateClient(application, testBaseDirectory, defaults, context);
                     script.Delegate(client, context);
                 }
             }
@@ -30,6 +27,19 @@ namespace Crowbar
             {
                 HandleException(exception);
             }
+        }
+
+        /// <summary>
+        /// Creates a new client object.
+        /// </summary>
+        /// <param name="application">The HTTP application.</param>
+        /// <param name="testBaseDirectory">The directory in which the test is run.</param>
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
+        /// <param name="context">The proxy context.</param>
+        /// <returns>A client.</returns>
+        protected virtual Client CreateClient(THttpApplication application, string testBaseDirectory, IHttpPayloadDefaults defaults, TContext context)
+        {
+            return new Client(defaults);
         }
 
         /// <summary>

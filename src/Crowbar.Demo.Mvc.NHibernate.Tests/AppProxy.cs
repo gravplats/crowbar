@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Crowbar.Demo.Mvc.NHibernate.Application;
 using Crowbar.Demo.Mvc.NHibernate.Application.Infrastructure.NHibernate;
 using Crowbar.Demo.Mvc.NHibernate.Tests.Infrastructure.Modules;
@@ -12,9 +13,38 @@ namespace Crowbar.Demo.Mvc.NHibernate.Tests
 {
     public class AppProxy : MvcApplicationProxyBase<App, AppProxyContext>
     {
+        public class AppProxyClient : Client
+        {
+            private readonly ISession session;
+
+            public AppProxyClient(ISession session, IHttpPayloadDefaults defaults)
+                : base(defaults)
+            {
+                this.session = session;
+            }
+
+            public override ClientResponse PerformRequest(string method, string path, Action<HttpPayload> overrides = null)
+            {
+                session.Flush();
+                session.Clear();
+
+                var response = base.PerformRequest(method, path, overrides);
+
+                session.Flush();
+                session.Clear();
+
+                return response;
+            }
+        }
+
         protected override void OnApplicationStart(App application, string testBaseDirectory)
         {
             application.Kernel.Load(new AppProxyNHibernateModule());
+        }
+
+        protected override Client CreateClient(App application, string testBaseDirectory, IHttpPayloadDefaults defaults, AppProxyContext context)
+        {
+            return new AppProxyClient(context.Session, defaults);
         }
 
         protected override AppProxyContext CreateContext(App application, string testBaseDirectory)

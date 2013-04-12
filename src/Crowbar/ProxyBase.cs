@@ -13,16 +13,16 @@ namespace Crowbar
         where TDelegate : class
     {
         private THttpApplication httpApplication;
-        private string testDirectory;
+        private string directory;
         private IHttpPayloadDefaults httpPayloadDefaults;
 
         /// <summary>
         /// Initializes the proxy.
         /// </summary>
         /// <param name="initialize">The initialization code.</param>
-        /// <param name="directory">The directory in which the test is run.</param>
+        /// <param name="testBaseDirectory">The directory in which the test is run.</param>
         /// <param name="defaults">Default HTTP payload settings, if any.</param>
-        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, IHttpPayloadDefaults defaults = null)
+        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string testBaseDirectory, IHttpPayloadDefaults defaults = null)
         {
             httpApplication = initialize.Delegate() as THttpApplication;
             if (httpApplication == null)
@@ -31,26 +31,16 @@ namespace Crowbar
                 throw new InvalidOperationException(message);
             }
 
-            testDirectory = directory;
+            directory = testBaseDirectory;
             httpPayloadDefaults = defaults;
 
-            OnApplicationStart(httpApplication, testDirectory);
+            OnApplicationStart(httpApplication, directory);
         }
 
         /// <inheritdoc />
         public override object InitializeLifetimeService()
         {
             return null;
-        }
-
-        /// <summary>
-        /// Creates a new client object.
-        /// </summary>
-        /// <param name="defaults"></param>
-        /// <returns>A Client.</returns>
-        protected virtual Client CreateClient(IHttpPayloadDefaults defaults)
-        {
-            return new Client(defaults);
         }
 
         /// <summary>
@@ -81,9 +71,7 @@ namespace Crowbar
         public void Process(SerializableDelegate<TDelegate> script)
         {
             Ensure.NotNull(script, "script");
-
-            var client = CreateClient(httpPayloadDefaults);
-            ProcessCore(script, httpApplication, client, testDirectory);
+            ProcessCore(script, httpApplication, directory, httpPayloadDefaults);
         }
 
         /// <summary>
@@ -91,8 +79,8 @@ namespace Crowbar
         /// </summary>
         /// <param name="script">The test script to be run.</param>
         /// <param name="application">The HTTP application.</param>
-        /// <param name="client">The client object.</param>
         /// <param name="testBaseDirectory">The directory in which the test is run.</param>
-        protected abstract void ProcessCore(SerializableDelegate<TDelegate> script, THttpApplication application, Client client, string testBaseDirectory);
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
+        protected abstract void ProcessCore(SerializableDelegate<TDelegate> script, THttpApplication application, string testBaseDirectory, IHttpPayloadDefaults defaults);
     }
 }
