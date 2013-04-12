@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Crowbar.Demo.WebApi.Tests
+namespace Crowbar.Demo.Mvc.WebApi.Tests
 {
     public class As_a_user_requesting_crowbars : UserStory
     {

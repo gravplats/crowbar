@@ -39,9 +39,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Demo.Mvc.Raven.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{95CC6EFA-BC82-4690-AECF-AF8044030CC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Demo.WebApi.Tests", "Crowbar.Demo.WebApi.Tests\Crowbar.Demo.WebApi.Tests.csproj", "{4532139C-3792-4B74-AF7A-FF4B9FA2FE10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Demo.Mvc.WebApi.Tests", "Crowbar.Demo.Mvc.WebApi.Tests\Crowbar.Demo.Mvc.WebApi.Tests.csproj", "{4532139C-3792-4B74-AF7A-FF4B9FA2FE10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Demo.WebApi", "Crowbar.Demo.WebApi\Crowbar.Demo.WebApi.csproj", "{04683193-FC58-40F2-94C5-F99D0C4CAA1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Demo.Mvc.WebApi", "Crowbar.Demo.Mvc.WebApi\Crowbar.Demo.Mvc.WebApi.csproj", "{04683193-FC58-40F2-94C5-F99D0C4CAA1C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crowbar.Tests.Mvc.Common", "Crowbar.Tests.Mvc.Common\Crowbar.Tests.Mvc.Common.csproj", "{8364FDA4-31CE-431A-A6D2-A0B085817309}"
 EndProject

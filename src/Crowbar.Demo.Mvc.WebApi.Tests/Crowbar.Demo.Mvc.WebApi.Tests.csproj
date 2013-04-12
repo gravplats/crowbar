@@ -7,8 +7,8 @@
     <ProjectGuid>{4532139C-3792-4B74-AF7A-FF4B9FA2FE10}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Crowbar.Demo.WebApi.Tests</RootNamespace>
-    <AssemblyName>Crowbar.Demo.WebApi.Tests</AssemblyName>
+    <RootNamespace>Crowbar.Demo.Mvc.WebApi.Tests</RootNamespace>
+    <AssemblyName>Crowbar.Demo.Mvc.WebApi.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -55,9 +55,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Crowbar.Demo.WebApi\Crowbar.Demo.WebApi.csproj">
+    <ProjectReference Include="..\Crowbar.Demo.Mvc.WebApi\Crowbar.Demo.Mvc.WebApi.csproj">
       <Project>{04683193-fc58-40f2-94c5-f99d0c4caa1c}</Project>
-      <Name>Crowbar.Demo.WebApi</Name>
+      <Name>Crowbar.Demo.Mvc.WebApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\Crowbar\Crowbar.csproj">
       <Project>{3c0fddd4-9a22-490e-a3c6-2991124ce803}</Project>

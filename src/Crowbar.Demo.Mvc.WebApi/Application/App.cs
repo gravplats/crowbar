@@ -2,7 +2,7 @@
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace Crowbar.Demo.WebApi.Application
+namespace Crowbar.Demo.Mvc.WebApi.Application
 {
     public class App : HttpApplication
     {

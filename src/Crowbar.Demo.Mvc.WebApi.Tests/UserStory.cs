@@ -1,8 +1,8 @@
 ﻿using System;
-using Crowbar.Demo.WebApi.Application;
+using Crowbar.Demo.Mvc.WebApi.Application;
 using NUnit.Framework;
 
-namespace Crowbar.Demo.WebApi.Tests
+namespace Crowbar.Demo.Mvc.WebApi.Tests
 {
     [TestFixture]
     public abstract class UserStory
@@ -19,7 +19,7 @@ namespace Crowbar.Demo.WebApi.Tests
         }
 
         protected static readonly MvcApplication<App> Application =
-            MvcApplication.Create<App>("Crowbar.Demo.WebApi", "Web.Custom.config", payload => payload.HttpsRequest());
+            MvcApplication.Create<App>("Crowbar.Demo.Mvc.WebApi", "Web.Custom.config", payload => payload.HttpsRequest());
 
         [Test]
         public void Execute()
