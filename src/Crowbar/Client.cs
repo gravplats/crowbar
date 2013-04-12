@@ -11,14 +11,14 @@ namespace Crowbar
     public class Client
     {
         private readonly int mvcMajorVersion;
-        private readonly Action<HttpPayload> defaults;
+        private readonly IHttpPayloadDefaults defaults;
 
         /// <summary>
         /// Creates an instance of <see cref="Client"/>.
         /// </summary>
         /// <param name="mvcMajorVersion">The major version of the MVC framework.</param>
-        /// <param name="defaults">Default HTTP payload settings.</param>
-        public Client(int mvcMajorVersion, Action<HttpPayload> defaults)
+        /// <param name="defaults"></param>
+        public Client(int mvcMajorVersion, IHttpPayloadDefaults defaults = null)
         {
             this.mvcMajorVersion = mvcMajorVersion;
             this.defaults = defaults;
@@ -80,18 +80,21 @@ namespace Crowbar
             Ensure.NotNull(method, "method");
             Ensure.NotNull(path, "path");
 
-            var context = new HttpPayload(mvcMajorVersion, method);
+            var payload = new HttpPayload(mvcMajorVersion, method);
+            if (defaults != null)
+            {
+                defaults.ApplyTo(payload);
+            }
 
             path = path.RemoveLeadingSlash();
-            path = context.ExtractQueryString(path);
+            path = payload.ExtractQueryString(path);
 
-            defaults.TryInvoke(context);
-            overrides.TryInvoke(context);
+            overrides.TryInvoke(payload);
 
             CrowbarContext.Reset();
 
             var output = new StringWriter();
-            var workerRequest = new SimulatedWorkerRequest(path, context, output);
+            var workerRequest = new SimulatedWorkerRequest(path, payload, output);
 
             HttpRuntime.ProcessRequest(workerRequest);
 

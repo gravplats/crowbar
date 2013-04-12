@@ -7,6 +7,15 @@ namespace Crowbar.Demo.Mvc.WebApi.Tests
     [TestFixture]
     public abstract class UserStory
     {
+        [Serializable]
+        public class AppProxyHttpPayloadDefaults : IHttpPayloadDefaults
+        {
+            public void ApplyTo(HttpPayload payload)
+            {
+                payload.HttpsRequest();
+            }
+        }
+
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
         public class ThenAttribute : Attribute
         {
@@ -19,7 +28,7 @@ namespace Crowbar.Demo.Mvc.WebApi.Tests
         }
 
         protected static readonly MvcApplication<App> Application =
-            MvcApplication.Create<App>("Crowbar.Demo.Mvc.WebApi", "Web.Custom.config", payload => payload.HttpsRequest());
+            MvcApplication.Create<App>("Crowbar.Demo.Mvc.WebApi", "Web.Custom.config", new AppProxyHttpPayloadDefaults());
 
         [Test]
         public void Execute()

@@ -76,7 +76,7 @@ namespace Crowbar
         /// <param name="config">The configuration file provider.</param>
         /// <param name="defaults">Default HTTP payload settings, if any.</param>
         /// <returns>An MVC application.</returns>
-        public static MvcApplication<THttpApplication> Create<THttpApplication>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults = null)
+        public static MvcApplication<THttpApplication> Create<THttpApplication>(IPathProvider project, IPathProvider config, IHttpPayloadDefaults defaults = null)
             where THttpApplication : HttpApplication
         {
             var proxy = CreateProxy<MvcApplicationProxy<THttpApplication>>(project, config, defaults);
@@ -93,7 +93,7 @@ namespace Crowbar
         /// <param name="config">The configuration file provider.</param>
         /// <param name="defaults">Default HTTP payload settings, if any.</param>
         /// <returns>The MVC application.</returns>
-        public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults = null)
+        public static MvcApplication<THttpApplication, TContext> Create<THttpApplication, TProxy, TContext>(IPathProvider project, IPathProvider config, IHttpPayloadDefaults defaults = null)
             where THttpApplication : HttpApplication
             where TProxy : MvcApplicationProxyBase<THttpApplication, TContext>
             where TContext : IDisposable
@@ -102,27 +102,23 @@ namespace Crowbar
             return new MvcApplication<THttpApplication, TContext>(proxy);
         }
 
-        private static TProxy CreateProxy<TProxy>(IPathProvider project, IPathProvider config, Action<HttpPayload> defaults)
+        private static TProxy CreateProxy<TProxy>(IPathProvider project, IPathProvider config, IHttpPayloadDefaults defaults = null)
             where TProxy : IProxy
         {
             Ensure.NotNull(project, "project");
             Ensure.NotNull(config, "config");
 
             string configPath = config.GetPhysicalPath();
+            var httpApplicationInitialization = new SerializableDelegate<Func<HttpApplication>>(() =>
+            {
+                SetCustomConfigurationFile(configPath);
+                FilterProviders.Providers.Add(new InterceptionFilterProvider());
+
+                return InitializeApplication();
+            });
 
             var proxy = MvcApplicationProxyFactory.Create<TProxy>(project);
-            
-            proxy.Initialize(
-                new SerializableDelegate<Func<HttpApplication>>(() =>
-                {
-                    SetCustomConfigurationFile(configPath);
-                    FilterProviders.Providers.Add(new InterceptionFilterProvider());
-
-                    return InitializeApplication();
-                }),
-                AppDomain.CurrentDomain.BaseDirectory,
-                defaults != null ? new SerializableDelegate<Action<HttpPayload>>(defaults) : null
-            );
+            proxy.Initialize(httpApplicationInitialization, AppDomain.CurrentDomain.BaseDirectory, defaults);
 
             return proxy;
         }

@@ -68,6 +68,7 @@
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
     <Compile Include="Ensure.cs" />
+    <Compile Include="IHttpPayloadDefaults.cs" />
     <Compile Include="IPathProvider.cs" />
     <Compile Include="IProxy.cs" />
     <Compile Include="WebConfigPathProvider.cs" />

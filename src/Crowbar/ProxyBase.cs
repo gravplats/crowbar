@@ -22,12 +22,10 @@ namespace Crowbar
         /// </summary>
         /// <param name="initialize">The initialization code.</param>
         /// <param name="directory">The directory in which the test is run.</param>
-        /// <param name="defaults"></param>
-        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, SerializableDelegate<Action<HttpPayload>> defaults = null)
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
+        public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, IHttpPayloadDefaults defaults = null)
         {
-            var action = (defaults != null) ? defaults.Delegate : null;
-            client = Ensure.NotNull(CreateClient(GetMvcMajorVersion(), action), "client");
-
+            client = Ensure.NotNull(CreateClient(GetMvcMajorVersion(), defaults), "client");
             testDirectory = directory;
 
             httpApplication = initialize.Delegate() as THttpApplication;
@@ -50,9 +48,9 @@ namespace Crowbar
         /// Creates a new client object.
         /// </summary>
         /// <param name="mvcMajorVersion">The major version of the MVC framework</param>
-        /// <param name="defaults">The default client context settings.</param>
+        /// <param name="defaults"></param>
         /// <returns>A Client.</returns>
-        protected virtual Client CreateClient(int mvcMajorVersion, Action<HttpPayload> defaults)
+        protected virtual Client CreateClient(int mvcMajorVersion, IHttpPayloadDefaults defaults)
         {
             return new Client(mvcMajorVersion, defaults);
         }
