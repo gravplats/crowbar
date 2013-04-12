@@ -10,17 +10,14 @@ namespace Crowbar
     /// </summary>
     public class Client
     {
-        private readonly int mvcMajorVersion;
         private readonly IHttpPayloadDefaults defaults;
 
         /// <summary>
         /// Creates an instance of <see cref="Client"/>.
         /// </summary>
-        /// <param name="mvcMajorVersion">The major version of the MVC framework.</param>
         /// <param name="defaults"></param>
-        public Client(int mvcMajorVersion, IHttpPayloadDefaults defaults = null)
+        public Client(IHttpPayloadDefaults defaults = null)
         {
-            this.mvcMajorVersion = mvcMajorVersion;
             this.defaults = defaults;
         }
 
@@ -80,7 +77,7 @@ namespace Crowbar
             Ensure.NotNull(method, "method");
             Ensure.NotNull(path, "path");
 
-            var payload = new HttpPayload(mvcMajorVersion, method);
+            var payload = new HttpPayload(method);
             if (defaults != null)
             {
                 defaults.ApplyTo(payload);

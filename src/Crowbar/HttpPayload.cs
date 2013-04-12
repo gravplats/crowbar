@@ -14,11 +14,9 @@ namespace Crowbar
         /// <summary>
         /// Creates an instance of <see cref="HttpPayload"/>.
         /// </summary>
-        /// <param name="mvcMajorVersion">The major version of the MVC framework</param>
         /// <param name="method">The HTTP method.</param>
-        public HttpPayload(int mvcMajorVersion, string method)
+        public HttpPayload(string method)
         {
-            MvcMajorVersion = mvcMajorVersion;
             context = this;
             context.Cookies = new HttpCookieCollection();
             context.FormValues = new NameValueCollection();
@@ -29,8 +27,6 @@ namespace Crowbar
 
             context.Headers["Content-Type"] = "application/octet-stream";
         }
-
-        internal int MvcMajorVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the body.

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Web;
 
 namespace Crowbar
@@ -47,12 +46,11 @@ namespace Crowbar
         /// <summary>
         /// Creates a new client object.
         /// </summary>
-        /// <param name="mvcMajorVersion">The major version of the MVC framework</param>
         /// <param name="defaults"></param>
         /// <returns>A Client.</returns>
-        protected virtual Client CreateClient(int mvcMajorVersion, IHttpPayloadDefaults defaults)
+        protected virtual Client CreateClient(IHttpPayloadDefaults defaults)
         {
-            return new Client(mvcMajorVersion, defaults);
+            return new Client(defaults);
         }
 
         /// <summary>
@@ -84,7 +82,7 @@ namespace Crowbar
         {
             Ensure.NotNull(script, "script");
 
-            var client = CreateClient(GetMvcMajorVersion(), httpPayloadDefaults);
+            var client = CreateClient(httpPayloadDefaults);
             ProcessCore(script, httpApplication, client, testDirectory);
         }
 
@@ -96,20 +94,5 @@ namespace Crowbar
         /// <param name="client">The client object.</param>
         /// <param name="testBaseDirectory">The directory in which the test is run.</param>
         protected abstract void ProcessCore(SerializableDelegate<TDelegate> script, THttpApplication application, Client client, string testBaseDirectory);
-
-        private static int GetMvcMajorVersion()
-        {
-            var mvc = AppDomain.CurrentDomain.GetAssemblies()
-                .Select(x => x.GetName())
-                .FirstOrDefault(x => x.Name == "System.Web.Mvc");
-
-            if (mvc != null)
-            {
-                return mvc.Version.Major;
-            }
-
-            // Uh-huh... no MVC assembly... should not work.
-            return 0;
-        }
     }
 }
