@@ -7,6 +7,13 @@ namespace Crowbar.Demo.Mvc.Application
 {
     public class App : HttpApplication
     {
+        protected void Application_Start()
+        {
+            RegisterGlobalFilters();
+            RegisterRoutes();
+            RegisterViewEngines();
+        }
+
         private static void RegisterGlobalFilters()
         {
             var filters = GlobalFilters.Filters;
@@ -25,13 +32,6 @@ namespace Crowbar.Demo.Mvc.Application
             var engines = ViewEngines.Engines;
             engines.Clear();
             engines.Add(new AppRazorViewEngine());
-        }
-
-        protected void Application_Start()
-        {
-            RegisterGlobalFilters();
-            RegisterRoutes();
-            RegisterViewEngines();
         }
     }
 }
