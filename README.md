@@ -43,6 +43,7 @@ Table of Contents
     * [Extensions](#section-clientresponse-extensions)
 * [Samples](#section-samples)
 * [Troubleshooting](#section-troubleshooting)
+* [Known Issues](#section-known-issues)
 * [Changelog](#section-changelog)
 
 <a name="section-mvcapplication"></a>
@@ -178,8 +179,17 @@ private static readonly MvcApplication Application =
 It is possible to define default `HttpPayload` settings for each request by supplying a third argument to `MvcApplication.Create()`. These settings will be applied to the `HttpPayload` before the request-specific settings. See the section on [HttpPayload](#section-httppayload) for available options.
 
 ``` csharp
+[Serializable]
+public class HttpPayloadDefaults : IHttpPayloadDefaults
+{
+	public void ApplyTo(HttpPayload payload)
+	{
+		payload.HttpsRequest();
+	}
+}
+
 private static readonly MvcApplication Application =
-    MvcApplication.Create("<ASP.NET MVC project>", "Web.Custom.config", payload => payload.HttpsRequest());
+    MvcApplication.Create("<ASP.NET MVC project>", "Web.Custom.config", new HttpPayloadDefaults());
 ```
 
 <a name="section-client"></a>
@@ -488,6 +498,12 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
   <configuration>
 ```
 
+<a name="section-known-issues"></a>
+Known Issues
+------------
+
+Tests exercising asynchronous action methods, `public async Task<ActionResult> ActionAsync() { ... }`, will fail when `<httpRuntime targetFramework="4.5" />` is defined in Web.config.
+
 <a name="section-changelog"></a>
 Changelog
 ---------
@@ -495,10 +511,10 @@ Changelog
 v0.10 
 
 * Breaking change: The `ProxyBase` hierarchy has been re-written. The most notably change is that classes deriving from `ProxyBase` takes a generic argument `THttpApplication`.
-* The `Client` object is now shared between tests. Previously a new instance was created for each test. This change should not have any noticable impact.
 * The `OnApplicationStart` method was added to `ProxyBase`. This method is called after the application has been started but prior to any test case.
 * Breaking change: the `BrowserContext` class has been renamed `HttpPayload`.
 * Breaking change: the `Browser*` classes (`Browser`, `BrowserResponse` etc) has been renamed `Client*` (`Client`, `ClientResponse` etc).
+* Breaking change: the parameter for the default HTTP payload settings is now an interface instead of a delegate. The use of a delegate forced a second initialization of the proxy.
 
 v0.9.6
 
