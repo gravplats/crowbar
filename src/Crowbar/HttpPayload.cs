@@ -70,9 +70,11 @@ namespace Crowbar
         /// <summary>
         /// Adds a header indicating that this is an AJAX request.
         /// </summary>
-        public void AjaxRequest()
+        /// <returns>The current HTTP payload.</returns>
+        public HttpPayload AjaxRequest()
         {
             Header("X-Requested-With", "XMLHttpRequest");
+            return this;
         }
 
         /// <summary>
@@ -80,20 +82,25 @@ namespace Crowbar
         /// </summary>
         /// <param name="body">A string that should be used as the request body.</param>
         /// <param name="contentType">The content type.</param>
-        public void Body(string body, string contentType = "application/octet-stream")
+        public HttpPayload Body(string body, string contentType = "application/octet-stream")
         {
             context.BodyString = body;
             context.Headers["Content-Type"] = contentType;
+
+            return this;
         }
 
         /// <summary>
         /// Adds a cookie to the request.
         /// </summary>
         /// <param name="cookie">The cookie that should be added.</param>
-        public void Cookie(HttpCookie cookie)
+        /// <returns>The current HTTP payload.</returns>
+        public HttpPayload Cookie(HttpCookie cookie)
         {
             Ensure.NotNull(cookie, "cookie");
             context.Cookies.Add(cookie);
+
+            return this;
         }
 
         /// <summary>
@@ -101,7 +108,8 @@ namespace Crowbar
         /// </summary>
         /// <param name="key">The name of the form element.</param>
         /// <param name="value">The value of the form element.</param>
-        public void FormValue(string key, string value)
+        /// <returns>The current HTTP payload.</returns>
+        public HttpPayload FormValue(string key, string value)
         {
             if (!string.IsNullOrWhiteSpace(context.BodyString))
             {
@@ -109,6 +117,8 @@ namespace Crowbar
             }
 
             context.FormValues.Add(key, value);
+
+            return this;
         }
 
         /// <summary>
@@ -116,7 +126,8 @@ namespace Crowbar
         /// </summary>
         /// <param name="name">The name of the header.</param>
         /// <param name="value">The name of the value.</param>
-        public void Header(string name, string value)
+        /// <returns>The current HTTP payload.</returns>
+        public HttpPayload Header(string name, string value)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -124,22 +135,28 @@ namespace Crowbar
             }
 
             context.Headers.Add(name, value);
+
+            return this;
         }
 
         /// <summary>
         /// Configures the request to be sent over HTTP.
         /// </summary>
-        public void HttpRequest()
+        /// <returns>The current HTTP payload.</returns>
+        public HttpPayload HttpRequest()
         {
             context.Protocol = "http";
+            return this;
         }
 
         /// <summary>
         /// Configures the request to be sent over HTTPS.
         /// </summary>
-        public void HttpsRequest()
+        /// <returns>The current HTTP payload.</returns>
+        public HttpPayload HttpsRequest()
         {
             context.Protocol = "https";
+            return this;
         }
 
         /// <summary>
@@ -147,7 +164,8 @@ namespace Crowbar
         /// </summary>
         /// <param name="key">The name of the entry.</param>
         /// <param name="value">The value of the entry.</param>
-        public void QueryString(string key, string value)
+        /// <returns>The current HTTP payload.</returns>
+        public HttpPayload QueryString(string key, string value)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -155,6 +173,7 @@ namespace Crowbar
             }
 
             context.QueryString += string.Format("{0}{1}={2}", context.QueryString.Length == 0 ? "" : "&", key, value);
+            return this;
         }
 
         internal string ExtractQueryString(string path)
