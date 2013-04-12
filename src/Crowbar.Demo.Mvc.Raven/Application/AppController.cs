@@ -11,7 +11,10 @@ namespace Crowbar.Demo.Mvc.Raven.Application
     [Authorize, RequireHttps]
     public class AppController : Controller
     {
-        public static IDocumentStore Store;
+        protected IDocumentSession RavenSession
+        {
+            get { return (IDocumentSession)HttpContext.Items[Application.App.RavenSessionKey]; }
+        }
 
         [GET(AppRoute.App)]
         public ActionResult App()
@@ -31,14 +34,11 @@ namespace Crowbar.Demo.Mvc.Raven.Application
         [POST(AppRoute.Login)]
         public ActionResult Login(LoginForm form)
         {
-            using (var session = Store.OpenSession())
+            var user = RavenSession.Query<User>().Where(x => x.Username == form.Username).FirstOrDefault();
+            if (user != null && user.Password.IsValid(form.Password))
             {
-                var user = session.Query<User>().Where(x => x.Username == form.Username).FirstOrDefault();
-                if (user != null && user.Password.IsValid(form.Password))
-                {
-                    FormsAuthentication.SetAuthCookie(form.Username, false);
-                    return Redirect(AppRoute.App);
-                }
+                FormsAuthentication.SetAuthCookie(form.Username, false);
+                return Redirect(AppRoute.App);
             }
 
             return Redirect(AppRoute.Root);

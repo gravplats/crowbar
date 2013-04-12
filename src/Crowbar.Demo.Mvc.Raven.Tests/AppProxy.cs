@@ -1,39 +1,19 @@
 using Crowbar.Demo.Mvc.Raven.Application;
+using Crowbar.Demo.Mvc.Raven.Tests.Infrastructure.Modules;
+using Ninject;
 using Raven.Client;
-using Raven.Client.Embedded;
-using Raven.Client.Listeners;
 
 namespace Crowbar.Demo.Mvc.Raven.Tests
 {
     public class AppProxy : MvcApplicationProxyBase<App, AppProxyContext>
     {
-        public class WaitForNonStaleResultsListener : IDocumentQueryListener
-        {
-            public void BeforeQueryExecuted(IDocumentQueryCustomization customization)
-            {
-                customization.WaitForNonStaleResults();
-            }
-        }
-
-        private static IDocumentStore CreateDocumentStore()
-        {
-            var store = new EmbeddableDocumentStore
-            {
-                Configuration =
-                {
-                    RunInMemory = true,
-                    RunInUnreliableYetFastModeThatIsNotSuitableForProduction = true
-                }
-            };
-
-            return store.RegisterListener(new WaitForNonStaleResultsListener()).Initialize();
-        }
-
         protected override AppProxyContext CreateContext(App application, string testBaseDirectory)
         {
-            var store = CreateDocumentStore();
-            application.SetDocumentStore(store);
+            // we need a refresh instance of an embeddale database for each test.
+            var kernel = application.Kernel;
+            kernel.Reload(new EmbeddableRavenModule());
 
+            var store = application.Kernel.Get<IDocumentStore>();
             return new AppProxyContext(store);
         }
     }
