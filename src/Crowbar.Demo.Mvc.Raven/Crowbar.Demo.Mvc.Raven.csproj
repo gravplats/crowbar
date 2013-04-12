@@ -75,7 +75,6 @@
       <HintPath>..\..\packages\RavenDB.Client.2.0.2330\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
