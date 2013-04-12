@@ -13,6 +13,9 @@ namespace Crowbar
         /// <inheritdoc />
         protected override void ProcessCore(SerializableDelegate<Action<Client>> script, THttpApplication application, Client client, string testBaseDirectory)
         {
+            Ensure.NotNull(script, "script");
+            Ensure.NotNull(client, "client");
+
             try
             {
                 script.Delegate(client);

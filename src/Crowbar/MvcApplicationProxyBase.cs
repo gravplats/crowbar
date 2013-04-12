@@ -15,6 +15,10 @@ namespace Crowbar
         /// <inheritdoc />
         protected override void ProcessCore(SerializableDelegate<Action<Client, TContext>> script, THttpApplication application, Client client, string testBaseDirectory)
         {
+            Ensure.NotNull(script, "script");
+            Ensure.NotNull(application, "application");
+            Ensure.NotNull(client, "client");
+
             try
             {
                 using (var context = CreateContext(application, testBaseDirectory))

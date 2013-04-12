@@ -14,8 +14,8 @@ namespace Crowbar
         where TDelegate : class
     {
         private THttpApplication httpApplication;
-        private Client client;
         private string testDirectory;
+        private IHttpPayloadDefaults httpPayloadDefaults;
 
         /// <summary>
         /// Initializes the proxy.
@@ -25,15 +25,15 @@ namespace Crowbar
         /// <param name="defaults">Default HTTP payload settings, if any.</param>
         public void Initialize(SerializableDelegate<Func<HttpApplication>> initialize, string directory, IHttpPayloadDefaults defaults = null)
         {
-            client = Ensure.NotNull(CreateClient(GetMvcMajorVersion(), defaults), "client");
-            testDirectory = directory;
-
             httpApplication = initialize.Delegate() as THttpApplication;
             if (httpApplication == null)
             {
                 string message = string.Format("The HTTP application is not of type '{0}'.", typeof(THttpApplication));
                 throw new InvalidOperationException(message);
             }
+
+            testDirectory = directory;
+            httpPayloadDefaults = defaults;
 
             OnApplicationStart(httpApplication, testDirectory);
         }
@@ -82,6 +82,9 @@ namespace Crowbar
         /// <param name="script">The test script to be run.</param>
         public void Process(SerializableDelegate<TDelegate> script)
         {
+            Ensure.NotNull(script, "script");
+
+            var client = CreateClient(GetMvcMajorVersion(), httpPayloadDefaults);
             ProcessCore(script, httpApplication, client, testDirectory);
         }
 
