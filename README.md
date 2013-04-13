@@ -474,10 +474,13 @@ response.ShouldHaveTemporarilyRedirectTo("/location");
 Samples
 -------
 
-The project contains two sample applications.
+The project contains several sample applications (which doubles as sanity test projects).
 
-* Crowbar.Demo.Mvc is an MVC application with no database server.
-* Crowbar.Demo.Mvc.Raven is an MVC application which uses a RavenDB database server.
+* Crowbar.Demo.Mvc is an MVC 4 application with no database server.
+* Crowbar.Demo.Mvc.Async is an MVC 4 application which demonstrates the use of asynchronous action methods.
+* Crowbar.Demo.Mvc.NHibernate is an MVC 4 application which uses NHibernate and a SQLite database server.
+* Crowbar.Demo.Mvc.Raven is an MVC 4 application which uses a RavenDB database server.
+* Crowbar.Demo.Mvc.WebApi is an MVC 4 application with a WebApi.
 
 <a name="section-troubleshooting"></a>
 Troubleshooting
