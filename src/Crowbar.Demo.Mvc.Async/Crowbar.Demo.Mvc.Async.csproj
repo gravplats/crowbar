@@ -97,6 +97,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Application\App.cs" />
     <Compile Include="Application\AppController.cs" />
     <Compile Include="Application\AppRazorViewEngine.cs" />
@@ -104,7 +107,6 @@
     <Compile Include="Application\IExternalRequestAsync.cs" />
     <Compile Include="Application\Infrastructure\NinjectWebCommon.cs" />
     <Compile Include="Application\Models\ResponseContainer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
