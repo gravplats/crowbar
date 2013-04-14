@@ -6,7 +6,8 @@ namespace Crowbar.Demo.Mvc.Async.Tests
     {
         protected override void OnApplicationStart(App application, string testBaseDirectory)
         {
-            application.Kernel.Rebind<IExternalRequestAsync>().ToConstant(new AppProxyExternalRequestAsync());
+            application.Kernel.Rebind<IExternalRequestAsync>()
+                .ToConstant(new ExternalRequestStub(testBaseDirectory));
         }
 
         protected override AppProxyContext CreateContext(App application, string testBaseDirectory)

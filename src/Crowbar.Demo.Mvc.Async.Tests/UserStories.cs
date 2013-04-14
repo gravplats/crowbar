@@ -11,7 +11,13 @@ namespace Crowbar.Demo.Mvc.Async.Tests
             Application.Execute((client, context) =>
             {
                 var response = client.Get(AppRoute.External);
+
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldBeJson(json =>
+                {
+                    string value = json.demo;
+                    Assert.That(value, Is.EqualTo("async"));
+                });
             });
         }
     }

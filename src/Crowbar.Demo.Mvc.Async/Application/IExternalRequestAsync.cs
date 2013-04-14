@@ -5,6 +5,6 @@ namespace Crowbar.Demo.Mvc.Async.Application
 {
     public interface IExternalRequestAsync
     {
-        Task<ResponseContainer> Execute();
+        Task<Response> Execute();
     }
 }

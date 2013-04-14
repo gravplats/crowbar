@@ -35,6 +35,9 @@
     <Reference Include="CsQuery">
       <HintPath>..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
@@ -53,7 +56,7 @@
     </Compile>
     <Compile Include="AppProxy.cs" />
     <Compile Include="AppProxyContext.cs" />
-    <Compile Include="AppProxyExternalRequestAsync.cs" />
+    <Compile Include="ExternalRequestStub.cs" />
     <Compile Include="UserStories.cs" />
     <Compile Include="UserStory.cs" />
   </ItemGroup>
@@ -62,6 +65,9 @@
     <Content Include="Web.Custom.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="request.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Crowbar.Demo.Mvc.Async\Crowbar.Demo.Mvc.Async.csproj">
