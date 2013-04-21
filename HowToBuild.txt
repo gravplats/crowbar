@@ -1,4 +1,4 @@
-How to build the project
+﻿How to build the project
 ------------------------
 
 The project uses [psake](https://github.com/JamesKovacs/psake) by [James Kovacs](http://jameskovacs.com/) to manage the build process. psake is a Windows PowerShell based build tool and is included in the project (psake.ps1 and psake.psm1).

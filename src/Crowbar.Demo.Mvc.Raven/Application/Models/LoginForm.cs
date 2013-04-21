@@ -1,4 +1,4 @@
-namespace Crowbar.Demo.Mvc.Raven.Application.Models
+﻿namespace Crowbar.Demo.Mvc.Raven.Application.Models
 {
     public class LoginForm
     {

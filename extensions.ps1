@@ -1,4 +1,4 @@
-# This script is derived from the dotless build script.
+﻿# This script is derived from the dotless build script.
 function Generate-Assembly-Info
 {
     param(

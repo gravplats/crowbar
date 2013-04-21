@@ -1,4 +1,4 @@
-# Helper script for those who want to run psake without importing the module.
+﻿# Helper script for those who want to run psake without importing the module.
 # Example:
 # .\psake.ps1 "default.ps1" "BuildHelloWord" "4.0" 
 

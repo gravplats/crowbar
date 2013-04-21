@@ -1,4 +1,4 @@
-include .\extensions.ps1
+﻿include .\extensions.ps1
 
 properties {
     $name                   = "Crowbar"

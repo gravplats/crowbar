@@ -1,4 +1,4 @@
-namespace Crowbar
+﻿namespace Crowbar
 {
     /// <summary>
     /// Provides functionality for returning the physical path of a resource.

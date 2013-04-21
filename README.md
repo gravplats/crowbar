@@ -1,4 +1,4 @@
-Crowbar - because sometimes you need leverage
+﻿Crowbar - because sometimes you need leverage
 =============================================
 
 Crowbar is an application testing library for ASP.NET MVC 3 and 4.
@@ -6,7 +6,7 @@ Crowbar is an application testing library for ASP.NET MVC 3 and 4.
 Credits
 -------
 
-Crowbar was inspired by the Nancy.Testing project from [Nancy](https://github.com/NancyFx/Nancy) by Andreas H�kansson, Steven Robbins and contributors. The Crowbar API is highly influenced by the Nancy.Testing API.
+Crowbar was inspired by the Nancy.Testing project from [Nancy](https://github.com/NancyFx/Nancy) by Andreas Håkansson, Steven Robbins and contributors. The Crowbar API is highly influenced by the Nancy.Testing API.
 
 The source code of Crowbar is based on Steven Sanderson's [MvcIntegrationTestFramework](http://blog.stevensanderson.com/2009/06/11/integration-testing-your-aspnet-mvc-application/). The initial commit of Crowbar is Jon Canning's [fork](https://github.com/JonCanning/MvcIntegrationTestFramework) of the MvcIntegrationTestFramework.
 

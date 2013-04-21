@@ -1,4 +1,4 @@
-namespace Crowbar.Tests.Mvc.Common
+﻿namespace Crowbar.Tests.Mvc.Common
 {
     public class CheckBoxPayload
     {

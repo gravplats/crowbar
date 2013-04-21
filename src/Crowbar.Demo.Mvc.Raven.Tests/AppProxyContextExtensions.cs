@@ -1,4 +1,4 @@
-using Crowbar.Demo.Mvc.Raven.Application.Models;
+﻿using Crowbar.Demo.Mvc.Raven.Application.Models;
 
 namespace Crowbar.Demo.Mvc.Raven.Tests
 {

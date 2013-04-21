@@ -1,4 +1,4 @@
-namespace Crowbar.Demo.Mvc.NHibernate.Application.Models
+﻿namespace Crowbar.Demo.Mvc.NHibernate.Application.Models
 {
     public class User
     {

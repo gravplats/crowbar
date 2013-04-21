@@ -1,4 +1,4 @@
-using Crowbar.Demo.Mvc.Raven.Application;
+﻿using Crowbar.Demo.Mvc.Raven.Application;
 using Crowbar.Demo.Mvc.Raven.Tests.Infrastructure.Modules;
 using Ninject;
 using Raven.Client;

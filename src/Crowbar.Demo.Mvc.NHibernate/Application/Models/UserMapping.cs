@@ -1,4 +1,4 @@
-using NHibernate.Mapping.ByCode;
+﻿using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
 namespace Crowbar.Demo.Mvc.NHibernate.Application.Models
