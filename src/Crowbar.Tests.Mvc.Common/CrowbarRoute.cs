@@ -11,6 +11,7 @@
         public const string ExceptionNonSerializable        = "/exception-non-serializable";
         public const string ExceptionSerializable           = "/exception-serializable";
 
+        public const string Header                          = "/header";
         public const string HttpsRequest                    = "/https-request";
 
         public const string JsonBody                        = "/json-body";

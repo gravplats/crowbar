@@ -11,6 +11,7 @@ namespace Crowbar
 {
     internal class SimulatedWorkerRequest : SimpleWorkerRequest
     {
+        private readonly SimulatedResponse sresponse;
         private readonly string bodyString;
         private readonly HttpCookieCollection cookies;
         private readonly NameValueCollection formValues;
@@ -20,7 +21,8 @@ namespace Crowbar
         private readonly IRequestWaitHandle handle;
         private readonly RawHttpRequest rawHttpRequest;
 
-        public SimulatedWorkerRequest(string path, ISimulatedWorkerRequestContext context, TextWriter output, IRequestWaitHandle handle)
+        public SimulatedWorkerRequest(string path, ISimulatedWorkerRequestContext context, TextWriter output, SimulatedResponse sresponse, IRequestWaitHandle handle)
+
             : base(path, context.QueryString, output)
         {
             bodyString = context.BodyString;
@@ -29,6 +31,7 @@ namespace Crowbar
             headers = context.Headers;
             method = context.Method;
             protocol = context.Protocol;
+            this.sresponse = sresponse;
             this.handle = handle;
             rawHttpRequest = new RawHttpRequest(method, protocol);
         }
@@ -202,6 +205,22 @@ namespace Crowbar
         public override bool IsSecure()
         {
             return string.Equals(protocol, "https", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override void SendCalculatedContentLength(int contentLength)
+        {
+            sresponse.AddHeader("Content-Length", contentLength.ToString());
+        }
+
+        public override void SendKnownResponseHeader(int index, string value)
+        {
+            string name = GetKnownResponseHeaderName(index);
+            sresponse.AddHeader(name, value);
+        }
+
+        public override void SendUnknownResponseHeader(string name, string value)
+        {
+            sresponse.AddHeader(name, value);
         }
     }
 }

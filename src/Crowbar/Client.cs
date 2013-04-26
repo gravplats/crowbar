@@ -90,17 +90,20 @@ namespace Crowbar
 
             CrowbarContext.Reset();
 
+            var output = new StringWriter();
+            var sresponse = new SimulatedResponse();
             var handle = CreateRequestWaitHandle();
 
-            var output = new StringWriter();
-            var workerRequest = new SimulatedWorkerRequest(path, payload, output, handle);
+            var workerRequest = new SimulatedWorkerRequest(path, payload, output, sresponse, handle);
 
             HttpRuntime.ProcessRequest(workerRequest);
 
             handle.Wait();
 
             string rawHttpRequest = workerRequest.GetRawHttpRequest();
-            return CreateResponse(output, rawHttpRequest);
+            var responseHeaders = sresponse.GetHeaders();
+
+            return CreateResponse(output, rawHttpRequest, responseHeaders);
         }
 
         /// <summary>
@@ -117,8 +120,9 @@ namespace Crowbar
         /// </summary>
         /// <param name="output">The writer to which the output should be written.</param>
         /// <param name="rawHttpRequest">The raw HTTP request.</param>
+        /// <param name="responseHeaders"></param>
         /// <returns>The client response.</returns>
-        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest)
+        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest, NameValueCollection responseHeaders)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
@@ -131,13 +135,6 @@ namespace Crowbar
                 return new ClientResponse();
             }
 
-            // Cannot read headers from response as it is not supported, however it is possible to fake the 'Location' header.
-            var headers = new NameValueCollection();
-            if (!string.IsNullOrEmpty(response.RedirectLocation))
-            {
-                headers.Add("Location", response.RedirectLocation);
-            }
-
             return new ClientResponse
             {
                 Advanced = new AdvancedClientResponse
@@ -148,8 +145,7 @@ namespace Crowbar
                     ResultExecutingContext = CrowbarContext.ResultExecutingContext,
                     HttpSessionState = CrowbarContext.HttpSessionState
                 },
-                Headers = headers,
-                HttpResponse = response,
+                HttpResponse = new CrowbarHttpResponse(response, responseHeaders),
                 ResponseBody = output.ToString(),
                 RawHttpRequest = rawHttpRequest
             };

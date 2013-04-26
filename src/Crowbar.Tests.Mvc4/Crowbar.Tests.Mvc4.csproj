@@ -113,6 +113,9 @@
     <Compile Include="..\Crowbar.Tests.Mvc3\Core\FormsAuthController.cs">
       <Link>Core\FormsAuthController.cs</Link>
     </Compile>
+    <Compile Include="..\Crowbar.Tests.Mvc3\Core\HeaderController.cs">
+      <Link>Core\HeaderController.cs</Link>
+    </Compile>
     <Compile Include="..\Crowbar.Tests.Mvc3\Core\HttpsRequestController.cs">
       <Link>Core\HttpsRequestController.cs</Link>
     </Compile>

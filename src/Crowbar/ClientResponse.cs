@@ -34,14 +34,17 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Gets the 'faked' Headers of the HTTP response.
+        /// Gets the headers of the HTTP response.
         /// </summary>
-        public NameValueCollection Headers { get; internal set; }
+        public NameValueCollection Headers
+        {
+            get { return HttpResponse.Headers; }
+        }
 
         /// <summary>
         /// Gets the HTTP response.
         /// </summary>
-        public HttpResponse HttpResponse { get; internal set; }
+        public HttpResponseBase HttpResponse { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP response body.

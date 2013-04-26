@@ -57,6 +57,7 @@
     <Compile Include="AdvancedClientResponse.cs" />
     <Compile Include="As.cs" />
     <Compile Include="AssertException.cs" />
+    <Compile Include="CrowbarHttpResponse.cs" />
     <Compile Include="HttpPayload.cs" />
     <Compile Include="HttpPayloadExtensions.cs" />
     <Compile Include="ClientExtensions.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="IProxy.cs" />
     <Compile Include="IRequestWaitHandle.cs" />
     <Compile Include="RequestWaitHandle.cs" />
+    <Compile Include="SimulatedRequest.cs" />
+    <Compile Include="SimulatedResponse.cs" />
     <Compile Include="WebConfigPathProvider.cs" />
     <Compile Include="WebProjectPathProvider.cs" />
     <Compile Include="RawHttpRequest.cs" />
