@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Web;
+using System.Web.Hosting;
+using LinFu.DynamicProxy;
 
 namespace Crowbar
 {
@@ -9,14 +11,17 @@ namespace Crowbar
     /// </summary>
     public class Client
     {
+        private readonly string testBaseDirectory;
         private readonly IHttpPayloadDefaults defaults;
 
         /// <summary>
         /// Creates an instance of <see cref="Client"/>.
         /// </summary>
+        /// <param name="testBaseDirectory"></param>
         /// <param name="defaults">Default HTTP payload settings, if any.</param>
-        public Client(IHttpPayloadDefaults defaults = null)
+        public Client(string testBaseDirectory, IHttpPayloadDefaults defaults = null)
         {
+            this.testBaseDirectory = testBaseDirectory;
             this.defaults = defaults;
         }
 
@@ -94,9 +99,14 @@ namespace Crowbar
             var handle = CreateRequestWaitHandle();
 
             var worker = new CrowbarHttpWorker(request, response, handle);
-            HttpRuntime.ProcessRequest(worker);
 
-            handle.Wait();
+            using (var interceptor = new CrowbarHttpWorkerInterceptor(testBaseDirectory, method, path, worker))
+            {
+                var proxy = new ProxyFactory().CreateProxy<SimpleWorkerRequest>(interceptor);
+                HttpRuntime.ProcessRequest(proxy);
+
+                handle.Wait();
+            }
 
             string rawHttpRequest = worker.GetRawHttpRequest();
             return CreateResponse(rawHttpRequest, response);

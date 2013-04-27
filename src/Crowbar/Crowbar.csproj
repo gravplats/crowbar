@@ -40,6 +40,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
+    <Reference Include="LinFu.DynamicProxy">
+      <HintPath>..\..\packages\LinFu.DynamicProxy.OfficialRelease.1.0.5\lib\net\LinFu.DynamicProxy.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -58,6 +61,7 @@
     <Compile Include="As.cs" />
     <Compile Include="AssertException.cs" />
     <Compile Include="CrowbarRequest.cs" />
+    <Compile Include="CrowbarHttpWorkerInterceptor.cs" />
     <Compile Include="HttpPayload.cs" />
     <Compile Include="HttpPayloadExtensions.cs" />
     <Compile Include="ClientExtensions.cs" />

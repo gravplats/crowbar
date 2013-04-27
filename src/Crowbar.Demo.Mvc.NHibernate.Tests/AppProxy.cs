@@ -17,8 +17,8 @@ namespace Crowbar.Demo.Mvc.NHibernate.Tests
         {
             private readonly ISession session;
 
-            public AppProxyClient(ISession session, IHttpPayloadDefaults defaults)
-                : base(defaults)
+            public AppProxyClient(string testBaseDirectory, ISession session, IHttpPayloadDefaults defaults)
+                : base(testBaseDirectory, defaults)
             {
                 this.session = session;
             }
@@ -44,7 +44,7 @@ namespace Crowbar.Demo.Mvc.NHibernate.Tests
 
         protected override Client CreateClient(App application, string testBaseDirectory, IHttpPayloadDefaults defaults, AppProxyContext context)
         {
-            return new AppProxyClient(context.Session, defaults);
+            return new AppProxyClient(testBaseDirectory, context.Session, defaults);
         }
 
         protected override AppProxyContext CreateContext(App application, string testBaseDirectory)

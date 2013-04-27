@@ -39,7 +39,7 @@ namespace Crowbar
         /// <returns>A client.</returns>
         protected virtual Client CreateClient(THttpApplication application, string testBaseDirectory, IHttpPayloadDefaults defaults, TContext context)
         {
-            return new Client(defaults);
+            return new Client(testBaseDirectory, defaults);
         }
 
         /// <summary>
