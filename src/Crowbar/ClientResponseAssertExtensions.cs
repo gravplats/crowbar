@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 using CsQuery;
@@ -188,7 +189,10 @@ namespace Crowbar
 
         private static void AssertContentType(this ClientResponse response, string expectedContentType)
         {
-            if (response.ContentType != expectedContentType)
+            string contentType = response.ContentType ?? string.Empty;
+            string[] values = contentType.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (!values.Contains(expectedContentType))
             {
                 throw new AssertException("The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
             }

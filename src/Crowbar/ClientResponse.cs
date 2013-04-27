@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Web;
 using System.Web.Helpers;
 using System.Xml.Linq;
@@ -22,15 +21,7 @@ namespace Crowbar
         /// </summary>
         public string ContentType
         {
-            get
-            {
-                if (HttpResponse == null)
-                {
-                    throw new InvalidOperationException("The HTTP response object is null.");
-                }
-
-                return HttpResponse.ContentType;
-            }
+            get { return Headers["Content-Type"]; }
         }
 
         /// <summary>
