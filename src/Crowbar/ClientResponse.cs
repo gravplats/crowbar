@@ -36,15 +36,12 @@ namespace Crowbar
         /// <summary>
         /// Gets the headers of the HTTP response.
         /// </summary>
-        public NameValueCollection Headers
-        {
-            get { return HttpResponse.Headers; }
-        }
+        public NameValueCollection Headers { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP response.
         /// </summary>
-        public HttpResponseBase HttpResponse { get; internal set; }
+        public HttpResponse HttpResponse { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP response body.
@@ -59,19 +56,12 @@ namespace Crowbar
         /// <summary>
         /// Gets the HTTP Status Code of the HTTP response.
         /// </summary>
-        public HttpStatusCode StatusCode
-        {
-            get
-            {
-                // When no route is found the response object is null. Are there any other cases when this is also true?
-                if (HttpResponse == null)
-                {
-                    return HttpStatusCode.NotFound;
-                }
+        public HttpStatusCode StatusCode { get; internal set; }
 
-                return (HttpStatusCode)HttpResponse.StatusCode;
-            }
-        }
+        /// <summary>
+        /// Gets the status description.
+        /// </summary>
+        public string StatusDescription { get; internal set; }
 
         /// <summary>
         /// Returns a DOM representation of the HTML document in the response body.

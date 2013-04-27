@@ -218,6 +218,12 @@ namespace Crowbar
             sresponse.AddHeader(name, value);
         }
 
+        public override void SendStatus(int statusCode, string statusDescription)
+        {
+            sresponse.StatusCode = (HttpStatusCode)statusCode;
+            sresponse.StatusDescription = statusDescription;
+        }
+
         public override void SendUnknownResponseHeader(string name, string value)
         {
             sresponse.AddHeader(name, value);

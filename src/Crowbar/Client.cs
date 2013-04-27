@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.IO;
 using System.Web;
 
@@ -101,9 +100,7 @@ namespace Crowbar
             handle.Wait();
 
             string rawHttpRequest = workerRequest.GetRawHttpRequest();
-            var responseHeaders = sresponse.GetHeaders();
-
-            return CreateResponse(output, rawHttpRequest, responseHeaders);
+            return CreateResponse(output, rawHttpRequest, sresponse);
         }
 
         /// <summary>
@@ -120,19 +117,13 @@ namespace Crowbar
         /// </summary>
         /// <param name="output">The writer to which the output should be written.</param>
         /// <param name="rawHttpRequest">The raw HTTP request.</param>
-        /// <param name="responseHeaders"></param>
+        /// <param name="sresponse">The simulated HTTP response.</param>
         /// <returns>The client response.</returns>
-        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest, NameValueCollection responseHeaders)
+        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest, SimulatedResponse sresponse)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
                 Throw(rawHttpRequest);
-            }
-
-            var response = CrowbarContext.HttpResponse;
-            if (response == null)
-            {
-                return new ClientResponse();
             }
 
             return new ClientResponse
@@ -145,9 +136,12 @@ namespace Crowbar
                     ResultExecutingContext = CrowbarContext.ResultExecutingContext,
                     HttpSessionState = CrowbarContext.HttpSessionState
                 },
-                HttpResponse = new CrowbarHttpResponse(response, responseHeaders),
+                HttpResponse = CrowbarContext.HttpResponse,
+                Headers = sresponse.GetHeaders(),
                 ResponseBody = output.ToString(),
-                RawHttpRequest = rawHttpRequest
+                RawHttpRequest = rawHttpRequest,
+                StatusCode = sresponse.StatusCode,
+                StatusDescription = sresponse.StatusDescription
             };
         }
 

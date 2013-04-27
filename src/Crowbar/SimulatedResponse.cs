@@ -2,7 +2,7 @@
 
 namespace Crowbar
 {
-    internal class SimulatedResponse
+    public class SimulatedResponse
     {
         private readonly NameValueCollection headers;
 
@@ -10,6 +10,10 @@ namespace Crowbar
         {
             headers = new NameValueCollection();
         }
+
+        public HttpStatusCode StatusCode { get; internal set; }
+
+        public string StatusDescription { get; internal set; }
 
         public NameValueCollection GetHeaders()
         {

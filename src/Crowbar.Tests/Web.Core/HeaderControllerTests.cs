@@ -13,7 +13,7 @@ namespace Crowbar.Tests.Web.Core
                 var response = client.Get(CrowbarRoute.Header);
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
-                string value = response.HttpResponse.Headers["X-Crowbar"];
+                string value = response.Headers["X-Crowbar"];
                 Assert.That(value, Is.EqualTo("crowbar"));
             });
         }

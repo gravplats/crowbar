@@ -25,16 +25,25 @@ namespace Crowbar.Tests.Web.Core
             });
         }
 
+        [Test]
+        public void Should_return_http_not_found_when_performing_get_against_an_unknown_path()
+        {
+            Execute(client =>
+            {
+                var response = client.Get("/unknown");
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+            });
+        }
+
         [TestCase("DELETE")]
-        [TestCase("GET")]
         [TestCase("POST")]
         [TestCase("PUT")]
-        public void Should_return_http_not_found_when_performing_request_against_an_unknown_path(string method)
+        public void Should_return_http_method_not_allowed_when_performing_non_get_against_an_unknown_path(string method)
         {
             Execute(client =>
             {
                 var response = client.PerformRequest(method, "/unknown");
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.MethodNotAllowed));
             });
         }
     }
