@@ -90,13 +90,26 @@ namespace Crowbar
 
             CrowbarContext.Reset();
 
+            var handle = CreateRequestWaitHandle();
+
             var output = new StringWriter();
-            var workerRequest = new SimulatedWorkerRequest(path, payload, output);
+            var workerRequest = new SimulatedWorkerRequest(path, payload, output, handle);
 
             HttpRuntime.ProcessRequest(workerRequest);
 
+            handle.Wait();
+
             string rawHttpRequest = workerRequest.GetRawHttpRequest();
             return CreateResponse(output, rawHttpRequest);
+        }
+
+        /// <summary>
+        /// Creates the request wait handle which is used to signal the end of the request.
+        /// </summary>
+        /// <returns>The request wait handle.</returns>
+        protected virtual IRequestWaitHandle CreateRequestWaitHandle()
+        {
+            return new RequestWaitHandle();
         }
 
         /// <summary>

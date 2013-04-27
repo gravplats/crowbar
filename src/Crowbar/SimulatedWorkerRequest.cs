@@ -17,9 +17,10 @@ namespace Crowbar
         private readonly NameValueCollection headers;
         private readonly string method;
         private readonly string protocol;
+        private readonly IRequestWaitHandle handle;
         private readonly RawHttpRequest rawHttpRequest;
 
-        public SimulatedWorkerRequest(string path, ISimulatedWorkerRequestContext context, TextWriter output)
+        public SimulatedWorkerRequest(string path, ISimulatedWorkerRequestContext context, TextWriter output, IRequestWaitHandle handle)
             : base(path, context.QueryString, output)
         {
             bodyString = context.BodyString;
@@ -28,7 +29,13 @@ namespace Crowbar
             headers = context.Headers;
             method = context.Method;
             protocol = context.Protocol;
+            this.handle = handle;
             rawHttpRequest = new RawHttpRequest(method, protocol);
+        }
+
+        public override void EndOfRequest()
+        {
+            handle.Signal();
         }
 
         public string GetRawHttpRequest()

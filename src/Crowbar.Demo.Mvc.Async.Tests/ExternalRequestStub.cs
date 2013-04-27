@@ -17,20 +17,20 @@ namespace Crowbar.Demo.Mvc.Async.Tests
 
         public async Task<Response> Execute()
         {
-            // trying to read from the file asynchronously will make the test fail, but the example is good enough
-            // to show how asynchronous calls can be stubbed.
-
-            string path = Path.Combine(testBaseDirectory, "request.json");
-
-            using (var stream = new FileStream(path, FileMode.Open))
-            using (var reader = new StreamReader(stream))
+            return await Task.Run(() =>
             {
-                using (var jsonTextReader = new JsonTextReader(reader))
+                string path = Path.Combine(testBaseDirectory, "request.json");
+
+                using (var stream = new FileStream(path, FileMode.Open))
+                using (var reader = new StreamReader(stream))
                 {
-                    var serializer = new JsonSerializer();
-                    return serializer.Deserialize<Response>(jsonTextReader);
+                    using (var jsonTextReader = new JsonTextReader(reader))
+                    {
+                        var serializer = new JsonSerializer();
+                        return serializer.Deserialize<Response>(jsonTextReader);
+                    }
                 }
-            }
+            });
         }
     }
 }

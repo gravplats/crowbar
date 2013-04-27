@@ -71,6 +71,8 @@
     <Compile Include="IHttpPayloadDefaults.cs" />
     <Compile Include="IPathProvider.cs" />
     <Compile Include="IProxy.cs" />
+    <Compile Include="IRequestWaitHandle.cs" />
+    <Compile Include="RequestWaitHandle.cs" />
     <Compile Include="WebConfigPathProvider.cs" />
     <Compile Include="WebProjectPathProvider.cs" />
     <Compile Include="RawHttpRequest.cs" />
