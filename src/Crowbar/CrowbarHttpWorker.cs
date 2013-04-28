@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
@@ -21,9 +20,8 @@ namespace Crowbar
         private readonly IRequestWaitHandle handle;
         private readonly RawHttpRequest rawHttpRequest;
 
-        public CrowbarHttpWorker(string path, ICrowbarHttpWorkerContext context, TextWriter output, CrowbarResponse response, IRequestWaitHandle handle)
-
-            : base(path, context.QueryString, output)
+        public CrowbarHttpWorker(string path, ICrowbarHttpWorkerContext context, CrowbarResponse response, IRequestWaitHandle handle)
+            : base(path, context.QueryString, response.Output)
         {
             bodyString = context.BodyString;
             cookies = context.Cookies;

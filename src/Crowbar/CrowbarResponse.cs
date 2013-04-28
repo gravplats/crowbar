@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.IO;
 
 namespace Crowbar
 {
@@ -15,7 +16,13 @@ namespace Crowbar
         public CrowbarResponse()
         {
             headers = new NameValueCollection();
+            Output = new StringWriter();
         }
+
+        /// <summary>
+        /// Used to captures the response body.
+        /// </summary>
+        internal StringWriter Output { get; set; }
 
         /// <summary>
         /// Gets the HTTP status code.
@@ -26,15 +33,6 @@ namespace Crowbar
         /// Gets the HTTP status description.
         /// </summary>
         public string StatusDescription { get; internal set; }
-
-        /// <summary>
-        /// Returns the HTTP headers for the response.
-        /// </summary>
-        /// <returns>The HTTP headers.</returns>
-        public NameValueCollection GetHeaders()
-        {
-            return headers;
-        }
 
         /// <summary>
         /// Adds an HTTP headers to the response.
@@ -49,6 +47,24 @@ namespace Crowbar
             }
 
             headers.Add(name, value);
+        }
+
+        /// <summary>
+        /// Returns the HTTP headers for the response.
+        /// </summary>
+        /// <returns>The HTTP headers.</returns>
+        public NameValueCollection GetHeaders()
+        {
+            return headers;
+        }
+
+        /// <summary>
+        /// Returns the response body.
+        /// </summary>
+        /// <returns>The response body.</returns>
+        public string GetResponseBody()
+        {
+            return Output.ToString();
         }
     }
 }

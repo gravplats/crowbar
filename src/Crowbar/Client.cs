@@ -89,17 +89,16 @@ namespace Crowbar
 
             CrowbarContext.Reset();
 
-            var output = new StringWriter();
             var response = new CrowbarResponse();
             var handle = CreateRequestWaitHandle();
 
-            var worker = new CrowbarHttpWorker(path, payload, output, response, handle);
+            var worker = new CrowbarHttpWorker(path, payload, response, handle);
             HttpRuntime.ProcessRequest(worker);
 
             handle.Wait();
 
             string rawHttpRequest = worker.GetRawHttpRequest();
-            return CreateResponse(output, rawHttpRequest, response);
+            return CreateResponse(rawHttpRequest, response);
         }
 
         /// <summary>
@@ -114,11 +113,10 @@ namespace Crowbar
         /// <summary>
         /// Creates the client response.
         /// </summary>
-        /// <param name="output">The writer to which the output should be written.</param>
         /// <param name="rawHttpRequest">The raw HTTP request.</param>
         /// <param name="response">The simulated HTTP response.</param>
         /// <returns>The client response.</returns>
-        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest, CrowbarResponse response)
+        protected virtual ClientResponse CreateResponse(string rawHttpRequest, CrowbarResponse response)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
@@ -137,7 +135,7 @@ namespace Crowbar
                     HttpSessionState = CrowbarContext.HttpSessionState
                 },
                 Headers = response.GetHeaders(),
-                ResponseBody = output.ToString(),
+                ResponseBody = response.GetResponseBody(),
                 RawHttpRequest = rawHttpRequest,
                 StatusCode = response.StatusCode,
                 StatusDescription = response.StatusDescription
