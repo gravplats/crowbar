@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using System.Web;
 using System.Web.Helpers;
 using System.Xml.Linq;
 using CsQuery;
@@ -28,11 +27,6 @@ namespace Crowbar
         /// Gets the headers of the HTTP response.
         /// </summary>
         public NameValueCollection Headers { get; internal set; }
-
-        /// <summary>
-        /// Gets the HTTP response.
-        /// </summary>
-        public HttpResponse HttpResponse { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP response body.

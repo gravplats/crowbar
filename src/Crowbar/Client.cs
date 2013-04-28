@@ -134,9 +134,9 @@ namespace Crowbar
                     ActionExecutingContext = CrowbarContext.ActionExecutingContext,
                     ResultExecutedContext = CrowbarContext.ResultExecutedContext,
                     ResultExecutingContext = CrowbarContext.ResultExecutingContext,
+                    HttpResponse = CrowbarContext.HttpResponse,
                     HttpSessionState = CrowbarContext.HttpSessionState
                 },
-                HttpResponse = CrowbarContext.HttpResponse,
                 Headers = sresponse.GetHeaders(),
                 ResponseBody = output.ToString(),
                 RawHttpRequest = rawHttpRequest,

@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using System.Web.SessionState;
 
 namespace Crowbar
@@ -27,6 +28,11 @@ namespace Crowbar
         /// Gets the context for the OnResultExecuting method.
         /// </summary>
         public ResultExecutingContext ResultExecutingContext { get; internal set; }
+
+        /// <summary>
+        /// Gets the HTTP response.
+        /// </summary>
+        public HttpResponse HttpResponse { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP session state.
