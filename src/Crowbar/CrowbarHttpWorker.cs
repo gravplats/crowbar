@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace Crowbar
 {
-    internal class SimulatedWorkerRequest : SimpleWorkerRequest
+    internal class CrowbarHttpWorker : SimpleWorkerRequest
     {
-        private readonly SimulatedResponse sresponse;
+        private readonly CrowbarResponse response;
         private readonly string bodyString;
         private readonly HttpCookieCollection cookies;
         private readonly NameValueCollection formValues;
@@ -21,7 +21,7 @@ namespace Crowbar
         private readonly IRequestWaitHandle handle;
         private readonly RawHttpRequest rawHttpRequest;
 
-        public SimulatedWorkerRequest(string path, ISimulatedWorkerRequestContext context, TextWriter output, SimulatedResponse sresponse, IRequestWaitHandle handle)
+        public CrowbarHttpWorker(string path, ISimulatedWorkerRequestContext context, TextWriter output, CrowbarResponse response, IRequestWaitHandle handle)
 
             : base(path, context.QueryString, output)
         {
@@ -31,7 +31,7 @@ namespace Crowbar
             headers = context.Headers;
             method = context.Method;
             protocol = context.Protocol;
-            this.sresponse = sresponse;
+            this.response = response;
             this.handle = handle;
             rawHttpRequest = new RawHttpRequest(method, protocol);
         }
@@ -209,24 +209,24 @@ namespace Crowbar
 
         public override void SendCalculatedContentLength(int contentLength)
         {
-            sresponse.AddHeader("Content-Length", contentLength.ToString());
+            response.AddHeader("Content-Length", contentLength.ToString());
         }
 
         public override void SendKnownResponseHeader(int index, string value)
         {
             string name = GetKnownResponseHeaderName(index);
-            sresponse.AddHeader(name, value);
+            response.AddHeader(name, value);
         }
 
         public override void SendStatus(int statusCode, string statusDescription)
         {
-            sresponse.StatusCode = (HttpStatusCode)statusCode;
-            sresponse.StatusDescription = statusDescription;
+            response.StatusCode = (HttpStatusCode)statusCode;
+            response.StatusDescription = statusDescription;
         }
 
         public override void SendUnknownResponseHeader(string name, string value)
         {
-            sresponse.AddHeader(name, value);
+            response.AddHeader(name, value);
         }
     }
 }

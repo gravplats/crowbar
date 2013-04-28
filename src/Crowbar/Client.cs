@@ -14,7 +14,7 @@ namespace Crowbar
         /// <summary>
         /// Creates an instance of <see cref="Client"/>.
         /// </summary>
-        /// <param name="defaults"></param>
+        /// <param name="defaults">Default HTTP payload settings, if any.</param>
         public Client(IHttpPayloadDefaults defaults = null)
         {
             this.defaults = defaults;
@@ -90,17 +90,16 @@ namespace Crowbar
             CrowbarContext.Reset();
 
             var output = new StringWriter();
-            var sresponse = new SimulatedResponse();
+            var response = new CrowbarResponse();
             var handle = CreateRequestWaitHandle();
 
-            var workerRequest = new SimulatedWorkerRequest(path, payload, output, sresponse, handle);
-
-            HttpRuntime.ProcessRequest(workerRequest);
+            var worker = new CrowbarHttpWorker(path, payload, output, response, handle);
+            HttpRuntime.ProcessRequest(worker);
 
             handle.Wait();
 
-            string rawHttpRequest = workerRequest.GetRawHttpRequest();
-            return CreateResponse(output, rawHttpRequest, sresponse);
+            string rawHttpRequest = worker.GetRawHttpRequest();
+            return CreateResponse(output, rawHttpRequest, response);
         }
 
         /// <summary>
@@ -117,9 +116,9 @@ namespace Crowbar
         /// </summary>
         /// <param name="output">The writer to which the output should be written.</param>
         /// <param name="rawHttpRequest">The raw HTTP request.</param>
-        /// <param name="sresponse">The simulated HTTP response.</param>
+        /// <param name="response">The simulated HTTP response.</param>
         /// <returns>The client response.</returns>
-        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest, SimulatedResponse sresponse)
+        protected virtual ClientResponse CreateResponse(StringWriter output, string rawHttpRequest, CrowbarResponse response)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
@@ -137,11 +136,11 @@ namespace Crowbar
                     HttpResponse = CrowbarContext.HttpResponse,
                     HttpSessionState = CrowbarContext.HttpSessionState
                 },
-                Headers = sresponse.GetHeaders(),
+                Headers = response.GetHeaders(),
                 ResponseBody = output.ToString(),
                 RawHttpRequest = rawHttpRequest,
-                StatusCode = sresponse.StatusCode,
-                StatusDescription = sresponse.StatusDescription
+                StatusCode = response.StatusCode,
+                StatusDescription = response.StatusDescription
             };
         }
 

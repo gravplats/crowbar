@@ -74,7 +74,7 @@
     <Compile Include="IProxy.cs" />
     <Compile Include="IRequestWaitHandle.cs" />
     <Compile Include="RequestWaitHandle.cs" />
-    <Compile Include="SimulatedResponse.cs" />
+    <Compile Include="CrowbarResponse.cs" />
     <Compile Include="WebConfigPathProvider.cs" />
     <Compile Include="WebProjectPathProvider.cs" />
     <Compile Include="RawHttpRequest.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="ProxyBase.cs" />
     <Compile Include="CrowbarController.cs" />
     <Compile Include="ViewContextStub.cs" />
-    <Compile Include="SimulatedWorkerRequest.cs" />
+    <Compile Include="CrowbarHttpWorker.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="MvcApplicationFactory.cs" />
     <Compile Include="SerializableDelegate.cs" />
