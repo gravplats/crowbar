@@ -74,7 +74,6 @@
     <Compile Include="IProxy.cs" />
     <Compile Include="IRequestWaitHandle.cs" />
     <Compile Include="RequestWaitHandle.cs" />
-    <Compile Include="SimulatedRequest.cs" />
     <Compile Include="SimulatedResponse.cs" />
     <Compile Include="WebConfigPathProvider.cs" />
     <Compile Include="WebProjectPathProvider.cs" />
