@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Xml.Linq;
 using CsQuery;
@@ -120,12 +121,7 @@ namespace Crowbar
         {
             Ensure.NotNullOrEmpty(name, "name");
 
-            if (response.HttpResponse == null)
-            {
-                throw new InvalidOperationException("The HttpResponse is null.");
-            }
-
-            var cookie = response.HttpResponse.Cookies[name];
+            var cookie = response.ParseCookie(name);
             if (cookie == null)
             {
                 throw new AssertException("Missing cookie '{0}'.", name);
@@ -161,12 +157,7 @@ namespace Crowbar
         {
             Ensure.NotNullOrEmpty(name, "name");
 
-            if (response.HttpResponse == null)
-            {
-                throw new InvalidOperationException("The HttpResponse is null.");
-            }
-
-            var cookie = response.HttpResponse.Cookies[name];
+            var cookie = response.ParseCookie(name);
             if (cookie != null)
             {
                 throw new AssertException("Unexpected cookie '{0}'.", name);
@@ -193,6 +184,14 @@ namespace Crowbar
             response.ShouldHaveRedirectedTo(location, HttpStatusCode.Found);
         }
 
+        private static void AssertStatusCode(this ClientResponse response, HttpStatusCode expectedStatusCode)
+        {
+            if (response.StatusCode != expectedStatusCode)
+            {
+                throw new AssertException("HTTP status code should have been '{0}' but was '{1}'.", expectedStatusCode, response.StatusCode);
+            }
+        }
+
         private static void ShouldHaveRedirectedTo(this ClientResponse response, string location, HttpStatusCode expectedStatusCode)
         {
             response.AssertStatusCode(expectedStatusCode);
@@ -203,12 +202,32 @@ namespace Crowbar
             }
         }
 
-        private static void AssertStatusCode(this ClientResponse response, HttpStatusCode expectedStatusCode)
+        private static HttpCookie ParseCookie(this ClientResponse response, string name)
         {
-            if (response.StatusCode != expectedStatusCode)
+            string header = response.Headers["Set-Cookie"];
+
+            var container = new CookieContainer();
+
+            var uri = new Uri("http://localhost");
+
+            // parse 'Set-Cookie' header, is there a better way without taking a dependency on HttpResponse?
+            container.SetCookies(uri, header);
+            var cookies = container.GetCookies(uri);
+
+            var cookie = cookies[name];
+            if (cookie == null)
             {
-                throw new AssertException("HTTP status code should have been '{0}' but was '{1}'.", expectedStatusCode, response.StatusCode);
+                return null;
             }
+
+            return new HttpCookie(cookie.Name, cookie.Value)
+            {
+                Domain = cookie.Domain,
+                Expires = cookie.Expires,
+                HttpOnly = cookie.HttpOnly,
+                Path = cookie.Path,
+                Secure = cookie.Secure
+            };
         }
     }
 }

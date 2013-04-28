@@ -7,40 +7,37 @@ namespace Crowbar.Web.Core
 {
     public class CookieController : CrowbarControllerBase
     {
+        private ActionResult Cookies()
+        {
+            Response.AppendCookie(new HttpCookie("Crowbar1", "Pry Bar"));
+            Response.AppendCookie(new HttpCookie("Crowbar2", "Wrecking Bar"));
+            Response.AppendCookie(new HttpCookie("Crowbar3", "Digging Bar"));
+
+            return HttpOk();
+        }
+
         [DELETE(CrowbarRoute.Cookie)]
         public ActionResult Cookie_Delete()
         {
-            var cookie = new HttpCookie("CustomCookie", "crowbar");
-            Response.AppendCookie(cookie);
-
-            return HttpOk();
+            return Cookies();
         }
 
         [GET(CrowbarRoute.Cookie)]
         public ActionResult Cookie_Get()
         {
-            var cookie = new HttpCookie("CustomCookie", "crowbar");
-            Response.AppendCookie(cookie);
-
-            return HttpOk();
+            return Cookies();
         }
 
         [POST(CrowbarRoute.Cookie)]
         public ActionResult Cookie_Post()
         {
-            var cookie = new HttpCookie("CustomCookie", "crowbar");
-            Response.AppendCookie(cookie);
-
-            return HttpOk();
+            return Cookies();
         }
 
         [PUT(CrowbarRoute.Cookie)]
         public ActionResult Cookie_Put()
         {
-            var cookie = new HttpCookie("CustomCookie", "crowbar");
-            Response.AppendCookie(cookie);
-
-            return HttpOk();
+            return Cookies();
         }
     }
 }

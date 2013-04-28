@@ -16,7 +16,9 @@ namespace Crowbar.Tests.Web.Core
                 var response = client.PerformRequest(method, CrowbarRoute.Cookie);
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
-                response.ShouldHaveCookie("CustomCookie", "crowbar");
+                response.ShouldHaveCookie("Crowbar1", "Pry Bar");
+                response.ShouldHaveCookie("Crowbar2", "Wrecking Bar");
+                response.ShouldHaveCookie("Crowbar3", "Digging Bar");
             });
         }
     }
