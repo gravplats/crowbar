@@ -6,7 +6,7 @@ namespace Crowbar
     /// <summary>
     /// Defines the HTTP request payload.
     /// </summary>
-    public interface ICrowbarHttpWorkerContext
+    public interface ICrowbarRequest
     {
         /// <summary>
         /// Gets or sets the body.

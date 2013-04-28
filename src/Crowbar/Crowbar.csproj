@@ -57,7 +57,6 @@
     <Compile Include="AdvancedClientResponse.cs" />
     <Compile Include="As.cs" />
     <Compile Include="AssertException.cs" />
-    <Compile Include="CrowbarHttpResponse.cs" />
     <Compile Include="CrowbarRequest.cs" />
     <Compile Include="HttpPayload.cs" />
     <Compile Include="HttpPayloadExtensions.cs" />
@@ -82,7 +81,7 @@
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="IHideObjectMembers.cs" />
-    <Compile Include="ICrowbarHttpWorkerContext.cs" />
+    <Compile Include="ICrowbarRequest.cs" />
     <Compile Include="ClientResponse.cs" />
     <Compile Include="MvcApplication.cs" />
     <Compile Include="MvcApplicationProxy.cs" />

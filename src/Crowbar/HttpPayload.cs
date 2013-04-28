@@ -7,9 +7,9 @@ namespace Crowbar
     /// <summary>
     /// Defines an HTTP payload.
     /// </summary>
-    public class HttpPayload : ICrowbarHttpWorkerContext
+    public class HttpPayload : ICrowbarRequest
     {
-        private readonly ICrowbarHttpWorkerContext context;
+        private readonly ICrowbarRequest context;
 
         /// <summary>
         /// Creates an instance of <see cref="HttpPayload"/>.
@@ -31,37 +31,37 @@ namespace Crowbar
         /// <summary>
         /// Gets or sets the body.
         /// </summary>
-        string ICrowbarHttpWorkerContext.BodyString { get; set; }
+        string ICrowbarRequest.BodyString { get; set; }
 
         /// <summary>
         /// Gets or sets cookies.
         /// </summary>
-        HttpCookieCollection ICrowbarHttpWorkerContext.Cookies { get; set; }
+        HttpCookieCollection ICrowbarRequest.Cookies { get; set; }
 
         /// <summary>
         /// Gets or sets the form values.
         /// </summary>
-        NameValueCollection ICrowbarHttpWorkerContext.FormValues { get; set; }
+        NameValueCollection ICrowbarRequest.FormValues { get; set; }
 
         /// <summary>
         /// Gets or sets the headers.
         /// </summary>
-        NameValueCollection ICrowbarHttpWorkerContext.Headers { get; set; }
+        NameValueCollection ICrowbarRequest.Headers { get; set; }
 
         /// <summary>
         /// Gets or set the HTTP method.
         /// </summary>
-        string ICrowbarHttpWorkerContext.Method { get; set; }
+        string ICrowbarRequest.Method { get; set; }
 
         /// <summary>
         /// Gets or sets the protocol.
         /// </summary>
-        string ICrowbarHttpWorkerContext.Protocol { get; set; }
+        string ICrowbarRequest.Protocol { get; set; }
 
         /// <summary>
         /// Gets or sets the query string.
         /// </summary>
-        string ICrowbarHttpWorkerContext.QueryString { get; set; }
+        string ICrowbarRequest.QueryString { get; set; }
 
         /// <summary>
         /// Adds a header indicating that this is an AJAX request.

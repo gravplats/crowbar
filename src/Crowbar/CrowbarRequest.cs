@@ -8,14 +8,14 @@ namespace Crowbar
     /// </summary>
     public class CrowbarRequest
     {
-        private readonly ICrowbarHttpWorkerContext context;
+        private readonly ICrowbarRequest context;
 
         /// <summary>
         /// Creates an instance of <see cref="CrowbarRequest"/>.
         /// <param name="path">The requested path.</param>
         /// <param name="context">The request context.</param>
         /// </summary>
-        public CrowbarRequest(string path, ICrowbarHttpWorkerContext context)
+        public CrowbarRequest(string path, ICrowbarRequest context)
         {
             Path = path;
             this.context = context;
