@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="CrowbarControllerTests.cs" />
     <Compile Include="Web.Core\AjaxRequestsTests.cs" />
+    <Compile Include="Web.Core\CookieTests.cs" />
     <Compile Include="Web.Core\FormsAuthTests.cs" />
     <Compile Include="Web.Core\HeaderControllerTests.cs" />
     <Compile Include="Web.Core\ShouldBeTests.cs" />

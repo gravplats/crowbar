@@ -104,6 +104,9 @@
     <Compile Include="..\Crowbar.Tests.Mvc3\Core\AjaxRequestController.cs">
       <Link>Core\AjaxRequestController.cs</Link>
     </Compile>
+    <Compile Include="..\Crowbar.Tests.Mvc3\Core\CookieController.cs">
+      <Link>Core\CookieController.cs</Link>
+    </Compile>
     <Compile Include="..\Crowbar.Tests.Mvc3\Core\CrowbarExceptionController.cs">
       <Link>Core\CrowbarExceptionController.cs</Link>
     </Compile>

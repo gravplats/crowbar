@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="Core\AjaxRequestController.cs" />
+    <Compile Include="Core\CookieController.cs" />
     <Compile Include="Core\FormsAuthController.cs" />
     <Compile Include="Core\HeaderController.cs" />
     <Compile Include="Core\SubmitController.cs" />

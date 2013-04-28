@@ -3,7 +3,8 @@
     public static class CrowbarRoute
     {
         public const string AjaxRequest                     = "/ajax-request";
-        
+
+        public const string Cookie                          = "/cookie";
         public const string CustomConfig                    = "/custom-config";
 
         public const string FormsAuth                       = "/forms-auth";
