@@ -21,7 +21,7 @@ namespace Crowbar
         private readonly IRequestWaitHandle handle;
         private readonly RawHttpRequest rawHttpRequest;
 
-        public CrowbarHttpWorker(string path, ISimulatedWorkerRequestContext context, TextWriter output, CrowbarResponse response, IRequestWaitHandle handle)
+        public CrowbarHttpWorker(string path, ICrowbarHttpWorkerContext context, TextWriter output, CrowbarResponse response, IRequestWaitHandle handle)
 
             : base(path, context.QueryString, output)
         {

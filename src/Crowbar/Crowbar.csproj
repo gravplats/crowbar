@@ -81,7 +81,7 @@
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="IHideObjectMembers.cs" />
-    <Compile Include="ISimulatedWorkerRequestContext.cs" />
+    <Compile Include="ICrowbarHttpWorkerContext.cs" />
     <Compile Include="ClientResponse.cs" />
     <Compile Include="MvcApplication.cs" />
     <Compile Include="MvcApplicationProxy.cs" />

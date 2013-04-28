@@ -4,9 +4,9 @@ using System.Web;
 namespace Crowbar
 {
     /// <summary>
-    /// Defines the HTTP request message.
+    /// Defines the HTTP request payload.
     /// </summary>
-    public interface ISimulatedWorkerRequestContext
+    public interface ICrowbarHttpWorkerContext
     {
         /// <summary>
         /// Gets or sets the body.

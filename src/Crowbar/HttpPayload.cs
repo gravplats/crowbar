@@ -7,9 +7,9 @@ namespace Crowbar
     /// <summary>
     /// Defines an HTTP payload.
     /// </summary>
-    public class HttpPayload : ISimulatedWorkerRequestContext
+    public class HttpPayload : ICrowbarHttpWorkerContext
     {
-        private readonly ISimulatedWorkerRequestContext context;
+        private readonly ICrowbarHttpWorkerContext context;
 
         /// <summary>
         /// Creates an instance of <see cref="HttpPayload"/>.
@@ -31,37 +31,37 @@ namespace Crowbar
         /// <summary>
         /// Gets or sets the body.
         /// </summary>
-        string ISimulatedWorkerRequestContext.BodyString { get; set; }
+        string ICrowbarHttpWorkerContext.BodyString { get; set; }
 
         /// <summary>
         /// Gets or sets cookies.
         /// </summary>
-        HttpCookieCollection ISimulatedWorkerRequestContext.Cookies { get; set; }
+        HttpCookieCollection ICrowbarHttpWorkerContext.Cookies { get; set; }
 
         /// <summary>
         /// Gets or sets the form values.
         /// </summary>
-        NameValueCollection ISimulatedWorkerRequestContext.FormValues { get; set; }
+        NameValueCollection ICrowbarHttpWorkerContext.FormValues { get; set; }
 
         /// <summary>
         /// Gets or sets the headers.
         /// </summary>
-        NameValueCollection ISimulatedWorkerRequestContext.Headers { get; set; }
+        NameValueCollection ICrowbarHttpWorkerContext.Headers { get; set; }
 
         /// <summary>
         /// Gets or set the HTTP method.
         /// </summary>
-        string ISimulatedWorkerRequestContext.Method { get; set; }
+        string ICrowbarHttpWorkerContext.Method { get; set; }
 
         /// <summary>
         /// Gets or sets the protocol.
         /// </summary>
-        string ISimulatedWorkerRequestContext.Protocol { get; set; }
+        string ICrowbarHttpWorkerContext.Protocol { get; set; }
 
         /// <summary>
         /// Gets or sets the query string.
         /// </summary>
-        string ISimulatedWorkerRequestContext.QueryString { get; set; }
+        string ICrowbarHttpWorkerContext.QueryString { get; set; }
 
         /// <summary>
         /// Adds a header indicating that this is an AJAX request.
