@@ -4,14 +4,14 @@ using System.IO;
 namespace Crowbar
 {
     /// <summary>
-    /// Represents the response of the HTTP worker request.
+    /// Represents the response of the HTTP worker.
     /// </summary>
     public class CrowbarResponse
     {
         private readonly NameValueCollection headers;
 
         /// <summary>
-        /// Creates an instance of <see cref="Client"/>.
+        /// Creates an instance of <see cref="CrowbarResponse"/>.
         /// </summary>
         public CrowbarResponse()
         {

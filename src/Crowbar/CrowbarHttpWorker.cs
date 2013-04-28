@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
@@ -10,28 +9,20 @@ namespace Crowbar
 {
     internal class CrowbarHttpWorker : SimpleWorkerRequest
     {
+        private readonly CrowbarRequest request;
         private readonly CrowbarResponse response;
-        private readonly string bodyString;
-        private readonly HttpCookieCollection cookies;
-        private readonly NameValueCollection formValues;
-        private readonly NameValueCollection headers;
-        private readonly string method;
-        private readonly string protocol;
         private readonly IRequestWaitHandle handle;
+
         private readonly RawHttpRequest rawHttpRequest;
 
-        public CrowbarHttpWorker(string path, ICrowbarHttpWorkerContext context, CrowbarResponse response, IRequestWaitHandle handle)
-            : base(path, context.QueryString, response.Output)
+        public CrowbarHttpWorker(CrowbarRequest request, CrowbarResponse response, IRequestWaitHandle handle)
+            : base(request.Path, request.QueryString, response.Output)
         {
-            bodyString = context.BodyString;
-            cookies = context.Cookies;
-            formValues = context.FormValues;
-            headers = context.Headers;
-            method = context.Method;
-            protocol = context.Protocol;
+            this.request = request;
             this.response = response;
             this.handle = handle;
-            rawHttpRequest = new RawHttpRequest(method, protocol);
+
+            rawHttpRequest = new RawHttpRequest(request.Method, request.Protocol);
         }
 
         public override void EndOfRequest()
@@ -54,12 +45,12 @@ namespace Crowbar
 
         public override string GetProtocol()
         {
-            return protocol;
+            return request.Protocol;
         }
 
         public override string GetHttpVerbName()
         {
-            return method;
+            return request.Method;
         }
 
         public override string GetKnownRequestHeader(int index)
@@ -67,9 +58,9 @@ namespace Crowbar
             string name = GetKnownRequestHeaderName(index);
             string value = HandleKnownRequestHeader(index);
 
-            if (value == null && headers != null)
+            if (value == null && request.Headers != null)
             {
-                value = headers[name];
+                value = request.Headers[name];
             }
 
             rawHttpRequest.AddHeader(name, value);
@@ -83,12 +74,12 @@ namespace Crowbar
             {
                 case HeaderContentType:
 
-                    bool isDeletePostOrPut = string.Equals(method, "DELETE", StringComparison.OrdinalIgnoreCase) ||
-                                             string.Equals(method, "POST", StringComparison.OrdinalIgnoreCase) ||
-                                             string.Equals(method, "PUT", StringComparison.OrdinalIgnoreCase);
+                    bool isDeletePostOrPut = string.Equals(request.Method, "DELETE", StringComparison.OrdinalIgnoreCase) ||
+                                             string.Equals(request.Method, "POST", StringComparison.OrdinalIgnoreCase) ||
+                                             string.Equals(request.Method, "PUT", StringComparison.OrdinalIgnoreCase);
 
                     //Override "Content-Type" header for DELETE, POST and PUT requests, otherwise ASP.NET won't read the Form collection.
-                    if (index == HeaderContentType && isDeletePostOrPut && formValues.Count > 0)
+                    if (index == HeaderContentType && isDeletePostOrPut && request.FormValues.Count > 0)
                     {
                         return "application/x-www-form-urlencoded";
                     }
@@ -106,15 +97,15 @@ namespace Crowbar
 
         private string MakeCookieHeader()
         {
-            if ((cookies == null) || (cookies.Count == 0))
+            if ((request.Cookies == null) || (request.Cookies.Count == 0))
             {
                 return null;
             }
 
             var sb = new StringBuilder();
-            foreach (string cookieName in cookies)
+            foreach (string cookieName in request.Cookies)
             {
-                sb.AppendFormat("{0}={1};", cookieName, cookies[cookieName].Value);
+                sb.AppendFormat("{0}={1};", cookieName, request.Cookies[cookieName].Value);
             }
 
             return sb.ToString();
@@ -122,12 +113,12 @@ namespace Crowbar
 
         public override string GetUnknownRequestHeader(string name)
         {
-            if (headers == null)
+            if (request.Headers == null)
             {
                 return null;
             }
 
-            string value = headers[name];
+            string value = request.Headers[name];
             rawHttpRequest.AddHeader(name, value);
 
             return value;
@@ -135,15 +126,15 @@ namespace Crowbar
 
         public override string[][] GetUnknownRequestHeaders()
         {
-            if (headers == null)
+            if (request.Headers == null)
             {
                 return null;
             }
 
-            var unknownHeaders = from key in headers.Keys.Cast<string>()
+            var unknownHeaders = from key in request.Headers.Keys.Cast<string>()
                                  let knownRequestHeaderIndex = GetKnownRequestHeaderIndex(key)
                                  where knownRequestHeaderIndex < 0
-                                 select new[] { key, headers[key] };
+                                 select new[] { key, request.Headers[key] };
 
             foreach (string[] unknownHeader in unknownHeaders)
             {
@@ -172,17 +163,17 @@ namespace Crowbar
 
         private string HandlePreloadedEntityBody()
         {
-            if (!string.IsNullOrEmpty(bodyString))
+            if (!string.IsNullOrEmpty(request.RequestBody))
             {
-                return bodyString;
+                return request.RequestBody;
             }
 
-            if (formValues.Count > 0)
+            if (request.FormValues.Count > 0)
             {
                 var entries = new List<string>();
-                foreach (string key in formValues)
+                foreach (string key in request.FormValues)
                 {
-                    string[] values = formValues.GetValues(key);
+                    string[] values = request.FormValues.GetValues(key);
                     if (values == null)
                     {
                         continue;
@@ -202,7 +193,7 @@ namespace Crowbar
 
         public override bool IsSecure()
         {
-            return string.Equals(protocol, "https", StringComparison.OrdinalIgnoreCase);
+            return string.Equals(request.Protocol, "https", StringComparison.OrdinalIgnoreCase);
         }
 
         public override void SendCalculatedContentLength(int contentLength)

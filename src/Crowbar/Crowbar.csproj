@@ -58,6 +58,7 @@
     <Compile Include="As.cs" />
     <Compile Include="AssertException.cs" />
     <Compile Include="CrowbarHttpResponse.cs" />
+    <Compile Include="CrowbarRequest.cs" />
     <Compile Include="HttpPayload.cs" />
     <Compile Include="HttpPayloadExtensions.cs" />
     <Compile Include="ClientExtensions.cs" />
