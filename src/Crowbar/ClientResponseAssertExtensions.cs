@@ -19,7 +19,7 @@ namespace Crowbar
         /// <returns>The CQ object.</returns>
         public static CQ ShouldBeHtml(this ClientResponse response, Action<CQ> assertions = null)
         {
-            response.AssertContentType("text/html");
+            response.ShouldHaveContentType("text/html");
 
             CQ document;
 
@@ -46,7 +46,7 @@ namespace Crowbar
         /// <returns>The JSON object.</returns>
         public static dynamic ShouldBeJson(this ClientResponse response, Action<dynamic> assertions = null, string contentType = "application/json")
         {
-            response.AssertContentType(contentType);
+            response.ShouldHaveContentType(contentType);
 
             dynamic json;
 
@@ -76,7 +76,7 @@ namespace Crowbar
         /// <returns>An XElement.</returns>
         public static XElement ShouldBeXml(this ClientResponse response, Action<XElement> assertions = null, string contentType = "application/xml")
         {
-            response.AssertContentType(contentType);
+            response.ShouldHaveContentType(contentType);
 
             XElement xml;
 
@@ -92,6 +92,22 @@ namespace Crowbar
             assertions.TryInvoke(xml);
 
             return xml;
+        }
+
+        /// <summary>
+        /// Asserts that the response has the specified content type.
+        /// </summary>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
+        /// <param name="expectedContentType">The expected content type.</param>
+        public static void ShouldHaveContentType(this ClientResponse response, string expectedContentType)
+        {
+            string contentType = response.ContentType ?? string.Empty;
+            string[] values = contentType.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (!values.Contains(expectedContentType))
+            {
+                throw new AssertException("The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
+            }
         }
 
         /// <summary>
@@ -184,17 +200,6 @@ namespace Crowbar
             if (response.Headers["Location"] != location)
             {
                 throw new AssertException("Location should have been '{0}' but was '{1}'.", location, response.Headers["Location"]);
-            }
-        }
-
-        private static void AssertContentType(this ClientResponse response, string expectedContentType)
-        {
-            string contentType = response.ContentType ?? string.Empty;
-            string[] values = contentType.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (!values.Contains(expectedContentType))
-            {
-                throw new AssertException("The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
             }
         }
 
