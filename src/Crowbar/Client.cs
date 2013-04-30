@@ -89,18 +89,16 @@ namespace Crowbar
 
             CrowbarContext.Reset();
 
-            var request = new CrowbarRequest(path, payload);
-            var response = new CrowbarResponse();
+            var request = new CrowbarHttpRequestCapture(new CrowbarHttpRequest(path, payload));
+            var response = new CrowbarHttpResponse();
 
             using (var handle = CreateRequestWaitHandle())
             {
                 var worker = new CrowbarHttpWorker(request, response, handle);
                 HttpRuntime.ProcessRequest(worker);
-
                 handle.Wait();
 
-                string rawHttpRequest = worker.GetRawHttpRequest();
-                return CreateResponse(rawHttpRequest, response);
+                return CreateResponse(request, response);
             }
         }
 
@@ -116,14 +114,14 @@ namespace Crowbar
         /// <summary>
         /// Creates the client response.
         /// </summary>
-        /// <param name="rawHttpRequest">The raw HTTP request.</param>
-        /// <param name="response">The simulated HTTP response.</param>
+        /// <param name="request">The HTTP request.</param>
+        /// <param name="response">The HTTP response.</param>
         /// <returns>The client response.</returns>
-        protected virtual ClientResponse CreateResponse(string rawHttpRequest, CrowbarResponse response)
+        protected virtual ClientResponse CreateResponse(ICrowbarHttpRequest request, CrowbarHttpResponse response)
         {
             if (CrowbarContext.ExceptionContext != null)
             {
-                Throw(rawHttpRequest);
+                Throw(request);
             }
 
             return new ClientResponse
@@ -139,7 +137,7 @@ namespace Crowbar
                 },
                 Headers = response.GetHeaders(),
                 ResponseBody = response.GetResponseBody(),
-                RawHttpRequest = rawHttpRequest,
+                RawHttpRequest = request.ToString(),
                 StatusCode = response.StatusCode,
                 StatusDescription = response.StatusDescription
             };
@@ -148,14 +146,14 @@ namespace Crowbar
         /// <summary>
         /// Throws an exception due to an error during the request.
         /// </summary>
-        /// <param name="rawHttpRequest">The raw HTTP request.</param>
-        protected virtual void Throw(string rawHttpRequest)
+        /// <param name="request">The HTTP request.</param>
+        protected virtual void Throw(ICrowbarHttpRequest request)
         {
             using (var writer = new StringWriter())
             {
                 writer.WriteLine("The MVC application threw an exception during the following HTTP request:");
                 writer.WriteLine();
-                writer.WriteLine(rawHttpRequest);
+                writer.WriteLine(request);
 
                 var exception = CrowbarContext.ExceptionContext.Exception;
                 if (exception.IsSerializable())

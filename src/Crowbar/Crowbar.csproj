@@ -57,7 +57,8 @@
     <Compile Include="AdvancedClientResponse.cs" />
     <Compile Include="As.cs" />
     <Compile Include="AssertException.cs" />
-    <Compile Include="CrowbarRequest.cs" />
+    <Compile Include="CrowbarHttpRequest.cs" />
+    <Compile Include="CrowbarHttpRequestCapture.cs" />
     <Compile Include="HttpPayload.cs" />
     <Compile Include="HttpPayloadExtensions.cs" />
     <Compile Include="ClientExtensions.cs" />
@@ -69,15 +70,15 @@
     <Compile Include="CQExtensions.cs" />
     <Compile Include="CrowbarException.cs" />
     <Compile Include="Ensure.cs" />
+    <Compile Include="ICrowbarHttpRequest.cs" />
     <Compile Include="IHttpPayloadDefaults.cs" />
     <Compile Include="IPathProvider.cs" />
     <Compile Include="IProxy.cs" />
     <Compile Include="IRequestWaitHandle.cs" />
     <Compile Include="RequestWaitHandle.cs" />
-    <Compile Include="CrowbarResponse.cs" />
+    <Compile Include="CrowbarHttpResponse.cs" />
     <Compile Include="WebConfigPathProvider.cs" />
     <Compile Include="WebProjectPathProvider.cs" />
-    <Compile Include="RawHttpRequest.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="IHideObjectMembers.cs" />

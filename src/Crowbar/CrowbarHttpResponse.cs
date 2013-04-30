@@ -6,14 +6,14 @@ namespace Crowbar
     /// <summary>
     /// Represents the response of the HTTP worker.
     /// </summary>
-    public class CrowbarResponse
+    public class CrowbarHttpResponse
     {
         private readonly NameValueCollection headers;
 
         /// <summary>
-        /// Creates an instance of <see cref="CrowbarResponse"/>.
+        /// Creates an instance of <see cref="CrowbarHttpResponse"/>.
         /// </summary>
-        public CrowbarResponse()
+        public CrowbarHttpResponse()
         {
             headers = new NameValueCollection();
             Output = new StringWriter();

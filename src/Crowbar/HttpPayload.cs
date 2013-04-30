@@ -31,7 +31,7 @@ namespace Crowbar
         /// <summary>
         /// Gets or sets the body.
         /// </summary>
-        string ICrowbarRequest.BodyString { get; set; }
+        string ICrowbarRequest.RequestBody { get; set; }
 
         /// <summary>
         /// Gets or sets cookies.
@@ -80,7 +80,7 @@ namespace Crowbar
         /// <param name="contentType">The content type.</param>
         public HttpPayload Body(string body, string contentType = "application/octet-stream")
         {
-            context.BodyString = body;
+            context.RequestBody = body;
             context.Headers["Content-Type"] = contentType;
 
             return this;
@@ -107,7 +107,7 @@ namespace Crowbar
         /// <returns>The current HTTP payload.</returns>
         public HttpPayload FormValue(string key, string value)
         {
-            if (!string.IsNullOrWhiteSpace(context.BodyString))
+            if (!string.IsNullOrWhiteSpace(context.RequestBody))
             {
                 throw new InvalidOperationException("Form value cannot be set as well as body string.");
             }

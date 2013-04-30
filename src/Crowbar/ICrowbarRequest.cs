@@ -11,7 +11,7 @@ namespace Crowbar
         /// <summary>
         /// Gets or sets the body.
         /// </summary>
-        string BodyString { get; set; }
+        string RequestBody { get; set; }
 
         /// <summary>
         /// Gets or sets cookies.
