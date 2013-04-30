@@ -18,6 +18,12 @@ namespace Crowbar
         }
 
         /// <inheritdoc />
+        public void Dispose()
+        {
+            evt.Dispose();
+        }
+
+        /// <inheritdoc />
         public void Signal()
         {
             evt.Set();

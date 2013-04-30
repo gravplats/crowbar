@@ -91,15 +91,17 @@ namespace Crowbar
 
             var request = new CrowbarRequest(path, payload);
             var response = new CrowbarResponse();
-            var handle = CreateRequestWaitHandle();
 
-            var worker = new CrowbarHttpWorker(request, response, handle);
-            HttpRuntime.ProcessRequest(worker);
+            using (var handle = CreateRequestWaitHandle())
+            {
+                var worker = new CrowbarHttpWorker(request, response, handle);
+                HttpRuntime.ProcessRequest(worker);
 
-            handle.Wait();
+                handle.Wait();
 
-            string rawHttpRequest = worker.GetRawHttpRequest();
-            return CreateResponse(rawHttpRequest, response);
+                string rawHttpRequest = worker.GetRawHttpRequest();
+                return CreateResponse(rawHttpRequest, response);
+            }
         }
 
         /// <summary>
