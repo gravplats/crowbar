@@ -11,12 +11,12 @@ namespace Crowbar
     public class ClientResponse
     {
         /// <summary>
-        /// Gets various context objects collected during the request.
+        /// Gets various context objects collected during the HTTP request cycle.
         /// </summary>
         public AdvancedClientResponse Advanced { get; internal set; }
 
         /// <summary>
-        /// Gets the Content Type of the HTTP response.
+        /// Gets the content type of the HTTP response.
         /// </summary>
         public string ContentType
         {
@@ -29,14 +29,14 @@ namespace Crowbar
         public NameValueCollection Headers { get; internal set; }
 
         /// <summary>
-        /// Gets the HTTP response body.
-        /// </summary>
-        public string ResponseBody { get; internal set; }
-
-        /// <summary>
         /// Gets the raw HTTP request that was sent to the server.
         /// </summary>
         public string RawHttpRequest { get; internal set; }
+
+        /// <summary>
+        /// Gets the HTTP response body.
+        /// </summary>
+        public string ResponseBody { get; internal set; }
 
         /// <summary>
         /// Gets the HTTP Status Code of the HTTP response.

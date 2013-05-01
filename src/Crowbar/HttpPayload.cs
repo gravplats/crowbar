@@ -7,9 +7,9 @@ namespace Crowbar
     /// <summary>
     /// Defines an HTTP payload.
     /// </summary>
-    public class HttpPayload : ICrowbarRequest
+    public class HttpPayload : IHttpPayload
     {
-        private readonly ICrowbarRequest context;
+        private readonly IHttpPayload context;
 
         /// <summary>
         /// Creates an instance of <see cref="HttpPayload"/>.
@@ -29,39 +29,39 @@ namespace Crowbar
         }
 
         /// <summary>
-        /// Gets or sets the body.
-        /// </summary>
-        string ICrowbarRequest.RequestBody { get; set; }
-
-        /// <summary>
         /// Gets or sets cookies.
         /// </summary>
-        HttpCookieCollection ICrowbarRequest.Cookies { get; set; }
+        HttpCookieCollection IHttpPayload.Cookies { get; set; }
 
         /// <summary>
         /// Gets or sets the form values.
         /// </summary>
-        NameValueCollection ICrowbarRequest.FormValues { get; set; }
+        NameValueCollection IHttpPayload.FormValues { get; set; }
 
         /// <summary>
         /// Gets or sets the headers.
         /// </summary>
-        NameValueCollection ICrowbarRequest.Headers { get; set; }
+        NameValueCollection IHttpPayload.Headers { get; set; }
 
         /// <summary>
         /// Gets or set the HTTP method.
         /// </summary>
-        string ICrowbarRequest.Method { get; set; }
+        string IHttpPayload.Method { get; set; }
 
         /// <summary>
         /// Gets or sets the protocol.
         /// </summary>
-        string ICrowbarRequest.Protocol { get; set; }
+        string IHttpPayload.Protocol { get; set; }
+
+        /// <summary>
+        /// Gets or sets the body.
+        /// </summary>
+        string IHttpPayload.RequestBody { get; set; }
 
         /// <summary>
         /// Gets or sets the query string.
         /// </summary>
-        string ICrowbarRequest.QueryString { get; set; }
+        string IHttpPayload.QueryString { get; set; }
 
         /// <summary>
         /// Adds a header indicating that this is an AJAX request.

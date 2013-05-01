@@ -3,7 +3,7 @@
 namespace Crowbar
 {
     /// <summary>
-    /// The default HTTP request synchronization implementation.
+    /// The default implementation for synchronizing an HTTP request.
     /// </summary>
     public class RequestWaitHandle : IRequestWaitHandle
     {

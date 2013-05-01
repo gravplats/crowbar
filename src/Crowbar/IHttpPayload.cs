@@ -6,13 +6,8 @@ namespace Crowbar
     /// <summary>
     /// Defines the HTTP request payload.
     /// </summary>
-    public interface ICrowbarRequest
+    public interface IHttpPayload
     {
-        /// <summary>
-        /// Gets or sets the body.
-        /// </summary>
-        string RequestBody { get; set; }
-
         /// <summary>
         /// Gets or sets cookies.
         /// </summary>
@@ -37,6 +32,11 @@ namespace Crowbar
         /// Gets or sets the protocol.
         /// </summary>
         string Protocol { get; set; }
+
+        /// <summary>
+        /// Gets or sets the body.
+        /// </summary>
+        string RequestBody { get; set; }
 
         /// <summary>
         /// Gets or sets the query string.

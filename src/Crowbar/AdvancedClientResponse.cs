@@ -5,7 +5,7 @@ using System.Web.SessionState;
 namespace Crowbar
 {
     /// <summary>
-    /// Provides access to various state objects during an HTTP request cycle.
+    /// Provides access to various state objects collected during the HTTP request cycle.
     /// </summary>
     public class AdvancedClientResponse
     {

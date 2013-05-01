@@ -210,7 +210,7 @@ namespace Crowbar
 
             var uri = new Uri("http://localhost");
 
-            // parse 'Set-Cookie' header, is there a better way without taking a dependency on HttpResponse?
+            // parse 'Set-Cookie' header, is there a better way other than taking a dependency on HttpResponse?
             container.SetCookies(uri, header);
             var cookies = container.GetCookies(uri);
 

@@ -14,7 +14,7 @@ namespace Crowbar
         /// <summary>
         /// Creates an instance of <see cref="Client"/>.
         /// </summary>
-        /// <param name="defaults">Default HTTP payload settings, if any.</param>
+        /// <param name="defaults">The default HTTP payload settings, if any.</param>
         public Client(IHttpPayloadDefaults defaults = null)
         {
             this.defaults = defaults;

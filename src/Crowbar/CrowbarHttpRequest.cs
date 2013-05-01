@@ -11,17 +11,17 @@ namespace Crowbar
     /// </summary>
     public class CrowbarHttpRequest : ICrowbarHttpRequest
     {
-        private readonly ICrowbarRequest request;
+        private readonly IHttpPayload payload;
 
         /// <summary>
         /// Creates an instance of <see cref="CrowbarHttpRequest"/>.
         /// <param name="path">The requested path.</param>
-        /// <param name="request">The request.</param>
+        /// <param name="payload">The payload.</param>
         /// </summary>
-        public CrowbarHttpRequest(string path, ICrowbarRequest request)
+        public CrowbarHttpRequest(string path, IHttpPayload payload)
         {
             Path = path;
-            this.request = request;
+            this.payload = payload;
         }
 
         /// <inheritdoc />
@@ -30,23 +30,23 @@ namespace Crowbar
         /// <inheritdoc />
         public string QueryString
         {
-            get { return request.QueryString; }
+            get { return payload.QueryString; }
         }
 
         /// <inheritdoc />
         public string GetRequestBody()
         {
-            if (!string.IsNullOrEmpty(request.RequestBody))
+            if (!string.IsNullOrEmpty(payload.RequestBody))
             {
-                return request.RequestBody;
+                return payload.RequestBody;
             }
 
-            if (request.FormValues.Count > 0)
+            if (payload.FormValues.Count > 0)
             {
                 var entries = new List<string>();
-                foreach (string key in request.FormValues)
+                foreach (string key in payload.FormValues)
                 {
-                    string[] values = request.FormValues.GetValues(key);
+                    string[] values = payload.FormValues.GetValues(key);
                     if (values == null)
                     {
                         continue;
@@ -68,9 +68,9 @@ namespace Crowbar
         public string GetHeader(string name, int index = -1)
         {
             string value = CreateKnownRequestHeaderValue(index);
-            if (value == null && request.Headers != null)
+            if (value == null && payload.Headers != null)
             {
-                value = request.Headers[name];
+                value = payload.Headers[name];
             }
 
             return value;
@@ -78,19 +78,19 @@ namespace Crowbar
 
         public IEnumerable<string> GetHeaderNames()
         {
-            return request.Headers.Keys.Cast<string>();
+            return payload.Headers.Keys.Cast<string>();
         }
 
         /// <inheritdoc />
         public string GetMethod()
         {
-            return request.Method;
+            return payload.Method;
         }
 
         /// <inheritdoc />
         public string GetProtocol()
         {
-            return request.Protocol;
+            return payload.Protocol;
         }
 
         /// <inheritdoc />
@@ -101,13 +101,13 @@ namespace Crowbar
 
         private string CreateContentTypeHeader()
         {
-            bool isDeletePostOrPut = string.Equals(request.Method, "DELETE", StringComparison.OrdinalIgnoreCase) ||
-                                     string.Equals(request.Method, "POST", StringComparison.OrdinalIgnoreCase) ||
-                                     string.Equals(request.Method, "PUT", StringComparison.OrdinalIgnoreCase);
+            bool isDeletePostOrPut = string.Equals(payload.Method, "DELETE", StringComparison.OrdinalIgnoreCase) ||
+                                     string.Equals(payload.Method, "POST", StringComparison.OrdinalIgnoreCase) ||
+                                     string.Equals(payload.Method, "PUT", StringComparison.OrdinalIgnoreCase);
 
             // override "Content-Type" header for DELETE, POST and PUT requests, otherwise ASP.NET won't 
             // read the Form collection.
-            if (isDeletePostOrPut && request.FormValues.Count > 0)
+            if (isDeletePostOrPut && payload.FormValues.Count > 0)
             {
                 return "application/x-www-form-urlencoded";
             }
@@ -117,15 +117,15 @@ namespace Crowbar
 
         private string CreateCookieHeader()
         {
-            if ((request.Cookies == null) || (request.Cookies.Count == 0))
+            if ((payload.Cookies == null) || (payload.Cookies.Count == 0))
             {
                 return null;
             }
 
             var cookies = new StringBuilder();
-            foreach (string cookieName in request.Cookies)
+            foreach (string cookieName in payload.Cookies)
             {
-                var cookie = request.Cookies[cookieName];
+                var cookie = payload.Cookies[cookieName];
                 if (cookie == null)
                 {
                     continue;

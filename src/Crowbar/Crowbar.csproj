@@ -82,7 +82,7 @@
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="IHideObjectMembers.cs" />
-    <Compile Include="ICrowbarRequest.cs" />
+    <Compile Include="IHttpPayload.cs" />
     <Compile Include="ClientResponse.cs" />
     <Compile Include="MvcApplication.cs" />
     <Compile Include="MvcApplicationProxy.cs" />
