@@ -1,7 +1,7 @@
 ﻿Crowbar - because sometimes you need leverage
 =============================================
 
-Crowbar is an application testing library for ASP.NET MVC 3 and 4.
+Crowbar is an application testing library for ASP.NET MVC 3 and 4. It is available as a [NuGet](http://nuget.org/packages/Crowbar/).
 
 Credits
 -------
@@ -37,13 +37,14 @@ Table of Contents
     * [Headers](#section-clientresponse-headers)
     * [ResponseBody](#section-clientresponse-responsebody)
     * [StatusCode](#section-clientresponse-statuscode)
+    * [StatusDescription](#section-clientresponse-statusdescription)
     * [AsCsQuery](#section-clientresponse-ascsquery)
     * [AsJson](#section-clientresponse-asjson)
     * [AsXml](#section-clientresponse-asxml)
     * [Extensions](#section-clientresponse-extensions)
+* [Migration Guide](#section-migration-guide)
 * [Samples](#section-samples)
 * [Troubleshooting](#section-troubleshooting)
-* [Known Issues](#section-known-issues)
 * [Changelog](#section-changelog)
 
 <a name="section-mvcapplication"></a>
@@ -92,7 +93,7 @@ public class MvcApplicationTests
 }
 ```
 
-By default, Crowbar, `WebProjectPathProvider`, will attempt to locate the web project in the base directory of the current `AppDomain`, if the web project is not found in the base directory Crowbar will move up one directory at a time until it reaches the root. If the web project is not found Crowbar will throw an exception. Crowbar, `WebConfigPathProvider`, will look for Web.config in the base directory of the current `AppDomain`. Should your web project and/or Web.config be located in a different location you will have to provide your own implementation of `IPathProvider` and pass it/them to `MvcApplicationFactory.Create()`.
+By default, Crowbar, `WebProjectPathProvider`, will attempt to locate the web project in the base directory of the current `AppDomain`, if the web project is not found in the base directory Crowbar will move up one directory at a time until it reaches the root. If the web project is not found Crowbar will throw an exception. Crowbar, `WebConfigPathProvider`, will look for Web.config in the base directory of the current `AppDomain`. Should your web project and/or configuration file be located in a different location you will have to provide your own implementation of `IPathProvider` and pass it to `MvcApplicationFactory.Create()`.
 
 ``` csharp
 public static class MvcApplicationFacade
@@ -115,7 +116,8 @@ public static class MvcApplicationFacade
 
     public static MvcApplication Create()
     {
-        return MvcApplicationFactory.Create(new CustomWebProjectPathProvider(), new CustomWebConfigPathProvider());
+        return MvcApplicationFactory.Create<THttpApplication>(
+			new CustomWebProjectPathProvider(), new CustomWebConfigPathProvider());
     }
 }
 
@@ -146,7 +148,7 @@ In order to initialize the user-defined context we need to defined our own proxy
 ``` csharp
 public class AppProxy : MvcApplicationProxyBase<MvcHttpApplication, UserDefinedContext>
 {
-    protected override void OnApplicationStart(MvcHttpApplication application)
+    protected override void OnApplicationStart(MvcHttpApplication application, string testBaseDirectory)
     {
          // This method will run once; after the application has been initialized by prior to any test.
     }	
@@ -166,7 +168,10 @@ public class AppProxy : MvcApplicationProxyBase<MvcHttpApplication, UserDefinedC
 <a name="section-mvcapplication-config"></a>
 ### User-Supplied Web.config
 
-By default Crowbar tries to use the Web.config defined in the ASP.NET MVC project, even though this is somewhat instable at times (the configuration file has not been replaced in the pre-initialization phase, i.e., WebActivator.PreApplicationStartMethod). To counter any problems with the configuration of the MVC project it is possible and highly recommended to use a custom configuration file. The name of the custom configuration file can be supplied as the second argument to `MvcApplication.Create()`. The custom configration file should be defined in the test project. Please note that the configuration file must be copied to the output directory by setting _Copy to Output Directory_ to either _Copy always_ or _Copy if newer_.
+By default Crowbar tries to use the Web.config defined in the ASP.NET MVC project. To counter any problems with the configuration of the MVC project it is possible to use a custom configuration file. The name of the custom configuration file can be supplied as the second argument to `MvcApplication.Create()`. The custom configuration file should be defined in the test project. The file must be copied to the output directory by setting _Copy to Output Directory_ to either _Copy always_ or _Copy if newer_.
+
+Please note that the configuration file has not been replaced in the pre-initialization phase, i.e. when running any method specified by the `PreApplicationStartMethodAttribute` from the [.NET framework](http://msdn.microsoft.com/en-us/library/system.web.preapplicationstartmethodattribute.aspx) or from [WebActivator](http://nuget.org/packages/WebActivator/).
+
 
 ``` csharp
 private static readonly MvcApplication Application =
@@ -196,7 +201,7 @@ private static readonly MvcApplication Application =
 Client
 -------
 
-An instance of the `Client` class enables us to interact with an ASP.NET MVC application by performing requests.
+An instance of the `Client` class enables us to interact with the ASP.NET MVC application by performing requests.
 
 ``` csharp
 var response = client.PerformRequest("GET", "/route");
@@ -366,17 +371,17 @@ The `ClientResponse` class defines the properties of the HTTP response.
 <a name="section-clientresponse-advanced"></a>
 ### Advanced
 
-The `Advanced` property provides access to various ASP.NET MVC context objects which are collected during the request.
+The `Advanced` property provides access to various ASP.NET MVC context objects collected during the request.
 
 <a name="section-clientresponse-contenttype"></a>
 ### ContentType
 
-Returns the content type of the request.
+Returns the content type of the response.
 
 <a name="section-clientresponse-headers"></a>
-### Headers (faked)
+### Headers
 
-Provides access to the _Location_ header if the response is a redirect.
+Provides access to the HTTP response headers.
 
 <a name="section-clientresponse-responsebody"></a>
 ### ResponseBody
@@ -387,6 +392,11 @@ Returns the string representation of the body of the response.
 ### StatusCode
 
 Returns the HTTP status code of the response.
+
+<a name="section-clientresponse-statusdescription"></a>
+### StatusDescription
+
+Returns the HTTP status description of the response.
 
 <a name="section-clientresponse-ascsquery"></a>
 ### AsCsQuery
@@ -470,6 +480,12 @@ Asserts that the HTTP status code is 'HTTP Status 302 Found', that the header _L
 ``` csharp
 response.ShouldHaveTemporarilyRedirectTo("/location");
 ```
+<a name="section-migration-guide"></a>
+Migration Guide
+---------------
+
+If you're upgrading from v0.9.x to v0.10 please consult the [migration guide](https://github.com/coderesque/crowbar/wiki/v0.9.x-to-v0.10-migration-guide).
+
 <a name="section-samples"></a>
 Samples
 -------
@@ -486,7 +502,7 @@ The project contains several sample applications (which doubles as sanity test p
 Troubleshooting
 ---------------
 
-Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4 and experience odd behavior consider adding a binding redirect in the root Web.config.
+Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4 then you should add a binding redirect in the root Web.config.
 
 ``` xml
   <configuration>
@@ -501,12 +517,6 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
   <configuration>
 ```
 
-<a name="section-known-issues"></a>
-Known Issues
-------------
-
-Tests exercising asynchronous action methods, `public async Task<ActionResult> ActionAsync() { ... }`, will fail when `<httpRuntime targetFramework="4.5" />` is defined in Web.config.
-
 <a name="section-changelog"></a>
 Changelog
 ---------
@@ -518,6 +528,9 @@ v0.10
 * Breaking change: the `BrowserContext` class has been renamed `HttpPayload`.
 * Breaking change: the `Browser*` classes (`Browser`, `BrowserResponse` etc) has been renamed `Client*` (`Client`, `ClientResponse` etc).
 * Breaking change: the parameter for the default HTTP payload settings is now an interface instead of a delegate. The use of a delegate forced a second initialization of the proxy.
+* Proper support for asynchronous action method.
+* Proper support for response headers.
+* Breaking change: the `ClientResponse.HttpResponse` has been moved to `Client.Advanced.HttpResponse`. Furthermore, the dependency on the HTTP response object has been removed from the properties in `ClientResponse`, e.g. the content type and the status code is read from the response of the HTTP worker request instead of the HTTP response collected during the request.
 
 v0.9.6
 
