@@ -35,5 +35,53 @@ namespace Crowbar
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>
         protected AssertException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+
+        /// <summary>
+        /// Creates an instance of <see cref="AssertException"/>.
+        /// </summary>
+        /// <param name="response">The client response.</param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <returns>An assert exception.</returns>
+        public static AssertException Create(ClientResponse response, string message)
+        {
+            message = ExtendMessage(response, message);
+            return new AssertException(message);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="AssertException"/>.
+        /// </summary>
+        /// <param name="response">The client response.</param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="args">An object array that contains zero or more object to format.</param>
+        /// <returns>An assert exception.</returns>
+        public static AssertException Create(ClientResponse response, string message, params object[] args)
+        {
+            message = ExtendMessage(response, message);
+            return new AssertException(message, args);
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="AssertException"/>.
+        /// </summary>
+        /// <param name="response">The client response.</param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The inner exception.</param>
+        /// <returns>An assert exception.</returns>
+        public static AssertException Create(ClientResponse response, string message, Exception innerException)
+        {
+            message = ExtendMessage(response, message);
+            return new AssertException(message, innerException);
+        }
+
+        private static string ExtendMessage(ClientResponse response, string message)
+        {
+            if (response != null)
+            {
+                message += Environment.NewLine + Environment.NewLine + response.RawHttpResponse;
+            }
+
+            return message;
+        }
     }
 }

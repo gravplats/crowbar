@@ -34,6 +34,11 @@ namespace Crowbar
         public string RawHttpRequest { get; internal set; }
 
         /// <summary>
+        /// Gets the raw HTTP response that was sent from the server.
+        /// </summary>
+        public string RawHttpResponse { get; internal set; }
+
+        /// <summary>
         /// Gets the HTTP response body.
         /// </summary>
         public string ResponseBody { get; internal set; }

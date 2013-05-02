@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.IO;
 
 namespace Crowbar
@@ -19,9 +20,6 @@ namespace Crowbar
             Output = new StringWriter();
         }
 
-        /// <summary>
-        /// Used to captures the response body.
-        /// </summary>
         internal StringWriter Output { get; set; }
 
         /// <summary>
@@ -65,6 +63,24 @@ namespace Crowbar
         public string GetResponseBody()
         {
             return Output.ToString();
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            using (var writer = new StringWriter())
+            {
+                writer.WriteLine("HTTP/1.0 {0} {1}", (int)StatusCode, StatusDescription);
+                foreach (string name in headers)
+                {
+                    string value = headers[name];
+                    writer.WriteLine("{0}: {1}", name, value);
+                }
+
+                writer.WriteLine(Environment.NewLine + Output);
+
+                return writer.ToString();
+            }
         }
     }
 }

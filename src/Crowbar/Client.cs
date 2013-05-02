@@ -138,6 +138,7 @@ namespace Crowbar
                 Headers = response.GetHeaders(),
                 ResponseBody = response.GetResponseBody(),
                 RawHttpRequest = request.ToString(),
+                RawHttpResponse = response.ToString(),
                 StatusCode = response.StatusCode,
                 StatusDescription = response.StatusDescription
             };

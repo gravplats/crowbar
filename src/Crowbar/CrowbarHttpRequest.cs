@@ -76,6 +76,7 @@ namespace Crowbar
             return value;
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> GetHeaderNames()
         {
             return payload.Headers.Keys.Cast<string>();

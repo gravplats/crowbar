@@ -30,7 +30,7 @@ namespace Crowbar
             }
             catch (Exception exception)
             {
-                throw new AssertException("Failed to convert response body into a CQ object.", exception);
+                throw AssertException.Create(response, "Failed to convert response body into a CQ object.", exception);
             }
 
             assertions.TryInvoke(document);
@@ -57,7 +57,7 @@ namespace Crowbar
             }
             catch (Exception exception)
             {
-                throw new AssertException("Failed to convert response body into JSON.", exception);
+                throw AssertException.Create(response, "Failed to convert response body into JSON.", exception);
             }
 
             if (assertions != null)
@@ -87,7 +87,7 @@ namespace Crowbar
             }
             catch (Exception exception)
             {
-                throw new AssertException("Failed to convert response body into XML.", exception);
+                throw AssertException.Create(response, "Failed to convert response body into XML.", exception);
             }
 
             assertions.TryInvoke(xml);
@@ -107,7 +107,7 @@ namespace Crowbar
 
             if (!values.Contains(expectedContentType))
             {
-                throw new AssertException("The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
+                throw AssertException.Create(response, "The content type should have been '{0}' but was '{1}'.", expectedContentType, response.ContentType);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Crowbar
             var cookie = response.ParseCookie(name);
             if (cookie == null)
             {
-                throw new AssertException("Missing cookie '{0}'.", name);
+                throw AssertException.Create(response, "Missing cookie '{0}'.", name);
             }
 
             return cookie;
@@ -142,7 +142,7 @@ namespace Crowbar
             var cookie = response.ShouldHaveCookie(name);
             if (!string.Equals(cookie.Value, value, StringComparison.Ordinal))
             {
-                throw new AssertException("The value of cookie '{0}' should have been '{1}' but was '{2}'.", name, value, cookie.Value);
+                throw AssertException.Create(response, "The value of cookie '{0}' should have been '{1}' but was '{2}'.", name, value, cookie.Value);
             }
 
             return cookie;
@@ -160,7 +160,7 @@ namespace Crowbar
             var cookie = response.ParseCookie(name);
             if (cookie != null)
             {
-                throw new AssertException("Unexpected cookie '{0}'.", name);
+                throw AssertException.Create(response, "Unexpected cookie '{0}'.", name);
             }
         }
 
@@ -188,7 +188,7 @@ namespace Crowbar
         {
             if (response.StatusCode != expectedStatusCode)
             {
-                throw new AssertException("HTTP status code should have been '{0}' but was '{1}'.", expectedStatusCode, response.StatusCode);
+                throw AssertException.Create(response, "HTTP status code should have been '{0}' but was '{1}'.", expectedStatusCode, response.StatusCode);
             }
         }
 
@@ -198,7 +198,7 @@ namespace Crowbar
 
             if (response.Headers["Location"] != location)
             {
-                throw new AssertException("Location should have been '{0}' but was '{1}'.", location, response.Headers["Location"]);
+                throw AssertException.Create(response, "Location should have been '{0}' but was '{1}'.", location, response.Headers["Location"]);
             }
         }
 
