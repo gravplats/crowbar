@@ -11,9 +11,7 @@ namespace Crowbar
         private readonly Dictionary<string, string> headers = new Dictionary<string, string>();
 
         private string body;
-        private string method;
         private string url;
-        private string protocol;
 
         private readonly ICrowbarHttpRequest request;
 
@@ -76,13 +74,13 @@ namespace Crowbar
         /// <inheritdoc />
         public string GetMethod()
         {
-            return method = request.GetMethod();
+            return request.GetMethod();
         }
 
         /// <inheritdoc />
         public string GetProtocol()
         {
-            return protocol = request.GetProtocol();
+            return request.GetProtocol();
         }
 
         /// <inheritdoc />
@@ -96,7 +94,7 @@ namespace Crowbar
         {
             using (var writer = new StringWriter())
             {
-                writer.WriteLine("{0} {1}://localhost{2}", method.ToUpper(), protocol, url);
+                writer.WriteLine("{0} {1}://localhost{2}", request.GetMethod().ToUpper(), request.GetProtocol(), url);
                 foreach (var header in headers)
                 {
                     writer.WriteLine("{0}: {1}", header.Key, header.Value);
