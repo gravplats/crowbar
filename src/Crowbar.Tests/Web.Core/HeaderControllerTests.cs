@@ -11,8 +11,8 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var response = client.Get(CrowbarRoute.Header);
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-
+                
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
                 response.ShouldHaveHeader("X-Crowbar", "crowbar");
             });
         }

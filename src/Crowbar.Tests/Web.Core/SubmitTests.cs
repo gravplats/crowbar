@@ -17,8 +17,7 @@ namespace Crowbar.Tests.Web.Core
                 var payload = new TextBoxPayload { Text = "text" };
 
                 var response = client.Render(context, payload).Submit(x => x.FormsAuth(username));
-
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -29,9 +28,9 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var payload = new CheckBoxPayload { Condition = condition, SanityCheck = condition.ToString() };
-                var response = client.Render("~/Views/Partials/_FormCheckBox.cshtml", payload).Submit();
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                var response = client.Render("~/Views/Partials/_FormCheckBox.cshtml", payload).Submit();
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -48,7 +47,7 @@ namespace Crowbar.Tests.Web.Core
                     form.Find("input[type=\"checkbox\"]").Get(0).Checked = model.Condition;
                 });
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -58,9 +57,9 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
-                var response = client.Render("~/Views/Partials/_FormTextBox.cshtml", payload).Submit();
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                var response = client.Render("~/Views/Partials/_FormTextBox.cshtml", payload).Submit();
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -75,7 +74,7 @@ namespace Crowbar.Tests.Web.Core
                     form.Find("input[type=\"text\"]").Val(model.Text);
                 });
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -85,9 +84,9 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var payload = new TextBoxPayload { Text = "text" };
+                
                 var response = client.Render("~/Views/Partials/_FormTextArea.cshtml", payload).Submit();
-
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -102,7 +101,7 @@ namespace Crowbar.Tests.Web.Core
                     form.Find("textarea").Text(model.Text);
                 });
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -130,8 +129,7 @@ namespace Crowbar.Tests.Web.Core
                 };
 
                 var response = client.Render("~/Views/Partials/_FormDropDown.cshtml", payload).Submit();
-
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -150,7 +148,7 @@ namespace Crowbar.Tests.Web.Core
                     form.Find("select").Val(model.Value);
                 });
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -166,7 +164,7 @@ namespace Crowbar.Tests.Web.Core
                 };
 
                 var response = client.Render("~/Views/Partials/_MultipleForms.cshtml", payload).Submit(selector: "form.js-form2");
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
 
@@ -185,8 +183,8 @@ namespace Crowbar.Tests.Web.Core
                 {
                     form.Find("input[type='hidden']").Val(payload.Form2);
                 }, selector: "form.js-form2");
-                
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
     }

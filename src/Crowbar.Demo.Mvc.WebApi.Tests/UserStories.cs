@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-
-namespace Crowbar.Demo.Mvc.WebApi.Tests
+﻿namespace Crowbar.Demo.Mvc.WebApi.Tests
 {
     public class As_a_user_requesting_crowbars : UserStory
     {
@@ -10,7 +8,7 @@ namespace Crowbar.Demo.Mvc.WebApi.Tests
             Application.Execute(client =>
             {
                 var response = client.Get("api/crowbars");
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
     }

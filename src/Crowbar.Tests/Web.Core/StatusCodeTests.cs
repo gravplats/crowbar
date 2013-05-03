@@ -31,7 +31,7 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var response = client.Get("/unknown");
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+                response.ShouldHaveStatusCode(HttpStatusCode.NotFound);
             });
         }
 
@@ -43,7 +43,7 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var response = client.PerformRequest(method, "/unknown");
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.MethodNotAllowed));
+                response.ShouldHaveStatusCode(HttpStatusCode.MethodNotAllowed);
             });
         }
     }

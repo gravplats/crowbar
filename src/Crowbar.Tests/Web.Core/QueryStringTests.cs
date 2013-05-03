@@ -13,7 +13,7 @@ namespace Crowbar.Tests.Web.Core
                 string path = CrowbarRoute.QueryString.AsOutbound(new { withPath = "CrowbarWithPath" });
                 var response = client.Get(path, x => x.QueryString("withMethod", "CrowbarWithMethod"));
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
     }

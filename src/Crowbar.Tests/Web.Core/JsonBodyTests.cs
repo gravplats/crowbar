@@ -13,7 +13,7 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var response = client.PerformRequest(method, CrowbarRoute.JsonBody, x => x.JsonBody(new { payload = "text" }));
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
     }

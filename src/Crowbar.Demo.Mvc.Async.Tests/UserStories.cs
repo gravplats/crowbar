@@ -12,7 +12,7 @@ namespace Crowbar.Demo.Mvc.Async.Tests
             {
                 var response = client.Get(AppRoute.External);
 
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
                 response.ShouldBeJson(json =>
                 {
                     string value = json.demo;

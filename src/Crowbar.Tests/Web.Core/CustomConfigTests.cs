@@ -11,7 +11,7 @@ namespace Crowbar.Tests.Web.Core
             Execute(client =>
             {
                 var response = client.Get(CrowbarRoute.CustomConfig);
-                Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                response.ShouldHaveStatusCode(HttpStatusCode.OK);
             });
         }
     }
