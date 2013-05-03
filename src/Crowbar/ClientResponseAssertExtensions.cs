@@ -102,8 +102,8 @@ namespace Crowbar
         /// <param name="expectedContentType">The expected content type.</param>
         public static void ShouldHaveContentType(this ClientResponse response, string expectedContentType)
         {
-            string contentType = response.ContentType ?? string.Empty;
-            string[] values = contentType.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            string actualContentType = response.ContentType ?? string.Empty;
+            string[] values = actualContentType.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
 
             if (!values.Contains(expectedContentType))
             {
@@ -135,14 +135,14 @@ namespace Crowbar
         /// </summary>
         /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
         /// <param name="name">The name of the cookie.</param>
-        /// <param name="value">The value of the cookie.</param>
+        /// <param name="expectedValue">The value of the cookie.</param>
         /// <returns>The cookie.</returns>
-        public static HttpCookie ShouldHaveCookie(this ClientResponse response, string name, string value)
+        public static HttpCookie ShouldHaveCookie(this ClientResponse response, string name, string expectedValue)
         {
             var cookie = response.ShouldHaveCookie(name);
-            if (!string.Equals(cookie.Value, value, StringComparison.Ordinal))
+            if (!string.Equals(cookie.Value, expectedValue, StringComparison.Ordinal))
             {
-                throw AssertException.Create(response, "The value of cookie '{0}' should have been '{1}' but was '{2}'.", name, value, cookie.Value);
+                throw AssertException.Create(response, "The value of cookie '{0}' should have been '{1}' but was '{2}'.", name, expectedValue, cookie.Value);
             }
 
             return cookie;
@@ -161,6 +161,55 @@ namespace Crowbar
             if (cookie != null)
             {
                 throw AssertException.Create(response, "Unexpected cookie '{0}'.", name);
+            }
+        }
+
+        /// <summary>
+        /// Asserts that the response has the specified header.
+        /// </summary>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
+        /// <param name="name">The name of the header.</param>
+        public static void ShouldHaveHeader(this ClientResponse response, string name)
+        {
+            Ensure.NotNullOrEmpty(name, "name");
+
+            string actualValue = response.Headers[name];
+            if (actualValue == null)
+            {
+                throw AssertException.Create(response, "Missing header '{0}'.", name);
+            }
+        }
+
+        /// <summary>
+        /// Asserts that the response has the specified header.
+        /// </summary>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
+        /// <param name="name">The name of the header.</param>
+        /// <param name="expectedValue">The value of the header.</param>
+        public static void ShouldHaveHeader(this ClientResponse response, string name, string expectedValue)
+        {
+            Ensure.NotNullOrEmpty(name, "name");
+
+            string actualValue = response.Headers[name];
+            if (!string.Equals(actualValue, expectedValue, StringComparison.Ordinal))
+            {
+                throw AssertException.Create(response, "The value of header '{0}' should have been '{1}' but was '{2}'.", name, expectedValue, actualValue);
+            }
+        }
+
+        /// <summary>
+        /// Asserts that the response does not have the specified header.
+        /// </summary>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
+        /// <param name="name">The name of the header.</param>
+        public static void ShouldNotHaveHeader(this ClientResponse response, string name)
+        {
+            Ensure.NotNullOrEmpty(name, "name");
+
+            string actualValue = response.Headers[name];
+            if (actualValue != null)
+            {
+                throw AssertException.Create(response, "Unexcepted header '{0}'.", name);
             }
         }
 
