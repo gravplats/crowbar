@@ -184,7 +184,12 @@ namespace Crowbar
             response.ShouldHaveRedirectedTo(location, HttpStatusCode.Found);
         }
 
-        private static void AssertStatusCode(this ClientResponse response, HttpStatusCode expectedStatusCode)
+        /// <summary>
+        /// Asserts that the response has the specified status code.
+        /// </summary>
+        /// <param name="response">The <see cref="ClientResponse"/> that the assert should be made on.</param>
+        /// <param name="expectedStatusCode">The expected status code.</param>
+        public static void ShouldHaveStatusCode(this ClientResponse response, HttpStatusCode expectedStatusCode)
         {
             if (response.StatusCode != expectedStatusCode)
             {
@@ -194,7 +199,7 @@ namespace Crowbar
 
         private static void ShouldHaveRedirectedTo(this ClientResponse response, string location, HttpStatusCode expectedStatusCode)
         {
-            response.AssertStatusCode(expectedStatusCode);
+            response.ShouldHaveStatusCode(expectedStatusCode);
 
             if (response.Headers["Location"] != location)
             {
