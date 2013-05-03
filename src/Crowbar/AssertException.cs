@@ -57,8 +57,8 @@ namespace Crowbar
         /// <returns>An assert exception.</returns>
         public static AssertException Create(ClientResponse response, string message, params object[] args)
         {
-            message = ExtendMessage(response, message);
-            return new AssertException(message, args);
+            message = ExtendMessage(response, string.Format(message, args));
+            return new AssertException(message);
         }
 
         /// <summary>
