@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.Serialization;
 
 namespace Crowbar
@@ -76,12 +77,16 @@ namespace Crowbar
 
         private static string ExtendMessage(ClientResponse response, string message)
         {
-            if (response != null)
+            using (var writer = new StringWriter())
             {
-                message += Environment.NewLine + Environment.NewLine + response.RawHttpResponse;
-            }
+                writer.WriteLine(message + Environment.NewLine);
+                writer.WriteLine("Raw HTTP request:" + Environment.NewLine);
+                writer.WriteLine(response.RawHttpRequest);
+                writer.WriteLine("Raw HTTP response:" + Environment.NewLine);
+                writer.WriteLine(response.RawHttpResponse);
 
-            return message;
+                return writer.ToString();
+            }
         }
     }
 }
