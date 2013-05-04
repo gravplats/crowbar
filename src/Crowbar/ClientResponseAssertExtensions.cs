@@ -121,7 +121,7 @@ namespace Crowbar
         {
             Ensure.NotNullOrEmpty(name, "name");
 
-            var cookie = response.ParseCookie(name);
+            var cookie = response.ParseCookieOrDefault(name);
             if (cookie == null)
             {
                 throw AssertException.Create(response, "Missing cookie '{0}'.", name);
@@ -157,7 +157,7 @@ namespace Crowbar
         {
             Ensure.NotNullOrEmpty(name, "name");
 
-            var cookie = response.ParseCookie(name);
+            var cookie = response.ParseCookieOrDefault(name);
             if (cookie != null)
             {
                 throw AssertException.Create(response, "Unexpected cookie '{0}'.", name);
@@ -256,9 +256,13 @@ namespace Crowbar
             }
         }
 
-        private static HttpCookie ParseCookie(this ClientResponse response, string name)
+        private static HttpCookie ParseCookieOrDefault(this ClientResponse response, string name)
         {
             string header = response.Headers["Set-Cookie"];
+            if (string.IsNullOrWhiteSpace(header))
+            {
+                return null;
+            }
 
             var container = new CookieContainer();
 
