@@ -18,6 +18,7 @@
         public const string JsonBody                        = "/json-body";
 
         public const string MultipleForms                   = "/form-selector";
+        public const string Mustache                        = "/mustache";
         
         public const string QueryString                     = "/query-string";
 

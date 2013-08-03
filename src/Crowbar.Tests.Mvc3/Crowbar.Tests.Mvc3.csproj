@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="Core\AjaxRequestController.cs" />
+    <Compile Include="Core\MustacheController.cs" />
     <Compile Include="Core\CookieController.cs" />
     <Compile Include="Core\FormsAuthController.cs" />
     <Compile Include="Core\HeaderController.cs" />
@@ -168,6 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Custom\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Templates\Form.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

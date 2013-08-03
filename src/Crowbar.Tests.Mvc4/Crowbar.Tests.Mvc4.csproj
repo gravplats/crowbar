@@ -125,6 +125,9 @@
     <Compile Include="..\Crowbar.Tests.Mvc3\Core\JsonBodyController.cs">
       <Link>Core\JsonBodyController.cs</Link>
     </Compile>
+    <Compile Include="..\Crowbar.Tests.Mvc3\Core\MustacheController.cs">
+      <Link>Core\MustacheController.cs</Link>
+    </Compile>
     <Compile Include="..\Crowbar.Tests.Mvc3\Core\QueryStringController.cs">
       <Link>Core\QueryStringController.cs</Link>
     </Compile>
@@ -200,6 +203,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Custom\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Templates\Form.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
