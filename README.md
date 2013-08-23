@@ -523,14 +523,14 @@ Changelog
 
 v0.10 
 
-* Breaking change: The `ProxyBase` hierarchy has been re-written. The most notably change is that classes deriving from `ProxyBase` takes a generic argument `THttpApplication`.
+* Breaking change: The `ProxyBase` hierarchy has been re-written. The most notably change is that classes deriving from `ProxyBase` take a generic argument `THttpApplication`.
 * The `OnApplicationStart` method was added to `ProxyBase`. This method is called after the application has been started but prior to any test case.
 * Breaking change: the `BrowserContext` class has been renamed `HttpPayload`.
-* Breaking change: the `Browser*` classes (`Browser`, `BrowserResponse` etc) has been renamed `Client*` (`Client`, `ClientResponse` etc).
+* Breaking change: the `Browser*` classes (`Browser`, `BrowserResponse` etc) have been renamed `Client*` (`Client`, `ClientResponse` etc).
 * Breaking change: the parameter for the default HTTP payload settings is now an interface instead of a delegate. The use of a delegate forced a second initialization of the proxy.
 * Proper support for asynchronous action method.
 * Proper support for response headers.
-* Breaking change: the `ClientResponse.HttpResponse` has been moved to `Client.Advanced.HttpResponse`. Furthermore, the dependency on the HTTP response object has been removed from the properties in `ClientResponse`, e.g. the content type and the status code is read from the response of the HTTP worker request instead of the HTTP response collected during the request.
+* Breaking change: the `ClientResponse.HttpResponse` has been moved to `ClientResponse.Advanced.HttpResponse`. Furthermore, the dependency on the HTTP response object has been removed from the properties in `ClientResponse`, e.g. the content type and the status code is read from the response of the HTTP worker request instead of the HTTP response collected during the request.
 
 v0.9.6
 
