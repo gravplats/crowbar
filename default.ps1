@@ -18,6 +18,8 @@ properties {
     $build_path                 = "$root\build"
     $build_binaries_path        = "$build_path\binaries\"
     $build_nuget_path           = "$build_path\nuget"
+    $build_nuget_core_path      = "$build_nuget_path\core"
+    $build_nuget_mustache_path  = "$build_nuget_path\mustache"
                                 
     # source                    
     $source_path                = "$root\src"
@@ -25,11 +27,11 @@ properties {
                                 
     # nuget                     
     $nuspec_core                = "$name.nuspec"
-    $nuspec_core_build_file     = "$build_path\nuget\core\$nuspec_core"
+    $nuspec_core_build_file     = "$build_nuget_core_path\$nuspec_core"
     $nuspec_core_file           = "$root\$nuspec_core"
     
     $nuspec_mustache            = "$name.Mustache.nuspec"
-    $nuspec_mustache_build_file = "$build_path\nuget\mustache\$nuspec_mustache"
+    $nuspec_mustache_build_file = "$build_nuget_mustache_path\$nuspec_mustache"
     $nuspec_mustache_file       = "$root\$nuspec_mustache"
 }
 
@@ -70,6 +72,7 @@ task nuget-core -depends build {
 
     # make a copy of the nuspec making temporary edits possible.
     Copy-Item $nuspec_core_file $nuspec_core_build_file
+    Copy-Item "$root\nuget.core.readme.txt" "$build_nuget_core_path\readme.txt"
     
 	# update version in the nuspec copy.
     $content = [xml](Get-Content $nuspec_core_build_file)
