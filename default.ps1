@@ -2,7 +2,7 @@
 
 properties {
     $name                       = "Crowbar"
-    $version                    = "0.9.6"
+    $version                    = "0.10"
     
     # files that should be part of the nuget.
     $nuget_core_package_files     = @( "$name.???" )
