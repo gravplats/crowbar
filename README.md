@@ -521,7 +521,9 @@ Crowbar is built using the ASP.NET MVC 3 assembly. If you're using ASP.NET MVC 4
 Changelog
 ---------
 
-v0.10 
+v0.10
+
+Please consult migration guide [v0.9.x to v0.10](https://github.com/mrydengren/crowbar/wiki/v0.9.x-to-v0.10-migration-guide).
 
 * Breaking change: The `ProxyBase` hierarchy has been re-written. The most notably change is that classes deriving from `ProxyBase` take a generic argument `THttpApplication`.
 * The `OnApplicationStart` method was added to `ProxyBase`. This method is called after the application has been started but prior to any test case.
