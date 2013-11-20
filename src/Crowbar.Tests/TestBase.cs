@@ -8,7 +8,8 @@ namespace Crowbar.Tests
         protected static readonly MvcApplication[] Applications = new[]
         {
             MvcApplication.Create("Crowbar.Tests.Mvc3", "Web.Custom.config"),
-            MvcApplication.Create("Crowbar.Tests.Mvc4", "Web.Custom.config")
+            MvcApplication.Create("Crowbar.Tests.Mvc4", "Web.Custom.config"),
+            MvcApplication.Create("Crowbar.Tests.Mvc5", "Web.Custom.config")
         };
 
         protected void Execute(Action<Client> client)
